@@ -1,0 +1,16 @@
+.home {
+    .calendar {
+        table {
+            tbody {
+                td {
+                    width: rem-calc(300);
+                    height: rem-calc(300);
+                    
+                    &:not(:last-child) {
+                        border-right: 1px solid $light-gray;
+                    }
+                }
+            }
+        }
+    }
+}

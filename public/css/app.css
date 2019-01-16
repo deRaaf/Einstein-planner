@@ -9220,3 +9220,12 @@ html.is-reveal-open body {
   }
 }
 
+.home .calendar table tbody td {
+  width: 18.75rem;
+  height: 18.75rem;
+}
+
+.home .calendar table tbody td:not(:last-child) {
+  border-right: 1px solid #e6e6e6;
+}
+
