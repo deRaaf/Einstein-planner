@@ -6,7 +6,17 @@
 @import "settings";
 
 // Foundation
-@import "foundation";
+@import "node_modules/foundation-sites/scss/foundation";
+
+// Font-awesome
+@import "node_modules/font-awesome/scss/font-awesome";
+
+@include foundation-everything($flex: true);
 
 // Project files
+
+// Pages
 @import "pages/home";
+
+// Components
+@import "components/modals";

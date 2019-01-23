@@ -18,6 +18,33 @@
     <div id="app">
         <router-view></router-view>
     </div>
+
+    <div class="reveal newItem" id="modalNewItem" data-reveal>
+        <h2>Nieuw agenda item</h2>
+        <p>Voeg een nieuw item toe</p>
+
+        <form action="">
+            <label for="aptName">Naam</label>
+            <input type="text" name="aptName" id="aptName">
+
+            <label for="aptDate">Datum</label>
+            <input type="date" name="aptDate" id="aptDate">
+
+            <div class="from">
+                <label for="aptFrom">Van</label>
+                <input type="time" name="aptFrom" id="aptFrom">
+            </div>
+
+            <div class="till">
+                <label for="aptTill">Tot</label>
+                <input type="time" name="aptTill" id="aptTill">
+            </div>
+        </form>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 </body>
 
 <!-- Compressed JavaScript -->
