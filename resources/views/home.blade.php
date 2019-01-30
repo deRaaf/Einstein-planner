@@ -39,6 +39,8 @@
                 <label for="aptTill">Tot</label>
                 <input type="time" name="aptTill" id="aptTill">
             </div>
+
+            <button class="button button-primary" type="submit">Toevoegen</button>
         </form>
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
