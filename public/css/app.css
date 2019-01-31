@@ -10842,6 +10842,21 @@ html.is-reveal-open body {
   position: relative;
 }
 
+.home .calendar table thead th {
+  font-size: 1.25rem;
+  text-transform: capitalize;
+}
+
+.home .calendar table thead th.month {
+  font-size: 1.75rem;
+}
+
+.home .calendar table thead th .date {
+  display: block;
+  font-weight: normal;
+  font-size: 0.875rem;
+}
+
 .home .calendar table tbody td {
   width: 18.75rem;
   height: 18.75rem;

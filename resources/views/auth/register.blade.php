@@ -2,11 +2,11 @@
 
 @section('content')
 
-<div class="container">
+<div class="grid-container">
 
-    <div class="row">
+    <div class="grid-x">
 
-        <div class="form-container small-6 small-centered columns">
+        <div class="form-container cell small-6 small-centered columns">
 
             <div class="form-title text-center">
                 Register
@@ -27,6 +27,10 @@
                         </span>
                     @endif
                 </div>
+
+                <label for="student_number">Student nummer</label>
+
+                <input id="student_number" type="number" class="form-control" name="student_number" value="{{ old('student_number') }}" required>
 
                 <div class="email">
                     <label for="email">E-Mail Address</label>

@@ -17,7 +17,7 @@ class CreateAgendaItemsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('student_number');
-            $table->string('type', 100);
+            $table->string('type');
             $table->date('date');
             $table->time('from');
             $table->time('till');

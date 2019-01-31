@@ -2,6 +2,23 @@
     position: relative;
     .calendar {
         table {
+            thead {
+                th {
+
+                    font-size: rem-calc(20);
+                    text-transform: capitalize;
+
+                    &.month {
+                        font-size: rem-calc(28);
+                    }
+
+                    .date {
+                        display: block;
+                        font-weight: normal;
+                        font-size: rem-calc(14);
+                    }
+                }
+            }
             tbody {
                 td {
                     width: rem-calc(300);

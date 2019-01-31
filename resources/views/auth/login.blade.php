@@ -2,11 +2,11 @@
 
 @section('content')
 
-<div class="container">
+<div class="grid-container">
 
     <div class="row">
 
-        <div class="form-container small-6 small-centered columns">
+        <div class="form-container cell small-6 small-centered columns">
 
             <div class="form-title text-center">
                 Login

@@ -51,45 +51,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      date: null,
+      currentMonth: null
+    };
+  },
+  created: function created() {
+    formatDate();
+  },
   methods: {
     popup: function popup(id) {
       var popup = new Foundation.Reveal($(id));
       popup.open();
+    },
+    formatDate: function formatDate() {
+      dateToday = Date();
+      this.date = dateToday;
+      monthToday = dateToday.getMonth();
+      months = ["januari", "februari", "Maart", "april", "Mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"];
+      this.currentMonth = months[monthToday];
+      console.log(months[monthToday]);
     }
-  } // directives: {
-  //     freveal: {
-  //         bind: function (el) {
-  //             new Foundation.Reveal($(el))
-  //         },
-  //         unbind: function (el) {
-  //             $(el).foundation.destroy()
-  //         }
-  //     }
-  // }
-
+  }
 });
 
 /***/ }),
@@ -127,7 +112,42 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm._m(1)
+    _c("div", { staticClass: "calendar" }, [
+      _c("table", [
+        _c("thead", [
+          _c("tr", [
+            _c("th", { staticClass: "month" }, [
+              _vm._v(_vm._s(_vm.currentMonth))
+            ]),
+            _vm._v(" "),
+            _c("th"),
+            _vm._v(" "),
+            _c("th"),
+            _vm._v(" "),
+            _c("th"),
+            _vm._v(" "),
+            _c("th")
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("th", [
+              _vm._v("Maandag "),
+              _c("span", { staticClass: "date" }, [_vm._v(_vm._s(_vm.date))])
+            ]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Dinsdag")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Woensdag")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Donderdag")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Vrijdag")])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -143,103 +163,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "calendar" }, [
-      _c("table", [
-        _c("thead", [
-          _c("tr", [
-            _c("th", [_vm._v("Maandag")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Dinsdag")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Woensdag")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Donderdag")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Vrijdag")])
-          ])
+    return _c("tbody", [
+      _c("tr", [
+        _c("td", [_vm._v("Content Goes Here")]),
+        _vm._v(" "),
+        _c("td", [
+          _vm._v(
+            "This is longer content Donec id elit non mi porta gravida at eget metus."
+          )
         ]),
         _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "This is longer content Donec id elit non mi porta gravida at eget metus."
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus."
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus."
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus."
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                "This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus."
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Content Goes Here")])
-          ])
-        ])
+        _c("td", [_vm._v("Content Goes Here")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Content Goes Here")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Content Goes Here")])
       ])
     ])
   }

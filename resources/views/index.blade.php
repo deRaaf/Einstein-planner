@@ -23,25 +23,25 @@
         <h2>Nieuw agenda item</h2>
         <p>Voeg een nieuw item toe</p>
 
-        <form action="">
-            <label for="aptName">Naam</label>
-            <input type="text" name="aptName" id="aptName">
+        {!! Form::open(array('url' => 'foo/bar')) !!}
+           {{ Form::label('aptName', 'Naam') }}
+            {{ Form::text('aptName') }}
 
-            <label for="aptDate">Datum</label>
-            <input type="date" name="aptDate" id="aptDate">
+            {{ Form::label('aptDate', 'Datum') }}
+            {{ Form::date('aptDate') }}
 
             <div class="from">
-                <label for="aptFrom">Van</label>
-                <input type="time" name="aptFrom" id="aptFrom">
+                {{ Form::label('aptFrom', 'Van') }}
+                {{ Form::time('aptFrom') }}
             </div>
 
             <div class="till">
-                <label for="aptTill">Tot</label>
-                <input type="time" name="aptTill" id="aptTill">
+                {{ Form::label('aptTill', 'Tot') }}
+                {{ Form::time('aptTill') }}
             </div>
 
-            <button class="button button-primary" type="submit">Toevoegen</button>
-        </form>
+            {{ Form::submit('Toevoegen', ['class' => 'button button-primary']) }}
+        {!! Form::close() !!}
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>

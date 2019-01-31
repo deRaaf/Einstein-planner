@@ -12,7 +12,14 @@
         <table>
             <thead>
                 <tr>
-                    <th>Maandag</th>
+                   <th class="month">{{ currentMonth }}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Maandag <span class="date">{{ date }}</span></th>
                     <th>Dinsdag</th>
                     <th>Woensdag</th>
                     <th>Donderdag</th>
@@ -27,58 +34,36 @@
                     <td>Content Goes Here</td>
                     <td>Content Goes Here</td>
                 </tr>
-                <tr>
-                    <td>Content Goes Here</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                </tr>
-                <tr>
-                    <td>Content Goes Here</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                </tr>
-                <tr>
-                    <td>Content Goes Here</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                </tr>
-                <tr>
-                    <td>Content Goes Here</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                </tr>
             </tbody>
         </table>
     </div>
-
   </div>
 </template>
 
 <script>
   export default {
+    data() {
+        return {
+            date: null,
+            currentMonth: null,
+        }
+    },
+    created() {
+        formatDate();
+    },
     methods: {
         popup: function (id) {
             var popup = new Foundation.Reveal($(id));
             popup.open();
+        },
+        formatDate: function() {
+            dateToday = Date();
+            this.date = dateToday;
+            monthToday = dateToday.getMonth();
+            months = ["januari", "februari", "Maart", "april", "Mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"];
+            this.currentMonth = months[monthToday];
+            console.log( months[monthToday]);
         }
     },
-    // directives: {
-    //     freveal: {
-    //         bind: function (el) {
-    //             new Foundation.Reveal($(el))
-    //         },
-    //         unbind: function (el) {
-    //             $(el).foundation.destroy()
-    //         }
-    //     }
-    // }
   }
 </script>
