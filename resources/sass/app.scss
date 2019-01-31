@@ -13,6 +13,9 @@
 
 @include foundation-everything($flex: true);
 
+//fullcalendar
+@import 'node_modules/fullcalendar/dist/fullcalendar';
+
 // Project files
 
 // Pages
