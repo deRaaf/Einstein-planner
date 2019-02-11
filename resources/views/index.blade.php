@@ -15,37 +15,11 @@
           type="text/css" href="{{ mix('css/app.css') }}">
 </head>
 <body>
+    <header>
+        <a href="/logout">Log uit</a>
+    </header>
     <div id="app">
         <router-view></router-view>
-    </div>
-
-    <div class="reveal newItem" id="modalNewItem" data-reveal>
-        <h2>Nieuw agenda item</h2>
-        <p>Voeg een nieuw item toe</p>
-
-        {!! Form::open(array('url' => 'foo/bar')) !!}
-           {{ Form::label('aptName', 'Naam') }}
-            {{ Form::text('aptName') }}
-
-            {{ Form::label('aptDate', 'Datum') }}
-            {{ Form::date('aptDate') }}
-
-            <div class="from">
-                {{ Form::label('aptFrom', 'Van') }}
-                {{ Form::time('aptFrom') }}
-            </div>
-
-            <div class="till">
-                {{ Form::label('aptTill', 'Tot') }}
-                {{ Form::time('aptTill') }}
-            </div>
-
-            {{ Form::submit('Toevoegen', ['class' => 'button button-primary']) }}
-        {!! Form::close() !!}
-
-        <button class="close-button" data-close aria-label="Close modal" type="button">
-            <span aria-hidden="true">&times;</span>
-        </button>
     </div>
 </body>
 

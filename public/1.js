@@ -12,6 +12,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_full_calendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-full-calendar */ "./node_modules/vue-full-calendar/index.js");
 /* harmony import */ var fullcalendar_dist_locale_nl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fullcalendar/dist/locale/nl */ "./node_modules/fullcalendar/dist/locale/nl.js");
 /* harmony import */ var fullcalendar_dist_locale_nl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fullcalendar_dist_locale_nl__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios_dist_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios/dist/axios */ "./node_modules/axios/dist/axios.js");
+/* harmony import */ var axios_dist_axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios_dist_axios__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -27,6 +29,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -40,15 +79,63 @@ __webpack_require__.r(__webpack_exports__);
         locale: 'nl',
         minTime: "08:00:00",
         maxTime: "22:00:00",
-        editable: "true"
-      }
+        editable: "true",
+        allDaySlot: false,
+        views: {
+          week: {
+            columnHeaderFormat: "dddd D"
+          },
+          month: {
+            columnHeaderFormat: "dddd"
+          }
+        }
+      },
+      form: [{
+        name: '',
+        date: '',
+        allDay: '',
+        description: '',
+        type: '',
+        from: '',
+        till: ''
+      }]
     };
   },
-  created: function created() {},
+  created: function created() {
+    this.get_agenda_items();
+  },
   methods: {
     popup: function popup(id) {
       var popup = new Foundation.Reveal($(id));
       popup.open();
+    },
+    get_agenda_items: function get_agenda_items() {
+      var _this = this;
+
+      window.axios.get('api/agenda_items?api_token=123').then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+        _this.agenda_items = data;
+      });
+    },
+    formSubmit: function formSubmit() {
+      if (this.form.allDay == 0 || this.form.allDay == "") {
+        this.form.allDay = false;
+      } else {
+        this.form.allDay = true;
+      }
+
+      axios.post('api/agenda_items?api_token=123', {
+        title: this.form.name,
+        start: this.form.date,
+        allDay: this.form.allDay,
+        description: this.form.description,
+        type: this.form.type // from: this.form.from,
+        // till: this.form.till,
+
+      }).catch(function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -363,18 +450,234 @@ var render = function() {
     [
       _vm._m(0),
       _vm._v(" "),
-      _c("div", [
+      _c("div", { staticClass: "grid-container" }, [
+        _c("h2", [_vm._v("Nieuw agenda item")]),
+        _vm._v(" "),
+        _c("p", [_vm._v("Voeg een nieuw item toe")]),
+        _vm._v(" "),
         _c(
-          "a",
+          "form",
           {
-            staticClass: "button",
             on: {
-              click: function($event) {
-                _vm.popup("#modalNewItem")
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.formSubmit($event)
               }
             }
           },
-          [_vm._v("Nieuw item")]
+          [
+            _c("label", { attrs: { for: "name" } }, [_vm._v("Naam")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.name,
+                  expression: "form.name"
+                }
+              ],
+              attrs: { type: "text", name: "name", id: "name" },
+              domProps: { value: _vm.form.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "name", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "date" } }, [_vm._v("Datum")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.date,
+                  expression: "form.date"
+                }
+              ],
+              attrs: { type: "date", name: "date", id: "date" },
+              domProps: { value: _vm.form.date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "date", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "allDay" } }, [_vm._v("Hele dag")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.allDay,
+                  expression: "form.allDay"
+                }
+              ],
+              attrs: { type: "checkbox", name: "allDay", id: "allDay" },
+              domProps: {
+                checked: Array.isArray(_vm.form.allDay)
+                  ? _vm._i(_vm.form.allDay, null) > -1
+                  : _vm.form.allDay
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.form.allDay,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && _vm.$set(_vm.form, "allDay", $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.form,
+                          "allDay",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
+                    }
+                  } else {
+                    _vm.$set(_vm.form, "allDay", $$c)
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(_vm.form.allDay))]),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "type" } }, [_vm._v("Type")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.type,
+                    expression: "form.type"
+                  }
+                ],
+                attrs: { name: "type", id: "type" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.form,
+                      "type",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "" } }, [
+                  _vm._v("Kies een type")
+                ]),
+                _vm._v(" "),
+                _c("option", [_vm._v("SO")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("REP")])
+              ]
+            ),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "description" } }, [
+              _vm._v("Beschrijving")
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.description,
+                  expression: "form.description"
+                }
+              ],
+              attrs: { id: "description" },
+              domProps: { value: _vm.form.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "description", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "from" }, [
+              _c("label", { attrs: { for: "from" } }, [_vm._v("Van")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.from,
+                    expression: "form.from"
+                  }
+                ],
+                attrs: { type: "time", name: "from", id: "from" },
+                domProps: { value: _vm.form.from },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "from", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "till" }, [
+              _c("label", { attrs: { for: "till" } }, [_vm._v("Tot")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.till,
+                    expression: "form.till"
+                  }
+                ],
+                attrs: { type: "time", name: "till", id: "till" },
+                domProps: { value: _vm.form.till },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "till", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("button", { staticClass: "button button-primary" }, [
+              _vm._v("Toevoegen")
+            ])
+          ]
         )
       ]),
       _vm._v(" "),

@@ -69,6 +69,7 @@ class RegisterController extends Controller
             'student_number' => $data['student_number'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'api_token' => '123',
         ]);
     }
 }
