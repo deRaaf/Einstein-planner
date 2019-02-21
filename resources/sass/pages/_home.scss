@@ -11,5 +11,15 @@
         .fc-divider {
             max-width: 100% !important;
         }
+
+        .fc-event {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            #delete {
+                display: none;
+            }
+        }
     }
 }

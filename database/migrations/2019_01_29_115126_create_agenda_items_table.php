@@ -25,7 +25,7 @@ class CreateAgendaItemsTable extends Migration
             // $table->time('from');
             // $table->time('till');
             $table->boolean('completed')->default(false);
-            $table->boolean('allDay')->default(false);
+            $table->string('allDay')->default('false');
         });
     }
 

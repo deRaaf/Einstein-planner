@@ -61,10 +61,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -79,8 +75,9 @@ __webpack_require__.r(__webpack_exports__);
         locale: 'nl',
         minTime: "08:00:00",
         maxTime: "22:00:00",
-        editable: "true",
-        allDaySlot: false,
+        editable: true,
+        nowIndicator: true,
+        // allDaySlot: false,
         views: {
           week: {
             columnHeaderFormat: "dddd D"
@@ -88,6 +85,9 @@ __webpack_require__.r(__webpack_exports__);
           month: {
             columnHeaderFormat: "dddd"
           }
+        },
+        eventRender: function eventRender(event, element) {
+          element.html(event.title + '<i id="delete" class="fas fa-trash-alt" @click="deleteAgendaItem()"></i>');
         }
       },
       form: [{
@@ -103,6 +103,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.get_agenda_items();
+    this.onHover();
   },
   methods: {
     popup: function popup(id) {
@@ -119,10 +120,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     formSubmit: function formSubmit() {
-      if (this.form.allDay == 0 || this.form.allDay == "") {
-        this.form.allDay = false;
+      if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
+        this.form.allDay = "false";
       } else {
-        this.form.allDay = true;
+        this.form.allDay = "true";
       }
 
       axios.post('api/agenda_items?api_token=123', {
@@ -136,6 +137,36 @@ __webpack_require__.r(__webpack_exports__);
       }).catch(function (error) {
         console.log(error);
       });
+      this.form = [{
+        name: '',
+        date: '',
+        allDay: '',
+        description: '',
+        type: '',
+        from: '',
+        till: ''
+      }];
+    },
+    deleteAgendaItem: function deleteAgendaItem() {
+      Swal.fire({
+        title: 'Weet je het zeker?',
+        text: "Je staat op het punt de ",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ja, verwijderen'
+      }).then(function (result) {
+        if (result.value) {
+          Swal.fire('Verwijderd!', 'De afspraak is verwijderd.', 'success');
+        }
+      });
+    },
+    onHover: function onHover() {
+      var item = document.getElementsByClassName("fc-event");
+      item.addEventListener("mouseover", function (event) {
+        document.getElementById("delete").style.display = "block";
+      }, false);
     }
   }
 });
@@ -448,9 +479,7 @@ var render = function() {
     "div",
     { staticClass: "home" },
     [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "grid-container" }, [
+      _c("div", { staticClass: "page-header grid-container" }, [
         _c("h2", [_vm._v("Nieuw agenda item")]),
         _vm._v(" "),
         _c("p", [_vm._v("Voeg een nieuw item toe")]),
@@ -688,16 +717,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "page-header" }, [
-      _c("h1", [_vm._v("Einstein planner")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

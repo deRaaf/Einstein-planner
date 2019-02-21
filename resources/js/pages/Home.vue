@@ -1,10 +1,6 @@
 <template>
   <div class="home">
-    <div class="page-header">
-        <h1>Einstein planner</h1>
-    </div>
-
-    <div class="grid-container">
+    <div class="page-header grid-container">
         <!-- <a class="button" @click="popup('#modalNewItem')">Nieuw item</a> -->
         <h2>Nieuw agenda item</h2>
         <p>Voeg een nieuw item toe</p>
@@ -65,8 +61,9 @@ export default {
                 locale: 'nl',
                 minTime: "08:00:00",
                 maxTime: "22:00:00",
-                editable: "true",
-                allDaySlot: false,
+                editable: true,
+                nowIndicator: true,   
+                // allDaySlot: false,
                 views: {
                     week: {
                         columnHeaderFormat: "dddd D",
@@ -74,6 +71,9 @@ export default {
                     month: {
                         columnHeaderFormat: "dddd",
                     }
+                },
+                eventRender(event, element) {
+                    element.html(event.title + '<i id="delete" class="fas fa-trash-alt" @click="deleteAgendaItem()"></i>');
                 }
             },
             form: [{
@@ -90,6 +90,7 @@ export default {
     },
     created() {
         this.get_agenda_items();
+        this.onHover();
     },
     methods: {
         popup: function (id) {
@@ -104,11 +105,10 @@ export default {
             });
         },
         formSubmit() {
-
-            if (this.form.allDay == 0 || this.form.allDay == "") {
-                this.form.allDay = false
+            if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
+                this.form.allDay = "false";
             } else {
-                this.form.allDay = true;
+                this.form.allDay = "true";
             }
 
             axios.post('api/agenda_items?api_token=123', {
@@ -126,7 +126,45 @@ export default {
                 console.log(error);
 
             });
-        }
+
+            this.form = [{
+                name: '',
+                date: '',
+                allDay: '',
+                description: '',
+                type: '',
+                from:'',
+                till: '',
+            }];
+        },
+        deleteAgendaItem() {
+            Swal.fire({
+                title: 'Weet je het zeker?',
+                text: "Je staat op het punt de ",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ja, verwijderen'
+                }).then((result) => {
+
+                    
+
+                    if (result.value) {
+                        Swal.fire(
+                        'Verwijderd!',
+                        'De afspraak is verwijderd.',
+                        'success'
+                        )
+                    }
+                })
+        },
+        onHover() {
+            var item = document.getElementsByClassName("fc-event");
+            item.addEventListener("mouseover", function( event ) {   
+                document.getElementById("delete").style.display = "block";
+            }, false);
+        }       
     },
   }
 </script>
