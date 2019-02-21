@@ -1,8 +1,6 @@
 # Einstein planner
 A plan tool for the Einstein Class based on Laravel and Vue.
 
-Insure you have composer and npm/yarn installed.
-
 ```
 # install composer dependencies
 composer install
