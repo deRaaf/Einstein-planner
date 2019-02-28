@@ -32,4 +32,10 @@ class AgendaController extends Controller
         $agenda_item->save();
         return response($agenda_item->jsonSerialize(), Response::HTTP_CREATED);
     }
+
+    public function destroy($id) {
+        $agenda_item = agenda_item::findOrFail($id);
+
+        $agenda_item->delete();
+    }
 }

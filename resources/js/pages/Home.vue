@@ -1,45 +1,6 @@
 <template>
   <div class="home">
-    <div class="page-header grid-container">
-        <!-- <a class="button" @click="popup('#modalNewItem')">Nieuw item</a> -->
-        <h2>Nieuw agenda item</h2>
-        <p>Voeg een nieuw item toe</p>
-
-        <form @submit.prevent="formSubmit">
-            <label for="name">Naam</label>
-            <input type="text" name="name" id="name" v-model="form.name">
-            <label for="date">Datum</label>
-            <input type="date" name="date" id="date" v-model="form.date">
-
-            <label for="allDay">Hele dag</label>
-            <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
-
-            <span>{{ form.allDay }}</span>
-
-            <label for="type">Type</label>
-            <select name="type" id="type" v-model="form.type">
-                <option disabled>Kies een type</option>
-                <option>SO</option>
-                <option>REP</option>
-            </select>
-            
-            <label for="description">Beschrijving</label>
-            <textarea id="description" v-model="form.description"></textarea>
-
-            <div class="from">
-                <label for="from">Van</label>
-                <input type="time" name="from" id="from" v-model="form.from">
-            </div>
-
-            <div class="till">
-                <label for="till">Tot</label>
-                <input type="time" name="till" id="till" v-model="form.till">
-            </div>
-
-            <button class="button button-primary">Toevoegen</button>
-        </form>
-    </div>
-
+    <router-link class="button primary" to="/newitem">Nieuw agenda item</router-link>
     <full-calendar :config="config" :events="agenda_items"/>
 
   </div>
@@ -49,6 +10,7 @@
 import { FullCalendar } from 'vue-full-calendar'
 import 'fullcalendar/dist/locale/nl'
 import 'axios/dist/axios'
+import Swal from 'sweetalert2'
 
 export default {
     components: {
@@ -73,98 +35,49 @@ export default {
                     }
                 },
                 eventRender(event, element) {
-                    element.html(event.title + '<i id="delete" class="fas fa-trash-alt" @click="deleteAgendaItem()"></i>');
+                    element.find('.fc-content').append('<i class="delete fas fa-trash-alt"></i>');
+
+                    console.log(event._id);
+
+                    element.find(".delete").click(function() {
+                        Swal.fire({
+                            title: 'Weet je het zeker?',
+                            text: "Je staat op het punt dit item te verwijderen",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ja, verwijderen'
+                            }).then((result) => {
+                                if (result.value) {
+                                    $('#calendar').fullCalendar('removeEvents',event._id);
+                                    
+                                    axios.delete('api/agenda_items/'+ event.id + '?api_token=123')
+
+                                    Swal.fire(
+                                    'Verwijderd!',
+                                    'De afspraak is verwijderd.',
+                                    'success'
+                                    )
+                                }
+                            })
+                    });
                 }
             },
-            form: [{
-                name: '',
-                date: '',
-                allDay: '',
-                description: '',
-                type: '',
-                from:'',
-                till: '',
-            }]
-
+            // showDel: false,
         }
     },
     created() {
         this.get_agenda_items();
-        this.onHover();
     },
     methods: {
-        popup: function (id) {
-            var popup = new Foundation.Reveal($(id));
-            popup.open();
-        },
         get_agenda_items: function() {
             window.axios.get('api/agenda_items?api_token=123').then(({ data }) => {
                 console.log(data);
 
                 this.agenda_items = data;
             });
-        },
-        formSubmit() {
-            if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
-                this.form.allDay = "false";
-            } else {
-                this.form.allDay = "true";
-            }
-
-            axios.post('api/agenda_items?api_token=123', {
-
-                title: this.form.name,
-                start: this.form.date,
-                allDay: this.form.allDay,
-                description: this.form.description,
-                type: this.form.type,
-                // from: this.form.from,
-                // till: this.form.till,
-            })
-            .catch(function (error) {
-
-                console.log(error);
-
-            });
-
-            this.form = [{
-                name: '',
-                date: '',
-                allDay: '',
-                description: '',
-                type: '',
-                from:'',
-                till: '',
-            }];
-        },
-        deleteAgendaItem() {
-            Swal.fire({
-                title: 'Weet je het zeker?',
-                text: "Je staat op het punt de ",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ja, verwijderen'
-                }).then((result) => {
-
-                    
-
-                    if (result.value) {
-                        Swal.fire(
-                        'Verwijderd!',
-                        'De afspraak is verwijderd.',
-                        'success'
-                        )
-                    }
-                })
-        },
-        onHover() {
-            var item = document.getElementsByClassName("fc-event");
-            item.addEventListener("mouseover", function( event ) {   
-                document.getElementById("delete").style.display = "block";
-            }, false);
-        }       
+        },  
     },
   }
 </script>

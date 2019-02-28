@@ -11,6 +11,11 @@ export default new VueRouter({
       path:'/',
       name: 'home',
       component: resolve => require(['./pages/Home.vue'], resolve)
+    },
+    {
+      path: '/newitem',
+      name: 'newitem',
+      component: resolve => require(['./pages/NewItem.vue'], resolve)
     }
   ]
 });

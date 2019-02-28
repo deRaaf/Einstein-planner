@@ -1,5 +1,6 @@
 .home {
     position: relative;
+    padding-top: rem-calc(20);
 
     #calendar {
         div.fc-widget-header {
@@ -12,14 +13,10 @@
             max-width: 100% !important;
         }
 
-        .fc-event {
+        .fc-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            #delete {
-                display: none;
-            }
         }
     }
 }

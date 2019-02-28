@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} {{ app()->version() }}</title>
+    <title>Lekker plannen</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -20,9 +20,9 @@
         <div class="top-bar">
 
           <div class="top-bar-left">
-            <ul class="dropdown menu" data-dropdown-menu>
-              <li class="menu-text">{{ config('app.name', 'Laravel') }} {{ app()->version() }}</li>
-            </ul>
+            <a href="{{ URL::to('/') }}">
+                <img class="logo" src="{{asset('img/logo_einsteinclass.png')}}" alt="Logo Einstein planner">
+            </a>
           </div>
 
           <div class="top-bar-right">

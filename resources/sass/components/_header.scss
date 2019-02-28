@@ -1,0 +1,9 @@
+.top-bar {
+    background-color: $white;
+    border-bottom: 1px solid $light-gray;
+
+    .logo {
+        height: rem-calc(100);
+        width: rem-calc(100);
+    }
+}

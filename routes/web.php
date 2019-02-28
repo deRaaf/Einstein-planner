@@ -17,12 +17,5 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-
-// Route::post('agenda_items','AgendaController@formSubmit');
+Route::get('/', 'HomeController@index')->name('home');
 
