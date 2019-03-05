@@ -261,13 +261,12 @@ function webpackContext(req) {
 	return __webpack_require__(id);
 }
 function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) { // check for number or string
+	if(!__webpack_require__.o(map, req)) {
 		var e = new Error("Cannot find module '" + req + "'");
 		e.code = 'MODULE_NOT_FOUND';
 		throw e;
 	}
-	return id;
+	return map[req];
 }
 webpackContext.keys = function webpackContextKeys() {
 	return Object.keys(map);
@@ -5954,8 +5953,8 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 900;
   font-display: auto;
-  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.eot?9a52a4e971938c52d6c541b9bf3dc2ec);
-  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.eot?9a52a4e971938c52d6c541b9bf3dc2ec) format("embedded-opentype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff2?3638e62ea50e6f5859b6a15276c25c87) format("woff2"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff?9c73abbdbd6492778680163269b68345) format("woff"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.ttf?20c189aa192501e4ec907d5f84e8fbb1) format("truetype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.svg?c8ea4c79af12c22b2b6073999137156c) format("svg");
+  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.eot?b5596f4d339f99e3d69bc41be78db962);
+  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.eot?b5596f4d339f99e3d69bc41be78db962) format("embedded-opentype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff2?462806316fea535a6a57651bc2b000b0) format("woff2"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.woff?61969d433bf265b9717a6c357a1e04e4) format("woff"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.ttf?b70cea0339374107969eb53e5b1f603f) format("truetype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.svg?82905d8d1c06969df11c8c378e9bdd4c) format("svg");
 }
 
 .fa,
@@ -15239,10 +15238,26 @@ be a descendant of the grid when it is being dragged.
   max-width: 100% !important;
 }
 
-.home #calendar .fc-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.home #calendar .fc-event .fc-content {
+  padding: 0.3125rem;
+  position: relative;
+}
+
+.home #calendar .fc-event .fc-content .description {
+  width: 100%;
+  margin-top: 0.3125rem;
+  display: block;
+}
+
+.home #calendar .fc-event .fc-content .delete {
+  display: none;
+  position: absolute;
+  right: 0.3125rem;
+  top: 0.3125rem;
+}
+
+.home #calendar .fc-event:hover .delete {
+  display: inline-block;
 }
 
 .newitem {

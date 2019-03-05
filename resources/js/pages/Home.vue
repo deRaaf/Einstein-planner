@@ -2,7 +2,6 @@
   <div class="home">
     <router-link class="button primary" to="/newitem">Nieuw agenda item</router-link>
     <full-calendar :config="config" :events="agenda_items"/>
-
   </div>
 </template>
 
@@ -35,9 +34,8 @@ export default {
                     }
                 },
                 eventRender(event, element) {
-                    element.find('.fc-content').append('<i class="delete fas fa-trash-alt"></i>');
-
-                    console.log(event._id);
+                    element.find('.fc-content').append('<i class="delete fas fa-trash-alt"></i> <span class="description">' + event.description + '</span>');
+                    element.find('.fc-content').append()
 
                     element.find(".delete").click(function() {
                         Swal.fire({
@@ -64,7 +62,6 @@ export default {
                     });
                 }
             },
-            // showDel: false,
         }
     },
     created() {

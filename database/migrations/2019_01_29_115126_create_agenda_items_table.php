@@ -20,10 +20,8 @@ class CreateAgendaItemsTable extends Migration
             $table->mediumText('description');
             $table->integer('student_number');
             $table->string('type');
-            $table->date('start');
-            $table->date('end')->nullable();
-            // $table->time('from');
-            // $table->time('till');
+            $table->string('start');
+            $table->string('end')->nullable();
             $table->boolean('completed')->default(false);
             $table->string('allDay')->default('false');
         });

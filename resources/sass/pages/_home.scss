@@ -13,10 +13,32 @@
             max-width: 100% !important;
         }
 
-        .fc-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .fc-event {
+            
+            .fc-content {
+                padding: rem-calc(5);
+                position: relative;
+
+                .description {
+                    width: 100%;
+                    margin-top: rem-calc(5);
+                    display: block;
+                }
+
+                .delete {
+                    display: none;
+                    position: absolute;
+                    right: rem-calc(5);
+                    top: rem-calc(5);
+                }
+            }
+
+            &:hover {
+                .delete {
+                    display: inline-block;
+                }
+            }
         }
+
     }
 }

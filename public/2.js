@@ -23,7 +23,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -51,8 +50,8 @@ __webpack_require__.r(__webpack_exports__);
           }
         },
         eventRender: function eventRender(event, element) {
-          element.find('.fc-content').append('<i class="delete fas fa-trash-alt"></i>');
-          console.log(event._id);
+          element.find('.fc-content').append('<i class="delete fas fa-trash-alt"></i> <span class="description">' + event.description + '</span>');
+          element.find('.fc-content').append();
           element.find(".delete").click(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
               title: 'Weet je het zeker?',
@@ -71,8 +70,7 @@ __webpack_require__.r(__webpack_exports__);
             });
           });
         }
-      } // showDel: false,
-
+      }
     };
   },
   created: function created() {
@@ -363,13 +361,12 @@ function webpackContext(req) {
 	return __webpack_require__(id);
 }
 function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) { // check for number or string
+	if(!__webpack_require__.o(map, req)) {
 		var e = new Error("Cannot find module '" + req + "'");
 		e.code = 'MODULE_NOT_FOUND';
 		throw e;
 	}
-	return id;
+	return map[req];
 }
 webpackContext.keys = function webpackContextKeys() {
 	return Object.keys(map);

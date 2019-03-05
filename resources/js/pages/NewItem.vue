@@ -58,23 +58,30 @@ export default {
     },
     methods: {
         formSubmit() {
+            var self = this;
+
             if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
                 this.form.allDay = "false";
             } else {
                 this.form.allDay = "true";
             }
 
-            var self = this;
+            if (this.form.from) {
+                var start = this.form.date + 'T' + this.form.from;
+            }
+
+            if (this.form.till) {
+                var end = this.form.date + 'T' + this.form.till;
+            }
 
             axios.post('api/agenda_items?api_token=123', {
 
                 title: this.form.name,
-                start: this.form.date,
+                start: start,
+                end: end,
                 allDay: this.form.allDay,
                 description: this.form.description,
-                type: this.form.type,
-                // from: this.form.from,
-                // till: this.form.till,
+                type: this.form.type
             })
             .then(function(response) {
                 if ( response.status == '201') {
