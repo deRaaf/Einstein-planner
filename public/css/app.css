@@ -15276,6 +15276,55 @@ be a descendant of the grid when it is being dragged.
   }
 }
 
+.newitem .date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.newitem .date .date__item {
+  flex-grow: 1;
+}
+
+.newitem .date .date__item:not(:last-child) {
+  margin-right: 0.625rem;
+}
+
+.newitem .date .date__item.allday {
+  flex-shrink: 1;
+  flex-grow: unset;
+}
+
+.login {
+  padding-right: 0.625rem;
+  padding-left: 0.625rem;
+  max-width: 75rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media print, screen and (min-width: 40em) {
+  .login {
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem;
+  }
+}
+
+.login__inner {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.login__inner .form-container {
+  width: calc(50% - 1.25rem);
+  margin-right: 0.625rem;
+  margin-left: 0.625rem;
+  margin: 0 auto;
+}
+
+.login__inner .form-container .form-title {
+  margin-top: 1.25rem;
+}
+
 .newItem .from,
 .newItem .till {
   width: 45%;
@@ -15289,6 +15338,17 @@ be a descendant of the grid when it is being dragged.
 .top-bar {
   background-color: #fefefe;
   border-bottom: 1px solid #e6e6e6;
+}
+
+@media screen and (max-width: 39.99875em) {
+  .top-bar .top-bar-right,
+  .top-bar .top-bar-left {
+    flex: 0 0 auto;
+  }
+}
+
+.top-bar .menu {
+  background: #fefefe;
 }
 
 .top-bar .logo {

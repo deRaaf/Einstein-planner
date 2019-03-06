@@ -2,14 +2,14 @@
 
 @section('content')
 
-<div class="grid-container">
+<div class="login">
 
-    <div class="grid-x">
+    <div class="login__inner">
 
-        <div class="form-container cell small-6 small-centered columns">
+        <div class="form-container">
 
             <div class="form-title text-center">
-                Register
+                <h1>Register</h1>
             </div>
 
             <form class="register-form" method="POST" action="{{ route('register') }}">

@@ -1,0 +1,16 @@
+.login {
+    @include xy-grid-container;
+
+    &__inner {
+        @include xy-grid;
+
+        .form-container {
+            @include xy-cell(6);
+            margin: 0 auto;
+
+            .form-title {
+                margin-top: rem-calc(20);
+            }
+        }
+    }
+}

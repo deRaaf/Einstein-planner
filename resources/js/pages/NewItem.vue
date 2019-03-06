@@ -6,33 +6,44 @@
         <form @submit.prevent="formSubmit">
             <label for="name">Naam</label>
             <input type="text" name="name" id="name" v-model="form.name">
-            <label for="date">Datum</label>
-            <input type="date" name="date" id="date" v-model="form.date">
 
-            <label for="allDay">Hele dag</label>
-            <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
+            <div class="date">
+                <div class="date__item">
+                    <label for="date">Datum van</label>
+                    <input type="date" name="date" id="date" v-model="form.date">
+                </div>
+               
+               <div class="date__item allday">
+                    <label for="allDay">Hele dag</label>
+                    <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
+               </div>
 
-            <span>{{ form.allDay }}</span>
+                <div v-if="!this.form.allDay" class="date__item">
+                    <label for="from">Van</label>
+                    <input type="time" name="from" id="from" v-model="form.from">
+                </div>
+
+                <div v-if="!this.form.allDay" class="date__item">
+                    <label for="till">Tot</label>
+                    <input type="time" name="till" id="till" v-model="form.till">
+                </div>
+
+                <div class="date__item">
+                    <label for="date">Datum tot</label>
+                    <input type="date" name="date" id="date" v-model="form.date">
+                </div>
+
+            </div>
 
             <label for="type">Type</label>
             <select name="type" id="type" v-model="form.type">
-                <option disabled>Kies een type</option>
+                <option selected disabled>Kies een type</option>
                 <option>SO</option>
                 <option>REP</option>
             </select>
             
             <label for="description">Beschrijving</label>
             <textarea id="description" v-model="form.description"></textarea>
-
-            <div class="from">
-                <label for="from">Van</label>
-                <input type="time" name="from" id="from" v-model="form.from">
-            </div>
-
-            <div class="till">
-                <label for="till">Tot</label>
-                <input type="time" name="till" id="till" v-model="form.till">
-            </div>
 
             <button class="button button-primary">Toevoegen</button>
         </form>

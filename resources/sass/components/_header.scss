@@ -2,6 +2,18 @@
     background-color: $white;
     border-bottom: 1px solid $light-gray;
 
+    .top-bar-right,
+    .top-bar-left {
+
+        @include breakpoint(small down) {
+            flex: 0 0 auto;
+        }
+    }
+        
+    .menu{
+        background: $white;
+    }
+
     .logo {
         height: rem-calc(100);
         width: rem-calc(100);

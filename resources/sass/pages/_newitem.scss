@@ -1,4 +1,22 @@
 .newitem {
     @include xy-grid-container;
     padding-top: rem-calc(20);
+
+    .date {
+        display: flex;
+        justify-content: space-between;
+
+        .date__item {
+            flex-grow: 1;
+            
+            &:not(:last-child) {
+                margin-right: rem-calc(10);
+            }
+
+            &.allday {
+                flex-shrink: 1;
+                flex-grow: unset;
+            }
+        }
+    }
 }
