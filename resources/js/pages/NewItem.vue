@@ -85,7 +85,7 @@ export default {
                 var end = this.form.date + 'T' + this.form.till;
             }
 
-            axios.post('api/agenda_items?api_token=123', {
+            axios.post('api/agenda_items', {
 
                 title: this.form.name,
                 start: start,

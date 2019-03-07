@@ -23,6 +23,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -51,7 +86,6 @@ __webpack_require__.r(__webpack_exports__);
         },
         eventRender: function eventRender(event, element) {
           element.find('.fc-content').append('<i class="delete fas fa-trash-alt"></i> <span class="description">' + event.description + '</span>');
-          element.find('.fc-content').append();
           element.find(".delete").click(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
               title: 'Weet je het zeker?',
@@ -80,7 +114,7 @@ __webpack_require__.r(__webpack_exports__);
     get_agenda_items: function get_agenda_items() {
       var _this = this;
 
-      window.axios.get('api/agenda_items?api_token=123').then(function (_ref) {
+      window.axios.get('api/agenda_items').then(function (_ref) {
         var data = _ref.data;
         console.log(data);
         _this.agenda_items = data;
@@ -396,6 +430,84 @@ var render = function() {
     "div",
     { staticClass: "home" },
     [
+      _c("div", { staticClass: "top-bar" }, [
+        _c(
+          "div",
+          { staticClass: "top-bar-left" },
+          [
+            _c("router-link", { attrs: { to: "/" } }, [
+              _c("img", {
+                staticClass: "logo",
+                attrs: {
+                  src: "/../img/logo_einsteinclass.png",
+                  alt: "Logo Einstein planner"
+                }
+              })
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "top-bar-right" }, [
+          _c("ul", { staticClass: "menu" }, [
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: "/login" } }, [
+                  _vm._v("Login")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: "/register" } }, [
+                  _vm._v("Register")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "ul",
+              {
+                staticClass: "dropdown menu",
+                attrs: { "data-dropdown-menu": "" }
+              },
+              [
+                _c("li", [
+                  _c("ul", { staticClass: "menu" }, [
+                    _c(
+                      "li",
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            attrs: {
+                              to: "/logout",
+                              onclick:
+                                "event.preventDefault();document.getElementById('logout-form').submit();"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                      Logout\n                                  "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                ])
+              ]
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
       _c(
         "router-link",
         { staticClass: "button primary", attrs: { to: "/newitem" } },
