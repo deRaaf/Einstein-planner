@@ -12,10 +12,21 @@
         
     .menu{
         background: $white;
+
+        .router-link-active {
+            background: $primary-color;
+            color: $white;
+            border-radius: $global-radius;
+        }
     }
 
-    .logo {
+    .logo__wrapper {
         height: rem-calc(100);
         width: rem-calc(100);
+
+        .logo {
+            width: 100%;
+            height: auto;
+        }
     }
 }

@@ -5905,13 +5905,13 @@ img {
 textarea {
   height: auto;
   min-height: 50px;
-  border-radius: 0;
+  border-radius: 8px;
 }
 
 select {
   box-sizing: border-box;
   width: 100%;
-  border-radius: 0;
+  border-radius: 8px;
 }
 
 .map_canvas img,
@@ -5929,7 +5929,7 @@ button {
      -moz-appearance: none;
           appearance: none;
   border: 0;
-  border-radius: 0;
+  border-radius: 8px;
   background: transparent;
   line-height: 1;
   cursor: auto;
@@ -5981,7 +5981,7 @@ textarea {
   margin: 0 0 1rem;
   padding: 0.5rem;
   border: 1px solid #cacaca;
-  border-radius: 0;
+  border-radius: 8px;
   background-color: #fefefe;
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
   font-family: inherit;
@@ -6038,7 +6038,7 @@ textarea[readonly] {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  border-radius: 0;
+  border-radius: 8px;
 }
 
 input[type=search] {
@@ -6120,12 +6120,12 @@ label.middle {
 
 .input-group > :first-child,
 .input-group > :first-child.input-group-button > * {
-  border-radius: 0 0 0 0;
+  border-radius: 8px 0 0 8px;
 }
 
 .input-group > :last-child,
 .input-group > :last-child.input-group-button > * {
-  border-radius: 0 0 0 0;
+  border-radius: 0 8px 8px 0;
 }
 
 .input-group-button a,
@@ -6215,7 +6215,7 @@ select {
      -moz-appearance: none;
           appearance: none;
   border: 1px solid #cacaca;
-  border-radius: 0;
+  border-radius: 8px;
   background-color: #fefefe;
   font-family: inherit;
   font-size: 1rem;
@@ -6572,6 +6572,7 @@ kbd {
   background-color: #e6e6e6;
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   color: #0a0a0a;
+  border-radius: 8px;
 }
 
 .subheader {
@@ -9446,7 +9447,7 @@ ol.no-bullet {
   margin: 0 0 1rem 0;
   padding: 0.85em 1em;
   border: 1px solid transparent;
-  border-radius: 0;
+  border-radius: 8px;
   transition: background-color 0.25s ease-out, color 0.25s ease-out;
   font-family: inherit;
   font-size: 0.9rem;
@@ -10220,7 +10221,7 @@ a.button:focus {
 .label {
   display: inline-block;
   padding: 0.33333rem 0.5rem;
-  border-radius: 0;
+  border-radius: 8px;
   font-size: 0.8rem;
   line-height: 1;
   white-space: nowrap;
@@ -10257,7 +10258,7 @@ a.button:focus {
 .progress {
   height: 1rem;
   margin-bottom: 1rem;
-  border-radius: 0;
+  border-radius: 8px;
   background-color: #cacaca;
 }
 
@@ -10287,6 +10288,7 @@ a.button:focus {
   width: 0%;
   height: 100%;
   background-color: #1779ba;
+  border-radius: 8px;
 }
 
 .progress-meter-text {
@@ -10300,6 +10302,7 @@ a.button:focus {
   font-weight: bold;
   color: #fefefe;
   white-space: nowrap;
+  border-radius: 8px;
 }
 
 .slider {
@@ -10341,7 +10344,7 @@ a.button:focus {
   display: inline-block;
   width: 1.4rem;
   height: 1.4rem;
-  border-radius: 0;
+  border-radius: 8px;
   background-color: #1779ba;
   transition: all 0.2s ease-in-out;
   touch-action: manipulation;
@@ -10415,7 +10418,7 @@ a.button:focus {
   display: block;
   width: 4rem;
   height: 2rem;
-  border-radius: 0;
+  border-radius: 8px;
   background: #cacaca;
   transition: all 0.25s ease-out;
   font-weight: inherit;
@@ -10436,7 +10439,7 @@ input + .switch-paddle {
   height: 1.5rem;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
-  border-radius: 0;
+  border-radius: 8px;
   background: #fefefe;
   transition: all 0.25s ease-out;
   content: "";
@@ -10629,7 +10632,7 @@ input:checked + label > .switch-inactive {
   margin: 0 0 1rem 0;
   padding: 1rem;
   border: 1px solid rgba(10, 10, 10, 0.25);
-  border-radius: 0;
+  border-radius: 8px;
   background-color: white;
   color: #0a0a0a;
 }
@@ -10687,7 +10690,7 @@ input:checked + label > .switch-inactive {
   flex-grow: 1;
   margin-bottom: 1rem;
   border: 1px solid #e6e6e6;
-  border-radius: 0;
+  border-radius: 8px;
   background: #fefefe;
   box-shadow: none;
   overflow: hidden;
@@ -10730,7 +10733,7 @@ input:checked + label > .switch-inactive {
   padding: 1rem;
   visibility: hidden;
   border: 1px solid #cacaca;
-  border-radius: 0;
+  border-radius: 8px;
   background-color: #fefefe;
   font-size: 1rem;
 }
@@ -10775,7 +10778,7 @@ input:checked + label > .switch-inactive {
 
 .pagination li {
   margin-right: 0.0625rem;
-  border-radius: 0;
+  border-radius: 8px;
   font-size: 0.875rem;
   display: none;
 }
@@ -10795,7 +10798,7 @@ input:checked + label > .switch-inactive {
 .pagination button {
   display: block;
   padding: 0.1875rem 0.625rem;
-  border-radius: 0;
+  border-radius: 8px;
   color: #0a0a0a;
 }
 
@@ -10855,7 +10858,7 @@ input:checked + label > .switch-inactive {
   z-index: 1200;
   max-width: 10rem;
   padding: 0.75rem;
-  border-radius: 0;
+  border-radius: 8px;
   background-color: #0a0a0a;
   font-size: 80%;
   color: #fefefe;
@@ -10972,11 +10975,11 @@ input:checked + label > .switch-inactive {
 }
 
 .accordion-item:first-child > :first-child {
-  border-radius: 0 0 0 0;
+  border-radius: 8px 8px 0 0;
 }
 
 .accordion-item:last-child > :last-child {
-  border-radius: 0 0 0 0;
+  border-radius: 0 0 8px 8px;
 }
 
 .accordion-title {
@@ -10992,7 +10995,7 @@ input:checked + label > .switch-inactive {
 
 :last-child:not(.is-active) > .accordion-title {
   border-bottom: 1px solid #e6e6e6;
-  border-radius: 0 0 0 0;
+  border-radius: 0 0 8px 8px;
 }
 
 .accordion-title:hover,
@@ -11306,7 +11309,7 @@ input:checked + label > .switch-inactive {
   max-width: 100%;
   margin-bottom: 1rem;
   border: solid 4px #fefefe;
-  border-radius: 0;
+  border-radius: 8px;
   box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.2);
   line-height: 0;
 }
@@ -12706,7 +12709,7 @@ html.is-reveal-open body {
   display: none;
   padding: 1rem;
   border: 1px solid #cacaca;
-  border-radius: 0;
+  border-radius: 8px;
   background-color: #fefefe;
   position: relative;
   top: 100px;
@@ -14952,37 +14955,73 @@ be a descendant of the grid when it is being dragged.
 
 .home {
   position: relative;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.home .calendar_wrap {
+  width: calc(83.3333333333% - 1.25rem);
+  margin-right: 0.625rem;
+  margin-left: 0.625rem;
   padding-top: 1.25rem;
 }
 
-.home #calendar div.fc-widget-header > table {
+.home .calendar_wrap #calendar div.fc-widget-header > table {
   margin-bottom: 0 !important;
 }
 
-.home #calendar .fc-divider {
+.home .calendar_wrap #calendar .fc-divider {
   max-width: 100% !important;
 }
 
-.home #calendar .fc-event .fc-content {
+.home .calendar_wrap #calendar .fc-button {
+  border-radius: 0;
+}
+
+.home .calendar_wrap #calendar .fc-event .fc-content {
   padding: 0.3125rem;
   position: relative;
 }
 
-.home #calendar .fc-event .fc-content .description {
+.home .calendar_wrap #calendar .fc-event .fc-content .description {
   width: 100%;
   margin-top: 0.3125rem;
   display: block;
 }
 
-.home #calendar .fc-event .fc-content .delete {
+.home .calendar_wrap #calendar .fc-event .fc-content .delete {
   display: none;
   position: absolute;
   right: 0.3125rem;
   top: 0.3125rem;
 }
 
-.home #calendar .fc-event:hover .delete {
+.home .calendar_wrap #calendar .fc-event:hover .delete {
   display: inline-block;
+}
+
+.home .sidebar {
+  flex: 1 1 0px;
+  width: auto;
+  position: relative;
+  padding: 2.8125rem 0.3125rem 0 0.3125rem;
+  border-left: 1px solid #e6e6e6;
+}
+
+.home .sidebar .close-button {
+  right: 0.3125rem;
+}
+
+.home .sidebar #external_events ul {
+  list-style: none;
+  margin: 0;
+  width: 100%;
+}
+
+.home .sidebar #external_events ul .fc-event {
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .newitem {
@@ -15025,6 +15064,8 @@ be a descendant of the grid when it is being dragged.
   max-width: 75rem;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 @media print, screen and (min-width: 40em) {
@@ -15034,20 +15075,26 @@ be a descendant of the grid when it is being dragged.
   }
 }
 
-.login__inner {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.login__inner .form-container {
+.login .form-container {
   width: calc(50% - 1.25rem);
   margin-right: 0.625rem;
   margin-left: 0.625rem;
-  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
-.login__inner .form-container .form-title {
+.login .form-container .form-title {
   margin-top: 1.25rem;
+}
+
+html,
+body,
+#app,
+#main {
+  height: 100%;
 }
 
 .newItem .from,
@@ -15076,8 +15123,33 @@ be a descendant of the grid when it is being dragged.
   background: #fefefe;
 }
 
-.top-bar .logo {
+.top-bar .menu .router-link-active {
+  background: #1779ba;
+  color: #fefefe;
+  border-radius: 8px;
+}
+
+.top-bar .logo__wrapper {
   height: 6.25rem;
   width: 6.25rem;
+}
+
+.top-bar .logo__wrapper .logo {
+  width: 100%;
+  height: auto;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.5s;
+  transition-property: all;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+  -webkit-transform: translateX(-30%);
+          transform: translateX(-30%);
 }
 

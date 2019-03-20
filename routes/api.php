@@ -13,12 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/register', 'API\AuthController@register');
-Route::post('/login', 'API\AuthController@login');
+Route::prefix('auth')->group(function () {
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::get('refresh', 'AuthController@refresh');
 
-Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', 'API\AuthController@logout');
-    Route::get('/get-user', 'API\AuthController@getUser');
+    Route::group(['middleware' => 'auth:api'], function(){
+        Route::get('user', 'AuthController@user');
+        Route::post('logout', 'AuthController@logout');
+    });
+});
+
+Route::group(['middleware' => 'auth:api'], function(){
+    // Users
+    Route::get('users', 'UserController@index')->middleware('isAdmin');
+    Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
 });
 
 Route::middleware(['auth:api'])->group(function () {

@@ -23,8 +23,10 @@
 // Pages
 @import "pages/home";
 @import "pages/newitem";
-@import "pages/login";
+@import "pages/login"; // also counts for register
+@import "pages/index";
 
 // Components
 @import "components/modals";
 @import "components/header";
+@import "components/animation";

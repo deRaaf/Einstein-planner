@@ -1,53 +1,77 @@
 <template>
     <div class="login">
+      <div class="form-container">
+          <div class="form-title text-center">
+              <h1>Login</h1>
+          </div>
 
-        <div class="login__inner">
-
-            <div class="form-container">
-
-                <div class="form-title text-center">
-                    <h1>Login</h1>
-                </div>
-                <label for="username">Email</label>
-                <input type="text" name="username" v-model="username">
-
-                <label for="password">Password</label>
-                <input type="password" name="password" v-model="password">
-
-
-                <button class="button primary" @click="login">Login</button>
+          <div class="alert alert-danger" v-if="has_error">
+              <p>Error, unable to connect with these credentials.</p>
+          </div>
+        <form autocomplete="off" @submit.prevent="login" method="post">
+            <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.email }">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="email" required>
+              <span class="help-block" v-if="has_error && errors.email">{{ errors.email }}</span>
             </div>
-        </div>
+
+            <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.password }">
+              <label for="password">Wachtwoord</label>
+              <input type="password" id="password" class="form-control" v-model="password" required>
+              <span class="help-block" v-if="has_error && errors.password">{{ errors.password }}</span>
+            </div>
+            
+            <button type="submit" class="button button-primary">Login</button>
+          </form>
+      </div>
     </div>
 </template>
 
 <script>
-export default {
+  export default {
     data() {
-        return {
-            username: '',
-            password: '',
-        };
+      return {
+        email: null,
+        password: null,
+        has_error: false,
+        error: '',
+        errors: {},
+      }
+    },
+
+    mounted() {
+      //
     },
 
     methods: {
-        login() {
-            var self = this;
-            let data = {
-                username: this.username,
-                password: this.password
-            };
+      login() {
+        // get the redirect object
+        var redirect = this.$auth.redirect()
+        var app = this
 
-            axios.post('/api/login', data)
-                .then(({data}) => {
-                    auth.login(data.token, data.user);
+        this.$auth.login({
+          data: {
+            email: app.email,
+            password: app.password
+          },
+          success: function() {
+            // handle redirection
+            console.log("success")
+            const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'admin.dashboard' : 'home'
 
-                    self.$router.push({ path : '/' });
-                })  
-                .catch(({response}) => {                    
-                    alert(response.data.message);
-                });
-        }
+            this.$router.push({name: redirectTo})
+          },
+          error: function(res) {
+            console.log("failed")
+            console.log(res.response.data.errors)
+            app.has_error = true
+            app.error = res.response.data.error
+            app.errors = res.response.data.errors || {}
+          },
+          rememberMe: true,
+          fetchUser: true
+        })
+      }
     }
-}
+  }
 </script>

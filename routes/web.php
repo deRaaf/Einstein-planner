@@ -13,3 +13,7 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
+// Route to handle page reload in Vue except for api routes
+Route::get('/{any?}', function (){
+    return view('index');
+})->where('any', '^(?!api\/)[\/\w\.-]*');

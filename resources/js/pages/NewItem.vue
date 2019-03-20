@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import 'axios/dist/axios'
-
 export default {
     data() {
         return {
@@ -85,7 +83,7 @@ export default {
                 var end = this.form.date + 'T' + this.form.till;
             }
 
-            axios.post('api/agenda_items', {
+            axios.post('/agenda_items', {
 
                 title: this.form.name,
                 start: start,

@@ -1,57 +1,28 @@
 <template>
-  <div class="home">
-            <div class="top-bar">
-
-          <div class="top-bar-left">
-            <router-link to="/">
-                <img class="logo" src="/../img/logo_einsteinclass.png" alt="Logo Einstein planner">
-            </router-link>
-          </div>
-
-          <div class="top-bar-right">
-            <ul class="menu">
-                    <li v-if="!authenticated && !user"><router-link to="/login">Login</router-link></li>
-                    <li v-if="!authenticated && !user"><router-link to="/register">Register</router-link></li>
-                    <ul v-if="authenticated && user" class="dropdown menu" data-dropdown-menu>
-                        <li>
-                            <!-- <a href="#">{{ Auth::user()->name }}</a> -->
-                            <ul class="menu">
-                                <li>
-                                    <router-link to="/logout" @click="Auth.logout()">
-                                        Logout
-                                    </router-link>
-
-                                    <!-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form> -->
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                <!-- @endif -->
-            </ul>
-          </div>
-
+    <div class="home">
+        <div class="calendar_wrap">
+            <router-link class="button primary" to="/newitem">Nieuw agenda item</router-link>
+            <full-calendar :config="config" :events="agenda_items"/>
         </div>
-    <router-link class="button primary" to="/newitem">Nieuw agenda item</router-link>
-    <full-calendar :config="config" :events="agenda_items"/>
-  </div>
+        <sidebar></sidebar>
+    </div>
 </template>
 
 <script>
 import { FullCalendar } from 'vue-full-calendar'
+import navHeader from '../components/navHeader.vue'
+import mSidebar from '../components/mSidebar.vue'
 import 'fullcalendar/dist/locale/nl'
-import 'axios/dist/axios'
 import Swal from 'sweetalert2'
 
 export default {
     components: {
         FullCalendar,
+        navHeader,
+        'sidebar': mSidebar,
     },
     data() {
         return {
-            authenticated: auth.check(),
-            user: auth.user,
             agenda_items: [],
             config: {
                 locale: 'nl',
@@ -101,15 +72,9 @@ export default {
     created() {
         this.get_agenda_items();
     },
-    mounted() {
-        Event.$on('userLoggedIn', () => {
-            this.authenticated = true;
-            this.user = auth.user;
-        }); 
-    },
     methods: {
         get_agenda_items: function() {
-            window.axios.get('api/agenda_items').then(({ data }) => {
+            window.axios.get('/agenda_items').then(({ data }) => {
                 console.log(data);
 
                 this.agenda_items = data;

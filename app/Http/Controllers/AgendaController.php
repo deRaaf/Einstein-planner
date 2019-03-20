@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Auth;
 class AgendaController extends Controller
 {
     public function index() {
-        return response(agenda_item::all()->jsonSerialize(), Response::HTTP_OK);
+        $user = Auth::user();
+        return response(agenda_item::where('student_number', $user->student_number)->get()->jsonSerialize(), Response::HTTP_OK);
     }
 
     public function store(Request $request){
