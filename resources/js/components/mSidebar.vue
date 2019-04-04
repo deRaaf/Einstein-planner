@@ -4,42 +4,50 @@
             <span aria-hidden="true">&times;</span>
         </button>
 
-        <div id="external_events">
-            <ul>
-                <li class="fc-event">TEST</li>
-                <li class="fc-event">TEST</li>
-                <li class="fc-event">TEST</li>
-            </ul>
+        <div class="sidebar__header">
+            
+        </div>
+
+        <div class="sidebar__content">
+            <h2>Taken</h2>
+            <p>In dit venster vind je het huiswerk dat de docent heeft ingevoerd. Zet de taken op volgorde en plan ze in.</p>
+
+            <router-link class="button primary expanded" to="/newitem">Nieuw agenda item</router-link>
+
+            <div id="external_events">
+
+                <div class="fc-event">
+                    <div class="type">HW</div>
+                    <div class="class">Engels</div>
+                    <div class="date"> 
+                        <span class="date__day">3</span>
+                        <span class="date__month">mei</span>
+                    </div>
+                </div>
+                <div class="fc-event">
+                    <div class="type">HW</div>
+                    <div class="class">Engels</div>
+                    <div class="date"> 
+                        <span class="date__day">3</span>
+                        <span class="date__month">mei</span>
+                    </div>
+                </div>
+                <div class="fc-event">
+                    <div class="type">HW</div>
+                    <div class="class">Engels</div>
+                    <div class="date"> 
+                        <span class="date__day">3</span>
+                        <span class="date__month">mei</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    created() {
-        this.saveSidebarItems();
-    },
-    methods: {
-        saveSidebarItems: function() {
-            
-            $('#external_events .fc-event').each(function() {
 
-                // store data so the calendar knows to render an event upon drop
-                $(this).data('event', {
-                    title: $.trim($(this).text()), // use the element's text as the event title
-                    stick: true // maintain when user navigates (see docs on the renderEvent method)
-                });
-
-                // make the event draggable using jQuery UI
-                $(this).draggable({
-                    zIndex: 999,
-                    revert: true,      // will cause the event to go back to its
-                    revertDuration: 0  //  original position after the drag
-                });
-
-            });
-        }
-    }
 }
 </script>
 

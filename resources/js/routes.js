@@ -30,6 +30,13 @@ let routes = [
       component: resolve => require(['./pages/Register'], resolve),
       meta: { auth: false }
     },
+    {
+      path: '/agendaitem/:id',
+      name: 'agendaitem',
+      component: resolve => require(['./pages/AgendaItem'], resolve),
+      meta: { auth: true },
+      props: true,
+    },
     // ADMIN ROUTES
     {
       path: '/admin',

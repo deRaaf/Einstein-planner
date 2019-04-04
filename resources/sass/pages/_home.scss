@@ -1,56 +1,7 @@
 .home {
     position: relative;
     @include xy-grid;
-
-    .calendar_wrap {
-        @include xy-cell(10);
-        padding-top: rem-calc(20);
-
-        #calendar {
-            
-            div.fc-widget-header {
-                > table {
-                    margin-bottom: 0 !important;
-                }
-            }
-    
-            .fc-divider {
-                max-width: 100% !important;
-            }
-    
-            .fc-button {
-                border-radius: 0;
-            }
-    
-            .fc-event {
-                
-                .fc-content {
-                    padding: rem-calc(5);
-                    position: relative;
-    
-                    .description {
-                        width: 100%;
-                        margin-top: rem-calc(5);
-                        display: block;
-                    }
-    
-                    .delete {
-                        display: none;
-                        position: absolute;
-                        right: rem-calc(5);
-                        top: rem-calc(5);
-                    }
-                }
-    
-                &:hover {
-                    .delete {
-                        display: inline-block;
-                    }
-                }
-            }
-    
-        }
-    }
+    height: 100vh;
 
     .sidebar {
         @include xy-cell(auto, false);
@@ -58,20 +9,62 @@
         padding: rem-calc(45 5 0 5);
         border-left: 1px solid $light-gray;
 
+        &__header {
+            padding: rem-calc(15);
+        }
+
+        &__content {
+            padding: 0 rem-calc(50);
+        }
+
+        h2{
+            font-size: rem-calc(20);
+        }
+
+        p {
+            font-size: rem-calc(12);
+        }
+
         .close-button {
             right: rem-calc(5);
         }
 
         #external_events {
-            ul {
-                list-style: none;
-                margin: 0;
-                width: 100%;
 
-                .fc-event {
-                    margin-bottom: 10px;
-                    padding: 10px;
-                    cursor: pointer;
+            .fc-event {
+                margin-bottom: rem-calc(10);
+                cursor: pointer;
+                border: 1px solid $black;
+                background: $white;
+                display: flex;
+                color: $black;
+
+                .type,
+                .class {
+                    text-align: center;
+                    padding: rem-calc(15) 0;
+                    border-right: 1px solid #BEBEBE;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .type {
+                    min-width: rem-calc(51);
+                }
+
+                .class {
+                    min-width: rem-calc(127);
+                }
+
+                .date {
+                    width: 100%;
+                    padding: rem-calc(8) 0;
+
+                    span {
+                        display: block;
+                        text-align: center;
+                    }
                 }
             }
         }

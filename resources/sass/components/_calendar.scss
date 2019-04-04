@@ -1,0 +1,111 @@
+.calendar_wrap {
+    @include xy-cell(9);
+    padding: rem-calc(40 50);
+
+    #calendar {
+        
+        div.fc-widget-header {
+
+            > table {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        .fc-divider {
+            max-width: 100% !important;
+        }
+
+        .fc-toolbar {
+
+            .fc-button {
+                border-radius: $global-radius;
+                background: $primary-color;
+                // border: 1px solid $primary-color;
+                border: 0;
+                height: rem-calc(42);
+            }
+            
+            .fc-menu-button {
+                background: url('../img/menu-button.svg') transparent no-repeat;
+                border: 0;
+                height: 42px;
+                width: 42px;
+                color: transparent;
+                box-shadow: none;
+            }
+
+            .fc-today-button {
+                width: rem-calc(111);
+            }
+
+            .fc-agendaWeek-button {
+                border-radius: 0;
+            }
+
+            .fc-month-button,
+            .fc-agendaDay-button,
+            .fc-agendaWeek-button{
+
+                width: rem-calc(115);
+                
+                &.fc-corner-left {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+
+                &.fc-corner-right {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+
+                &.fc-state-active {
+                    // border: 1px solid #83E1FF !important;
+                    box-shadow: none;
+                    background: #C6F1FF;
+                }
+            }
+        }
+
+        .fc-today {
+            background: lighten($primary-color, 10%);
+        }
+
+        .fc-view-container {
+
+            .fc-view{
+
+                table {
+                    border-radius: $global-radius;
+                    overflow: hidden;   
+                }
+            }
+
+            .fc-event {
+            
+                .fc-content {
+                    padding: rem-calc(5);
+                    position: relative;
+    
+                    .description {
+                        width: 100%;
+                        margin-top: rem-calc(5);
+                        display: block;
+                    }
+    
+                    .delete {
+                        display: none;
+                        position: absolute;
+                        right: rem-calc(5);
+                        top: rem-calc(5);
+                    }
+                }
+    
+                &:hover {
+                    .delete {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+}

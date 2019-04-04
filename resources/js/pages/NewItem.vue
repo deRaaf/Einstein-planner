@@ -4,19 +4,19 @@
         <p>Voeg een nieuw item toe</p>
 
         <form @submit.prevent="formSubmit">
-            <label for="name">Naam</label>
+            <label for="name">Naam van de taak</label>
             <input type="text" name="name" id="name" v-model="form.name">
 
             <div class="date">
+                <div class="date__item allday">
+                    <label for="allDay">Hele dag</label>
+                    <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
+               </div>
+               
                 <div class="date__item">
                     <label for="date">Datum van</label>
                     <input type="date" name="date" id="date" v-model="form.date">
                 </div>
-               
-               <div class="date__item allday">
-                    <label for="allDay">Hele dag</label>
-                    <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
-               </div>
 
                 <div v-if="!this.form.allDay" class="date__item">
                     <label for="from">Van</label>
@@ -35,14 +35,16 @@
 
             </div>
 
-            <label for="type">Type</label>
+            <label for="type">Wat ga je doen?</label>
             <select name="type" id="type" v-model="form.type">
                 <option selected disabled>Kies een type</option>
                 <option>SO</option>
-                <option>REP</option>
+                <option>Repetitie</option>
+                <option>Leerwerk</option>
+                <option>Maakwerk</option>
             </select>
             
-            <label for="description">Beschrijving</label>
+            <label for="description">Wat ga je maken/leren?</label>
             <textarea id="description" v-model="form.description"></textarea>
 
             <button class="button button-primary">Toevoegen</button>

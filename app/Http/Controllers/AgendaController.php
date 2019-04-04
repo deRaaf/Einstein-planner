@@ -14,7 +14,16 @@ class AgendaController extends Controller
 {
     public function index() {
         $user = Auth::user();
-        return response(agenda_item::where('student_number', $user->student_number)->get()->jsonSerialize(), Response::HTTP_OK);
+        $student_number = $user->student_number;
+        
+        return response(agenda_item::where('student_number', $student_number)->get()->jsonSerialize(), Response::HTTP_OK);
+    }
+
+    public function show($id) {
+        $user = Auth::user();
+        $student_number = $user->student_number;
+        
+        return response(agenda_item::where([['student_number',  $student_number], ['id', $id],])->get()->jsonSerialize(), Response::HTTP_OK);
     }
 
     public function store(Request $request){

@@ -5,6 +5,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import jquery from 'jquery'
+import 'jquery-ui/ui/widgets/draggable';
+import 'foundation-sites/dist/js/foundation'
 require('./bootstrap');
 import 'es6-promise/auto'
 import axios from 'axios'
@@ -15,11 +18,13 @@ import VueRouter from 'vue-router'
 import Index from './Index'
 import auth from './auth'
 import router from './routes'
-import './magister'
 
 
 // Set Vue globally
 window.Vue = Vue
+
+// Create eventbus
+Vue.prototype.$eventBus = new Vue()
 
 // Set Vue router
 Vue.router = router
@@ -32,6 +37,8 @@ Vue.use(VueAuth, auth)
 
 // Load Index
 Vue.component('index', Index)
+
+window.$ = window.jQuery = jquery
 
 /**
  * The following block of code will recursively scan this directory for the Vue

@@ -34,6 +34,7 @@
         "@magisterjs/authcode": "^1.6.0",
         "@websanova/vue-auth": "^2.21.14-beta",
         "es6-promise": "^4.2.6",
+        "jquery-ui": "^1.12.1",
         "magister.js": "^2.0.0-alpha.10",
         "moment": "^2.24.0",
         "sweetalert2": "^8.0.6",

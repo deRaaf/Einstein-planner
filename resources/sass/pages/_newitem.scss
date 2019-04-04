@@ -5,6 +5,7 @@
     .date {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
 
         .date__item {
             flex-grow: 1;
