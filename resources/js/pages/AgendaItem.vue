@@ -1,6 +1,6 @@
     <template>
         <div class="newitem">
-            <div class="newitem__inner" v-for="form in forms" :key="form.id">
+            <div class="newitem__inner">
                 <h2>Bewerk {{ form.title }}</h2>
 
                 <form @submit.prevent="formSubmit">
@@ -57,10 +57,10 @@
     export default {
         data() {
             return {
-                forms: [],
+                form: {},
             }
         },
-        created() {
+        mounted() {
             this.fetchPost();
         },
         methods: {
@@ -81,7 +81,7 @@
                     var end = this.form.date + 'T' + this.form.till;
                 }
 
-                axios.post('/agenda_items', {
+                axios.put('/agenda_items/' + self.$attrs.id, {
 
                     title: this.form.title,
                     start: start,
@@ -92,7 +92,7 @@
                 })
                 .then(function(response) {
                     if ( response.status == '201') {
-                    self.$router.push({ path : '/' });
+                        self.$router.push({ path : '/' });
                     }
                 })
                 .catch(function (error) {
@@ -104,16 +104,12 @@
                 this.form = [];
             },
             fetchPost() {
-                this.$eventBus.$on('send-data', (id) => {
-                    // console.log("eventbus" + id)
-                    axios.get('/agenda_items/' + id).then(response => {
-                        this.forms = response.data;
+                var id = this.$attrs.id;
 
-                        console.log(this.forms)
-                    })
-                    .catch(error => console.log(error))
-                });
-
+                axios.get('/agenda_items/' + id).then(response => {
+                    this.form = response.data[0];
+                })
+                .catch(error => console.log(error))
             },
         }
     }

@@ -26,6 +26,23 @@ class AgendaController extends Controller
         return response(agenda_item::where([['student_number',  $student_number], ['id', $id],])->get()->jsonSerialize(), Response::HTTP_OK);
     }
 
+    public function update(Request $request, $id) {
+        $user = Auth::user();
+        $student_number = $user->student_number;
+        $agenda_item = Agenda_item::find($id);
+
+        $agenda_item->title = $request->title;
+        $agenda_item->start = $request->start;
+        $agenda_item->end = $request->end;
+        $agenda_item->allDay = $request->allDay;
+        $agenda_item->student_number = $user->student_number;
+        $agenda_item->description = $request->description;
+        $agenda_item->type = $request->type;
+        $agenda_item->save();
+
+        return response($agenda_item->jsonSerialize(), Response::HTTP_CREATED);
+    }
+
     public function store(Request $request){
 
         $agenda_item = new agenda_item();

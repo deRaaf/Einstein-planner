@@ -1,0 +1,36 @@
+.off-canvas {
+    width: 0;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+    background: $white;
+    border-right: 1px solid $medium-gray;
+
+    &.position-left {
+        transform: unset;
+    }
+
+    &.active {
+        width: rem-calc(250);
+    }
+
+    .menu {
+        .menu-item {
+
+            border-bottom: 1px solid $medium-gray;
+
+            &:first-child {
+                border-top: 1px solid $medium-gray;
+            }
+
+            a {
+                color: $black;
+                font-size: 23px;
+    
+                &.active {
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+  }

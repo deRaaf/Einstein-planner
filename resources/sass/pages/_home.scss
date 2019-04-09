@@ -6,11 +6,16 @@
     .sidebar {
         @include xy-cell(auto, false);
         position: relative;
-        padding: rem-calc(45 5 0 5);
         border-left: 1px solid $light-gray;
+
+        &.active {
+            @include xy-cell(1, false);
+        }
 
         &__header {
             padding: rem-calc(15);
+            display: flex;
+            justify-content: space-between;
         }
 
         &__content {
