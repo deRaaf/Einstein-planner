@@ -2,6 +2,12 @@
     @include xy-cell(9);
     padding: rem-calc(40 50);
 
+    transition: width 0.5s;
+    
+    &.collapsed {
+        @include xy-cell(11, false);
+    }
+
     #calendar {
         
         div.fc-widget-header {
@@ -76,7 +82,7 @@
 
                 table {
                     border-radius: $global-radius;
-                    overflow: hidden;   
+                    // overflow: hidden;   
                 }
             }
 

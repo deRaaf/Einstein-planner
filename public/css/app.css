@@ -14965,16 +14965,57 @@ be a descendant of the grid when it is being dragged.
   width: auto;
   position: relative;
   border-left: 1px solid #e6e6e6;
+  transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  transition: transform 0.5s, -webkit-transform 0.5s;
 }
 
-.home .sidebar.active {
-  width: calc(8.3333333333% - 1.25rem);
+.home .sidebar.collapsed {
+  border: 0;
+}
+
+.home .sidebar.collapsed .sidebar__header {
+  border-bottom: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
+}
+
+.home .sidebar.collapsed .sidebar__header svg {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.home .sidebar.collapsed .sidebar__header h2 {
+  display: inline-block;
+}
+
+.home .sidebar.collapsed .sidebar__header .right {
+  display: none;
+}
+
+.home .sidebar.collapsed .sidebar__content {
+  display: none;
 }
 
 .home .sidebar__header {
   padding: 0.9375rem;
   display: flex;
   justify-content: space-between;
+}
+
+.home .sidebar__header h2 {
+  display: none;
+}
+
+.home .sidebar__header button {
+  cursor: pointer;
+}
+
+.home .sidebar__header button.refresh.rotate svg {
+  -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+  transition: -webkit-transform 0.8s;
+  transition: transform 0.8s;
+  transition: transform 0.8s, -webkit-transform 0.8s;
 }
 
 .home .sidebar__content {
@@ -15134,6 +15175,11 @@ be a descendant of the grid when it is being dragged.
   margin-right: 0.625rem;
   margin-left: 0.625rem;
   padding: 2.5rem 3.125rem;
+  transition: width 0.5s;
+}
+
+.calendar_wrap.collapsed {
+  width: calc(91.6666666667% - 1.25rem);
 }
 
 .calendar_wrap #calendar div.fc-widget-header > table {
@@ -15201,7 +15247,6 @@ be a descendant of the grid when it is being dragged.
 
 .calendar_wrap #calendar .fc-view-container .fc-view table {
   border-radius: 5px;
-  overflow: hidden;
 }
 
 .calendar_wrap #calendar .fc-view-container .fc-event .fc-content {

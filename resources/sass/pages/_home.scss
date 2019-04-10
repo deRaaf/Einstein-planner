@@ -8,14 +8,53 @@
         position: relative;
         border-left: 1px solid $light-gray;
 
-        &.active {
-            @include xy-cell(1, false);
+        transition: transform 0.5s;
+
+        &.collapsed {
+            border: 0;
+
+            .sidebar__header {
+                border-bottom: 1px solid $light-gray;
+                border-left: 1px solid $light-gray;
+
+                svg {
+                    transform: rotate(180deg);
+                }
+
+                h2 {
+                    display: inline-block;
+                }
+
+                .right {
+                    display: none;
+                }
+            }
+
+            .sidebar__content {
+                display: none;
+            }
         }
 
         &__header {
             padding: rem-calc(15);
             display: flex;
             justify-content: space-between;
+
+            h2 {
+                display: none;
+            }
+
+            button {
+                cursor: pointer;
+
+                &.refresh {
+
+                    &.rotate svg {
+                        transform: rotate(360deg);
+                        transition: transform 0.8s;
+                    }
+                }
+            }
         }
 
         &__content {

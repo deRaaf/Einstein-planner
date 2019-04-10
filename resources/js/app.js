@@ -7,6 +7,7 @@
 
 import jquery from 'jquery'
 import 'jquery-ui/ui/widgets/draggable';
+import 'jquery-ui/ui/widgets/sortable';
 import 'foundation-sites/dist/js/foundation'
 require('./bootstrap');
 import 'es6-promise/auto'

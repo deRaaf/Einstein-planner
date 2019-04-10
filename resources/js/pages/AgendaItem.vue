@@ -1,7 +1,7 @@
     <template>
         <div class="newitem">
             <div class="newitem__inner">
-                <h2>Bewerk {{ form.title }}</h2>
+                <h2>{{ form.title }}</h2>
 
                 <form @submit.prevent="formSubmit">
                     <label for="name">Naam van de taak</label>
@@ -108,6 +108,17 @@
 
                 axios.get('/agenda_items/' + id).then(response => {
                     this.form = response.data[0];
+
+                    if (this.form.start) {
+                        this.form.date = this.form.start.slice(0, 10)
+                        console.log(this.form.date)
+                    }
+
+                    if (this.form.start && this.form.end) {
+                        this.form.from = this.form.start.slice(11, 16)
+                        this.form.till = this.form.end.slice(11, 16)
+                        this.form.allDay = 0;
+                    }
                 })
                 .catch(error => console.log(error))
             },
