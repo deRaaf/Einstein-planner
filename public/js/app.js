@@ -3338,6 +3338,7 @@ __webpack_require__.r(__webpack_exports__);
         locale: 'nl',
         minTime: "06:00:00",
         maxTime: "22:00:00",
+        timeFormat: "H:mm",
         editable: true,
         dropabble: true,
         dragRevertDuration: 0,
@@ -3360,7 +3361,11 @@ __webpack_require__.r(__webpack_exports__);
         },
         views: {
           week: {
-            columnHeaderFormat: "dddd D"
+            columnHeaderFormat: "dddd D",
+            slotLabelFormat: ['H:mm']
+          },
+          day: {
+            slotLabelFormat: ['H:mm']
           },
           month: {
             columnHeaderFormat: "dddd"
@@ -3472,7 +3477,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     eventClick: function eventClick(item) {
       var data = item.id;
-      this.$eventBus.$emit('send-data', data);
       this.$router.push({
         path: '/agendaitem/' + data
       });

@@ -15182,18 +15182,14 @@ be a descendant of the grid when it is being dragged.
   width: calc(91.6666666667% - 1.25rem);
 }
 
-.calendar_wrap #calendar div.fc-widget-header > table {
-  margin-bottom: 0 !important;
-}
-
-.calendar_wrap #calendar .fc-divider {
-  max-width: 100% !important;
+.calendar_wrap #calendar .fc-axis {
+  border: 0;
 }
 
 .calendar_wrap #calendar .fc-toolbar .fc-button {
   border-radius: 5px;
   background: #b4ecff;
-  border: 0;
+  border: 1px solid #b4ecff;
   height: 2.625rem;
 }
 
@@ -15237,16 +15233,42 @@ be a descendant of the grid when it is being dragged.
 .calendar_wrap #calendar .fc-toolbar .fc-month-button.fc-state-active,
 .calendar_wrap #calendar .fc-toolbar .fc-agendaDay-button.fc-state-active,
 .calendar_wrap #calendar .fc-toolbar .fc-agendaWeek-button.fc-state-active {
+  border: 1px solid #83E1FF !important;
   box-shadow: none;
   background: #C6F1FF;
+}
+
+.calendar_wrap #calendar td.fc-widget-header {
+  border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: 0;
+}
+
+.calendar_wrap #calendar td.fc-widget-header div.fc-widget-header {
+  border: 0;
+}
+
+.calendar_wrap #calendar td.fc-widget-header div.fc-widget-header .fc-day-header {
+  text-transform: capitalize;
+  background: #fefefe !important;
+  border: 0;
+}
+
+.calendar_wrap #calendar td.fc-widget-header div.fc-widget-header > table {
+  margin-bottom: 0 !important;
+}
+
+.calendar_wrap #calendar .fc-divider {
+  max-width: 100% !important;
 }
 
 .calendar_wrap #calendar .fc-today {
   background: #e7f9ff;
 }
 
-.calendar_wrap #calendar .fc-view-container .fc-view table {
-  border-radius: 5px;
+.calendar_wrap #calendar .fc-view-container .fc-view > table {
+  border-collapse: separate;
 }
 
 .calendar_wrap #calendar .fc-view-container .fc-event .fc-content {
@@ -15269,6 +15291,37 @@ be a descendant of the grid when it is being dragged.
 
 .calendar_wrap #calendar .fc-view-container .fc-event:hover .delete {
   display: inline-block;
+}
+
+.calendar_wrap #calendar .fc-body {
+  border-radius: 5px;
+}
+
+.calendar_wrap #calendar .fc-body .fc-slats table {
+  border-collapse: separate;
+}
+
+.calendar_wrap #calendar .fc-body .fc-slats table tbody tr:first-child .fc-widget-content:not(.fc-axis) {
+  border: 1px solid #333;
+  border-bottom: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.calendar_wrap #calendar .fc-body .fc-slats table tbody tr .fc-widget-content:not(.fc-axis) {
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+}
+
+.calendar_wrap #calendar .fc-body .fc-slats table tbody tr:last-child .fc-widget-content:not(.fc-axis) {
+  border: 1px solid #333;
+  border-top: 0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.calendar_wrap #calendar .fc-body > tr > td.fc-widget-content {
+  border: 0;
 }
 
 .off-canvas {

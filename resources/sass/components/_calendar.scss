@@ -9,16 +9,9 @@
     }
 
     #calendar {
-        
-        div.fc-widget-header {
 
-            > table {
-                margin-bottom: 0 !important;
-            }
-        }
-
-        .fc-divider {
-            max-width: 100% !important;
+        .fc-axis {
+            border: 0;
         }
 
         .fc-toolbar {
@@ -26,8 +19,7 @@
             .fc-button {
                 border-radius: $global-radius;
                 background: $primary-color;
-                // border: 1px solid $primary-color;
-                border: 0;
+                border: 1px solid $primary-color;
                 height: rem-calc(42);
             }
             
@@ -65,11 +57,36 @@
                 }
 
                 &.fc-state-active {
-                    // border: 1px solid #83E1FF !important;
+                    border: 1px solid #83E1FF !important;
                     box-shadow: none;
                     background: #C6F1FF;
                 }
             }
+        }
+
+        td.fc-widget-header {
+            border-top: 1px solid transparent;
+            border-left: 1px solid transparent;
+            border-right: 1px solid transparent;
+            border-bottom: 0;
+
+            div.fc-widget-header {
+                border:0;
+
+                .fc-day-header {
+                    text-transform: capitalize;
+                    background: $white !important;
+                    border: 0;
+                }
+    
+                > table {
+                    margin-bottom: 0 !important;
+                }
+            }
+        }
+
+        .fc-divider {
+            max-width: 100% !important;
         }
 
         .fc-today {
@@ -78,11 +95,9 @@
 
         .fc-view-container {
 
-            .fc-view{
-
-                table {
-                    border-radius: $global-radius;
-                    // overflow: hidden;   
+            .fc-view {
+                > table {
+                    border-collapse: separate;
                 }
             }
 
@@ -110,6 +125,63 @@
                     .delete {
                         display: inline-block;
                     }
+                }
+            }
+        }
+
+        .fc-body {
+            border-radius: $global-radius;
+
+            .fc-time {
+                > span {
+                    // margin-top: -26px;
+                    // display: block;
+                }
+            }
+
+            .fc-slats {
+                table {
+                    border-collapse: separate;
+
+                    tbody {
+                        tr {
+                            &:first-child {
+                                .fc-widget-content {
+                                    &:not(.fc-axis) {
+                                        border: 1px solid $black;
+                                        border-bottom: 0;
+                                        border-top-left-radius: $global-radius;
+                                        border-top-right-radius: $global-radius;
+                                    }
+                                }
+                            }
+
+                            .fc-widget-content {
+                                &:not(.fc-axis) {
+                                    border-left: 1px solid $black;
+                                    border-right: 1px solid $black;
+                                }
+                            }
+
+                            &:last-child {
+                                .fc-widget-content {
+                                    &:not(.fc-axis) {
+                                        border: 1px solid $black;
+                                        border-top: 0;
+                                        border-bottom-left-radius: $global-radius;
+                                        border-bottom-right-radius: $global-radius;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            > tr {
+
+                > td.fc-widget-content {
+                    border: 0;
                 }
             }
         }

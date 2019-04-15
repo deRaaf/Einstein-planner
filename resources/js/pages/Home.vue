@@ -92,6 +92,7 @@ export default {
                 locale: 'nl',
                 minTime: "06:00:00",
                 maxTime: "22:00:00",
+                timeFormat: "H:mm",
                 editable: true,
                 dropabble: true,
                 dragRevertDuration: 0,
@@ -115,6 +116,14 @@ export default {
                 views: {
                     week: {
                         columnHeaderFormat: "dddd D",
+                        slotLabelFormat: [
+                            'H:mm',
+                        ],
+                    },
+                    day: {
+                        slotLabelFormat: [
+                            'H:mm',
+                        ],
                     },
                     month: {
                         columnHeaderFormat: "dddd",
@@ -240,7 +249,6 @@ export default {
         },
         eventClick(item) {
             var data = item.id
-            this.$eventBus.$emit('send-data', data);
             this.$router.push({ path: '/agendaitem/' + data });
         },
         collapse() {
