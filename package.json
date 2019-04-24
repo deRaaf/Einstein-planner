@@ -37,8 +37,10 @@
         "jquery-ui": "^1.12.1",
         "magister.js": "^2.0.0-alpha.10",
         "moment": "^2.24.0",
+        "select2": "^4.0.6-rc.1",
         "sweetalert2": "^8.0.6",
         "vue-axios": "^2.1.4",
-        "vue-full-calendar": "^2.7.0"
+        "vue-full-calendar": "^2.7.0",
+        "vue-swatches": "^1.0.3"
     }
 }

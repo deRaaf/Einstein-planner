@@ -12,11 +12,13 @@
 @import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
 @import "node_modules/@fortawesome/fontawesome-free/scss/solid";
 
-
 @include foundation-everything($flex: true);
 
 //fullcalendar
 @import 'node_modules/fullcalendar/dist/fullcalendar';
+
+// select2
+@import 'node_modules/select2/dist/css/select2.min';
 
 // Project files
 

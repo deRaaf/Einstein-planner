@@ -9,6 +9,7 @@ import jquery from 'jquery'
 import 'jquery-ui/ui/widgets/draggable';
 import 'jquery-ui/ui/widgets/sortable';
 import 'foundation-sites/dist/js/foundation'
+import 'select2/dist/js/select2.full.min';
 require('./bootstrap');
 import 'es6-promise/auto'
 import axios from 'axios'

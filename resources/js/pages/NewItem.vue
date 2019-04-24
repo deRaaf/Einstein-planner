@@ -4,8 +4,26 @@
         <p>Voeg een nieuw item toe</p>
 
         <form @submit.prevent="formSubmit">
-            <label for="name">Naam van de taak</label>
-            <input type="text" name="name" id="name" v-model="form.name">
+            
+            <div class="left">
+                <select name="type" id="type" v-model="form.type" v-select2>
+                    <option value="soort taak" selected disabled>Soort taak</option>
+                    <option value="so">SO</option>
+                    <option value="rep">REP</option>
+                    <option value="hw">HW</option>
+                    <option value="vrij">Vrij</option>
+                </select>
+
+                <select name="subject" id="subject">
+                    <option value="vak" selected disabled>Vak</option>
+                    <option value="en">ENG</option>
+                    <option value="ned">NED</option>
+                    <option value="wis">WIS</option>
+                    <option value="bio">BIO</option>
+                </select>
+            </div>
+
+            <textarea name="name" id="name" v-model="form.name" cols="30" rows="10"></textarea>
 
             <div class="date">
                 <div class="date__item allday">
@@ -34,15 +52,6 @@
                 </div>
 
             </div>
-
-            <label for="type">Wat ga je doen?</label>
-            <select name="type" id="type" v-model="form.type">
-                <option selected disabled>Kies een type</option>
-                <option>SO</option>
-                <option>Repetitie</option>
-                <option>Leerwerk</option>
-                <option>Maakwerk</option>
-            </select>
             
             <label for="description">Wat ga je maken/leren?</label>
             <textarea id="description" v-model="form.description"></textarea>
@@ -66,6 +75,25 @@ export default {
                 till: '',
             }],
         }
+    },
+    directives: {
+        select2: {
+            // directive definition
+            inserted: function (el) {
+                $(el).on('select2:select', () => {
+                    const event = new Event('change', { bubbles: true, cancelable: true });
+                    el.dispatchEvent(event);
+                });
+
+                $(el).on('select2:unselect', () => {
+                    const event = new Event('change', {bubbles: true, cancelable: true})
+                    el.dispatchEvent(event)
+                })
+            }
+        }
+    },
+    mounted() {
+        this.initSelect();
     },
     methods: {
         formSubmit() {
@@ -114,6 +142,33 @@ export default {
                 from:'',
                 till: '',
             }];
+        },
+        initSelect() {
+            $('#type').select2();
+            
+            $('#type').on('select2:select', function(e) {
+                var data = e.params.data;
+                CheckValues(data.element.value)
+            });
+
+            function CheckValues(value) {
+                switch (value) {
+                    case "hw":
+                        $(".select2-selection").css( "background-color", "blue");
+                        break;
+                    case "rep":
+                        $(".select2-selection").css( "background-color", "red");
+                        break;
+                    case "vrij":
+                        $(".select2-selection").css( "background-color", "yellow");
+                        break;
+                    case "so":
+                        $(".select2-selection").css( "background-color", "green");
+                        break;
+                }
+            }
+
+            CheckValues($("#type").val());
         }
     }
 }

@@ -1,53 +1,85 @@
     <template>
         <div class="newitem">
             <div class="newitem__inner">
-                <h2>{{ form.title }}</h2>
+                <h2>{{ form.title }} 
+                    <button class="button button-primary">
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.48145 6.23462L5.66252 10.4916L14.5185 1.50836" stroke="#333333" stroke-opacity="0.5" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+
+                        Taak afvinken
+                    </button>
+                </h2>
 
                 <form @submit.prevent="formSubmit">
-                    <label for="name">Naam van de taak</label>
-                    <input type="text" name="name" id="name" v-model="form.title">
 
-                    <div class="date">
-                        <div class="date__item allday">
-                            <label for="allDay">Hele dag</label>
-                            <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
-                        </div>
-                    
-                        <div class="date__item">
-                            <label for="date">Datum wanneer je begint</label>
-                            <input type="date" name="date" id="date" v-model="form.date">
-                        </div>
+                    <div class="top">
+                        <div class="left">
+                            <select name="type" id="type" v-model="form.type" v-select2>
+                                <option value="soort taak" selected disabled>Soort taak</option>
+                                <option value="so">SO</option>
+                                <option value="rep">REP</option>
+                                <option value="hw">HW</option>
+                                <option value="vrij">Vrij</option>
+                            </select>
 
-                        <div v-if="!this.form.allDay" class="date__item">
-                            <label for="from">Tijd wanneer je begint</label>
-                            <input type="time" name="from" id="from" v-model="form.from">
-                        </div>
-
-                        <div v-if="!this.form.allDay" class="date__item">
-                            <label for="till">Tijd wanneer je denkt klaar te zijn</label>
-                            <input type="time" name="till" id="till" v-model="form.till">
-                        </div>
-
-                        <div class="date__item">
-                            <label for="date">Datum wanneer denkt klaar te zijn</label>
-                            <input type="date" name="date" id="date" v-model="form.date">
+                            <select name="subject" id="subject">
+                                <option value="vak" selected disabled>Vak</option>
+                                <option value="en">ENG</option>
+                                <option value="ned">NED</option>
+                                <option value="wis">WIS</option>
+                                <option value="bio">BIO</option>
+                            </select>
+                            <div class="deadline">
+                                <label>Deadline:</label>
+                                <input type="date" name="deadline" id="deadline" v-model="form.deadline">
+                            </div>
                         </div>
 
+                        <div class="right">
+                            <textarea name="name" id="name" v-model="form.title" rows="3"></textarea>
+                        </div>
                     </div>
 
-                    <label for="type">Type</label>
-                    <select name="type" id="type" v-model="form.type">
-                        <option selected disabled>Kies een type</option>
-                        <option>SO</option>
-                        <option>Repetitie</option>
-                        <option>Leerwerk</option>
-                        <option>Maakwerk</option>
-                    </select>
-                    
-                    <label for="description">Wat ga je je maken/leren?</label>
-                    <textarea id="description" v-model="form.description"></textarea>
+                    <div class="bottom">
+                        <div class="date left">
+                        
+                            <div class="date__item planned">
+                                <label for="date">Ingeplande datum:</label>
+                                <input type="date" name="date" id="date" v-model="form.date">
+                            </div>
 
-                    <button class="button button-primary">Opslaan</button>
+                            <div v-if="!this.form.allDay" class="date__item">
+                                <label for="from">Van</label>
+                                <input type="time" name="from" id="from" v-model="form.from">
+                            </div>
+
+                            <div v-if="!this.form.allDay" class="date__item">
+                                <label for="from">Tot</label>
+                                <input type="time" name="till" id="till" v-model="form.till">
+                            </div>
+
+                            <div class="date__item date2">
+                                <input type="date" name="date2" id="date2" v-model="form.date">
+                            </div>
+
+                            <div class="date__item allday">
+                                <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
+                                <label for="allDay">Hele dag</label>
+                            </div>
+                        </div>
+                        
+                        <div class="right">
+                            <label for="description">Notities</label>
+                            <textarea id="description" v-model="form.description" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form__footer">
+                        <router-link to="/">Terug</router-link>
+                        <button class="button delete">Verwijderen</button>
+                        <button class="button button-primary">Opslaan</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -60,8 +92,25 @@
                 form: {},
             }
         },
+        directives: {
+            select2: {
+                // directive definition
+                inserted: function (el) {
+                   $(el).on('select2:select', () => {
+                        const event = new Event('change', { bubbles: true, cancelable: true });
+                        el.dispatchEvent(event);
+                    });
+
+                    $(el).on('select2:unselect', () => {
+                        const event = new Event('change', {bubbles: true, cancelable: true})
+                        el.dispatchEvent(event)
+                    })
+                }
+            }
+        },
         mounted() {
             this.fetchPost();
+            this.initSelect();
         },
         methods: {
             formSubmit() {
@@ -122,6 +171,37 @@
                 })
                 .catch(error => console.log(error))
             },
+            initSelect() {
+                $('#type').select2({
+                    containerCssClass: "type",
+                });
+
+                $('#subject').select2();
+                
+                $('#type').on('select2:select', function(e) {
+                    var data = e.params.data;
+                    CheckValues(data.element.value)
+                });
+
+                function CheckValues(value) {
+                    switch (value) {
+                        case "hw":
+                            $(".type").css( "background-color", "blue");
+                            break;
+                        case "rep":
+                            $(".type").css( "background-color", "red");
+                            break;
+                        case "vrij":
+                            $(".type").css( "background-color", "yellow");
+                            break;
+                        case "so":
+                            $(".type").css( "background-color", "green");
+                            break;
+                    }
+                }
+
+                CheckValues($("#type").val());
+            }
         }
     }
     </script>
