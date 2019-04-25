@@ -1,8 +1,19 @@
 .calendar_wrap {
-    @include xy-cell(9);
-    padding: rem-calc(40 50);
-
+    padding: rem-calc(20);
     transition: width 0.5s;
+
+    @include breakpoint(large) {
+        @include xy-cell(8, false);
+    }
+
+    @include breakpoint(xlarge) {
+        @include xy-cell(9, false);
+    }
+
+    @include breakpoint(xxlarge) {
+        width: calc(80% - 1.875rem);
+        padding: rem-calc(40 50);
+    }
     
     &.collapsed {
         @include xy-cell(11, false);
@@ -16,11 +27,24 @@
 
         .fc-toolbar {
 
+            .fc-right {
+                @include breakpoint(369 down) {
+                    margin-top: rem-calc(20);
+                    float: left;
+                }
+            }
+
             .fc-button {
                 border-radius: $global-radius;
                 background: $primary-color;
                 border: 1px solid $primary-color;
                 height: rem-calc(42);
+
+                &.fc-next-button {
+                    @include breakpoint(390 down) {
+                        margin: 0;
+                    }
+                }
             }
             
             .fc-menu-button {
@@ -34,17 +58,35 @@
 
             .fc-today-button {
                 width: rem-calc(111);
+
+                @include breakpoint(1060 down) {
+                    display: none;
+                }
+            }
+
+            h2 {
+                @include breakpoint(1190 down) {
+                    display: none;
+                }
             }
 
             .fc-agendaWeek-button {
                 border-radius: 0;
             }
 
+            .fc-button-group {
+                @include breakpoint(327 down) {
+                    margin-left: rem-calc(4);
+                }
+            }
+
             .fc-month-button,
             .fc-agendaDay-button,
             .fc-agendaWeek-button{
 
-                width: rem-calc(115);
+                @include breakpoint(medium) {
+                    width: rem-calc(115);
+                }
                 
                 &.fc-corner-left {
                     border-top-right-radius: 0;
@@ -77,6 +119,11 @@
                     text-transform: capitalize;
                     background: $white !important;
                     border: 0;
+                    font-weight: 300;
+
+                    @include breakpoint(small down) {
+                        font-size: rem-calc(10);
+                    }
                 }
     
                 > table {
@@ -102,29 +149,18 @@
             }
 
             .fc-event {
+                margin: 6px 3px;
+                border: 0;
+                border-radius: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             
                 .fc-content {
                     padding: rem-calc(5);
-                    position: relative;
-    
-                    .description {
-                        width: 100%;
-                        margin-top: rem-calc(5);
-                        display: block;
-                    }
-    
-                    .delete {
-                        display: none;
-                        position: absolute;
-                        right: rem-calc(5);
-                        top: rem-calc(5);
-                    }
-                }
-    
-                &:hover {
-                    .delete {
-                        display: inline-block;
-                    }
+                    text-align: center;
+                    color: $black;
+                    font-size: rem-calc(12);
                 }
             }
         }
@@ -132,12 +168,22 @@
         .fc-body {
             border-radius: $global-radius;
 
-            // .fc-time {
-            //     > span {
-            //         // margin-top: -26px;
-            //         // display: block;
-            //     }
-            // }
+            .fc-scroller {
+                @include breakpoint(medium down) {
+                    height: rem-calc(352) !important;
+                }
+            }
+
+            .fc-time {
+                > span {
+                    // margin-top: -26px;
+                    // display: block;
+
+                    @include breakpoint(small down) {
+                        font-size: rem-calc(9);
+                    }
+                }
+            }
 
             .fc-slats {
                 table {

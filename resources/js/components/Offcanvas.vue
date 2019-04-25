@@ -51,6 +51,10 @@
             {
               name: 'Home',
               path: 'home'
+            },
+            {
+              name: 'Profile',
+              path: 'profile'
             }
           ],
           // LOGGED ADMIN

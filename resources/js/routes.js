@@ -37,6 +37,12 @@ let routes = [
       meta: { auth: true },
       props: true,
     },
+    {
+      path: '/profiel',
+      name: 'profile',
+      component: resolve => require(['./pages/Profile'], resolve),
+      meta: { auth: true },
+    },
     // ADMIN ROUTES
     {
       path: '/admin',
@@ -51,20 +57,5 @@ let routes = [
 const router = new VueRouter({
     routes
 });
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.middlewareAuth)) {                
-//     if (!auth.check) {
-//       next({
-//           path: '/login',
-//           query: { redirect: to.fullPath }
-//       });
-
-//       return;
-//     }
-//   }
-
-//   next();
-// })
 
 export default router;

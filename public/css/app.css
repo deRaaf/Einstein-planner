@@ -15593,17 +15593,28 @@ be a descendant of the grid when it is being dragged.
   position: relative;
   display: flex;
   flex-flow: row wrap;
-  height: 100vh;
+}
+
+@media print, screen and (min-width: 64em) {
+  .home {
+    height: 100vh;
+  }
 }
 
 .home .sidebar {
-  flex: 1 1 0px;
-  width: auto;
   position: relative;
-  border-left: 1px solid #e6e6e6;
   transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
   transition: transform 0.5s, -webkit-transform 0.5s;
+  width: 100%;
+}
+
+@media print, screen and (min-width: 64em) {
+  .home .sidebar {
+    flex: 1 1 0px;
+    width: auto;
+    border-left: 1px solid #e6e6e6;
+  }
 }
 
 .home .sidebar.collapsed {
@@ -15638,6 +15649,12 @@ be a descendant of the grid when it is being dragged.
   justify-content: space-between;
 }
 
+@media screen and (max-width: 63.99875em) {
+  .home .sidebar__header {
+    display: none;
+  }
+}
+
 .home .sidebar__header h2 {
   display: none;
 }
@@ -15662,12 +15679,26 @@ be a descendant of the grid when it is being dragged.
   font-size: 1.25rem;
 }
 
+@media print, screen and (min-width: 64em) {
+  .home .sidebar h2 button {
+    display: none;
+  }
+}
+
 .home .sidebar p {
   font-size: 0.75rem;
 }
 
 .home .sidebar .close-button {
   right: 0.3125rem;
+}
+
+@media screen and (min-width: 40em) and (max-width: 63.99875em) {
+  .home .sidebar #external_events {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
 }
 
 .home .sidebar #external_events .fc-event {
@@ -15677,6 +15708,14 @@ be a descendant of the grid when it is being dragged.
   background: #fefefe;
   display: flex;
   color: #333;
+  width: 100%;
+}
+
+@media screen and (min-width: 40em) and (max-width: 63.99875em) {
+  .home .sidebar #external_events .fc-event {
+    margin-right: 0.625rem;
+    max-width: 14.375rem;
+  }
 }
 
 .home .sidebar #external_events .fc-event .type,
@@ -15761,6 +15800,11 @@ be a descendant of the grid when it is being dragged.
   }
 }
 
+.newitem .top .right #description,
+.newitem .bottom .right #description {
+  height: 16.625rem;
+}
+
 .newitem .top {
   margin-bottom: 1.25rem;
 }
@@ -15798,14 +15842,13 @@ be a descendant of the grid when it is being dragged.
 .newitem input,
 .newitem textarea {
   padding: 0.6875rem 0.625rem;
-  margin-bottom: 1.25rem;
+  margin: 0;
 }
 
 @media screen and (max-width: 39.99875em) {
   .newitem input,
   .newitem textarea {
     width: 100% !important;
-    margin: 0;
   }
 }
 
@@ -15853,8 +15896,22 @@ be a descendant of the grid when it is being dragged.
   font-size: 0.875rem;
 }
 
+@media print, screen and (min-width: 40em) {
+  .newitem .date {
+    flex-direction: column;
+    justify-content: unset !important;
+    padding-top: 1.25rem;
+  }
+}
+
 .newitem .date .date__item {
   margin-bottom: 1.25rem;
+}
+
+.newitem .date .date__item.wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .newitem .date .date__item.planned {
@@ -15867,6 +15924,10 @@ be a descendant of the grid when it is being dragged.
     justify-content: space-between;
     align-items: center;
   }
+}
+
+.newitem .date .date__item.planned #date {
+  margin-bottom: 0;
 }
 
 @media print, screen and (min-width: 40em) {
@@ -15976,11 +16037,27 @@ be a descendant of the grid when it is being dragged.
 }
 
 .calendar_wrap {
-  width: calc(75% - 1.25rem);
-  margin-right: 0.625rem;
-  margin-left: 0.625rem;
-  padding: 2.5rem 3.125rem;
+  padding: 1.25rem;
   transition: width 0.5s;
+}
+
+@media print, screen and (min-width: 64em) {
+  .calendar_wrap {
+    width: calc(66.6666666667% - 1.875rem);
+  }
+}
+
+@media screen and (min-width: 75em) {
+  .calendar_wrap {
+    width: calc(75% - 1.875rem);
+  }
+}
+
+@media screen and (min-width: 90em) {
+  .calendar_wrap {
+    width: calc(80% - 1.875rem);
+    padding: 2.5rem 3.125rem;
+  }
 }
 
 .calendar_wrap.collapsed {
@@ -15991,11 +16068,24 @@ be a descendant of the grid when it is being dragged.
   border: 0;
 }
 
+@media screen and (max-width: 23.0625em) {
+  .calendar_wrap #calendar .fc-toolbar .fc-right {
+    margin-top: 1.25rem;
+    float: left;
+  }
+}
+
 .calendar_wrap #calendar .fc-toolbar .fc-button {
   border-radius: 5px;
   background: #b4ecff;
   border: 1px solid #b4ecff;
   height: 2.625rem;
+}
+
+@media screen and (max-width: 24.375em) {
+  .calendar_wrap #calendar .fc-toolbar .fc-button.fc-next-button {
+    margin: 0;
+  }
 }
 
 .calendar_wrap #calendar .fc-toolbar .fc-menu-button {
@@ -16011,14 +16101,34 @@ be a descendant of the grid when it is being dragged.
   width: 6.9375rem;
 }
 
+@media screen and (max-width: 66.25em) {
+  .calendar_wrap #calendar .fc-toolbar .fc-today-button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 74.375em) {
+  .calendar_wrap #calendar .fc-toolbar h2 {
+    display: none;
+  }
+}
+
 .calendar_wrap #calendar .fc-toolbar .fc-agendaWeek-button {
   border-radius: 0;
 }
 
-.calendar_wrap #calendar .fc-toolbar .fc-month-button,
-.calendar_wrap #calendar .fc-toolbar .fc-agendaDay-button,
-.calendar_wrap #calendar .fc-toolbar .fc-agendaWeek-button {
-  width: 7.1875rem;
+@media screen and (max-width: 20.4375em) {
+  .calendar_wrap #calendar .fc-toolbar .fc-button-group {
+    margin-left: 0.25rem;
+  }
+}
+
+@media print, screen and (min-width: 40em) {
+  .calendar_wrap #calendar .fc-toolbar .fc-month-button,
+  .calendar_wrap #calendar .fc-toolbar .fc-agendaDay-button,
+  .calendar_wrap #calendar .fc-toolbar .fc-agendaWeek-button {
+    width: 7.1875rem;
+  }
 }
 
 .calendar_wrap #calendar .fc-toolbar .fc-month-button.fc-corner-left,
@@ -16058,6 +16168,13 @@ be a descendant of the grid when it is being dragged.
   text-transform: capitalize;
   background: #fefefe !important;
   border: 0;
+  font-weight: 300;
+}
+
+@media screen and (max-width: 39.99875em) {
+  .calendar_wrap #calendar td.fc-widget-header div.fc-widget-header .fc-day-header {
+    font-size: 0.625rem;
+  }
 }
 
 .calendar_wrap #calendar td.fc-widget-header div.fc-widget-header > table {
@@ -16076,30 +16193,36 @@ be a descendant of the grid when it is being dragged.
   border-collapse: separate;
 }
 
+.calendar_wrap #calendar .fc-view-container .fc-event {
+  margin: 6px 3px;
+  border: 0;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .calendar_wrap #calendar .fc-view-container .fc-event .fc-content {
   padding: 0.3125rem;
-  position: relative;
-}
-
-.calendar_wrap #calendar .fc-view-container .fc-event .fc-content .description {
-  width: 100%;
-  margin-top: 0.3125rem;
-  display: block;
-}
-
-.calendar_wrap #calendar .fc-view-container .fc-event .fc-content .delete {
-  display: none;
-  position: absolute;
-  right: 0.3125rem;
-  top: 0.3125rem;
-}
-
-.calendar_wrap #calendar .fc-view-container .fc-event:hover .delete {
-  display: inline-block;
+  text-align: center;
+  color: #333;
+  font-size: 0.75rem;
 }
 
 .calendar_wrap #calendar .fc-body {
   border-radius: 5px;
+}
+
+@media screen and (max-width: 63.99875em) {
+  .calendar_wrap #calendar .fc-body .fc-scroller {
+    height: 22rem !important;
+  }
+}
+
+@media screen and (max-width: 39.99875em) {
+  .calendar_wrap #calendar .fc-body .fc-time > span {
+    font-size: 0.5625rem;
+  }
 }
 
 .calendar_wrap #calendar .fc-body .fc-slats table {

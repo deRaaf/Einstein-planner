@@ -1,64 +1,81 @@
 <template>
-    <div class="newitem">
-        <h2>Nieuw agenda item</h2>
-        <p>Voeg een nieuw item toe</p>
+<div class="newitem">
+    <div class="newitem__inner">
+        <h2>Nieuwe taak aanmaken</h2>
 
         <form @submit.prevent="formSubmit">
-            
-            <div class="left">
-                <select name="type" id="type" v-model="form.type" v-select2>
-                    <option value="soort taak" selected disabled>Soort taak</option>
-                    <option value="so">SO</option>
-                    <option value="rep">REP</option>
-                    <option value="hw">HW</option>
-                    <option value="vrij">Vrij</option>
-                </select>
 
-                <select name="subject" id="subject">
-                    <option value="vak" selected disabled>Vak</option>
-                    <option value="en">ENG</option>
-                    <option value="ned">NED</option>
-                    <option value="wis">WIS</option>
-                    <option value="bio">BIO</option>
-                </select>
+            <div class="top">
+                <div class="left">
+                    <select name="type" id="type" v-model="form.type" v-select2>
+                        <option value="soort taak" selected disabled>Soort taak</option>
+                        <option value="so">SO</option>
+                        <option value="rep">REP</option>
+                        <option value="hw">HW</option>
+                        <option value="vrij">Vrij</option>
+                    </select>
+
+                    <select name="subject" id="subject">
+                        <option value="vak" selected disabled>Vak</option>
+                        <option value="en">ENG</option>
+                        <option value="ned">NED</option>
+                        <option value="wis">WIS</option>
+                        <option value="bio">BIO</option>
+                    </select>
+                    <div class="deadline">
+                        <label>Deadline:</label>
+                        <input type="date" name="deadline" id="deadline" v-model="form.deadline">
+                    </div>
+                </div>
+
+                <div class="right">
+                    <textarea name="name" id="name" v-model="form.name" rows="3"></textarea>
+                </div>
             </div>
 
-            <textarea name="name" id="name" v-model="form.name" cols="30" rows="10"></textarea>
+            <div class="bottom">
+                <div class="date left">
+                
+                    <div class="date__item planned">
+                        <label for="date">Ingeplande datum:</label>
+                        <input type="date" name="date" id="date" v-model="form.date">
+                    </div>
 
-            <div class="date">
-                <div class="date__item allday">
-                    <label for="allDay">Hele dag</label>
-                    <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
-               </div>
-               
-                <div class="date__item">
-                    <label for="date">Datum van</label>
-                    <input type="date" name="date" id="date" v-model="form.date">
+                    <div v-if="!this.form.allDay" class="date__item wrap">
+                        <div>
+                            <label for="from">Van</label>
+                            <input type="time" name="from" id="from" v-model="form.from">
+                        </div>
+
+                        <div>
+                            <label for="from">Tot</label>
+                            <input type="time" name="till" id="till" v-model="form.till">
+                        </div>
+                    </div>
+
+                    <div class="date__item date2">
+                        <input type="date" name="date2" id="date2" v-model="form.date">
+                    </div>
+
+                    <div class="date__item allday">
+                        <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
+                        <label for="allDay">Hele dag</label>
+                    </div>
                 </div>
-
-                <div v-if="!this.form.allDay" class="date__item">
-                    <label for="from">Van</label>
-                    <input type="time" name="from" id="from" v-model="form.from">
+                
+                <div class="right">
+                    <label for="description">Notities</label>
+                    <textarea id="description" v-model="form.description" rows="3"></textarea>
                 </div>
-
-                <div v-if="!this.form.allDay" class="date__item">
-                    <label for="till">Tot</label>
-                    <input type="time" name="till" id="till" v-model="form.till">
-                </div>
-
-                <div class="date__item">
-                    <label for="date">Datum tot</label>
-                    <input type="date" name="date" id="date" v-model="form.date">
-                </div>
-
             </div>
-            
-            <label for="description">Wat ga je maken/leren?</label>
-            <textarea id="description" v-model="form.description"></textarea>
 
-            <button class="button button-primary">Toevoegen</button>
+            <div class="form__footer">
+                <router-link to="/">Terug</router-link>
+                <button class="button button-primary">Opslaan</button>
+            </div>
         </form>
     </div>
+</div>
 </template>
 
 <script>
@@ -144,7 +161,11 @@ export default {
             }];
         },
         initSelect() {
-            $('#type').select2();
+            $('#type').select2({
+                containerCssClass: "type",
+            });
+
+            $('#subject').select2();
             
             $('#type').on('select2:select', function(e) {
                 var data = e.params.data;
