@@ -53,7 +53,7 @@
               path: 'home'
             },
             {
-              name: 'Profile',
+              name: 'Profiel',
               path: 'profile'
             }
           ],

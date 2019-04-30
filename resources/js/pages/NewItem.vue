@@ -22,6 +22,7 @@
                         <option value="wis">WIS</option>
                         <option value="bio">BIO</option>
                     </select>
+                    
                     <div class="deadline">
                         <label>Deadline:</label>
                         <input type="date" name="deadline" id="deadline" v-model="form.deadline">

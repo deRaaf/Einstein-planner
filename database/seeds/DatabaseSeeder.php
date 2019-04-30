@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Tim',
+            'name' => 'Demo',
             'student_number' => '12345',
-            'email' => 'user@user.com',
-            'password' => Hash::make('secret'),
+            'email' => 'demo@demo.nl',
+            'password' => Hash::make('demo'),
             'role' => 1
         ]);
 

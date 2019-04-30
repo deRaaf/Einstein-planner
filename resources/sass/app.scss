@@ -20,16 +20,21 @@
 // select2
 @import 'node_modules/select2/dist/css/select2.min';
 
+// vue-swatches
+@import 'node_modules/vue-swatches/dist/vue-swatches.min';
+
 // Project files
 
 // Pages
 @import "pages/home";
-@import "pages/newitem";
+@import "pages/newitem"; // also counts for agendaitem
 @import "pages/login"; // also counts for register
 @import "pages/index";
+@import "pages/profile";
 
 // Components
 @import "components/modals";
 @import "components/animation";
 @import "components/calendar";
 @import "components/offcanvas";
+@import "components/form";

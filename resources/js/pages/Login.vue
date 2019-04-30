@@ -38,11 +38,6 @@
         errors: {},
       }
     },
-
-    mounted() {
-      //
-    },
-
     methods: {
       login() {
         // get the redirect object

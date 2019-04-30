@@ -1,0 +1,86 @@
+.profile {
+    margin-left: rem-calc(98);
+    padding-top: rem-calc(22);
+    max-width: rem-calc(799);
+    
+    &__info,
+    &__password,
+    &__settings {
+        padding: rem-calc(22 0 60 0);
+        border-top: 1px solid #BEBEBE;
+    }
+
+    &__info,
+    &__password {
+       .form__inner {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        input {
+            width: 100%;
+        }
+
+        .left,
+        .right {
+            width: 49%;
+        }
+
+        .right {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            .formgroup {
+                &:first-child {
+                    width: 100%;
+                }
+
+                &.small {
+                    width: rem-calc(188);
+                }
+            }
+        }
+       }
+    }
+
+    &__settings {
+        
+        .colorpalette {
+            display: flex;
+            margin-bottom: rem-calc(20);
+
+            .color {
+                // width: rem-calc(86);
+                // font-size: rem-calc(14);
+                // padding: rem-calc(11 9);
+                
+                &:not(:last-child) {
+                    margin-right: rem-calc(16);
+                }
+            }
+        }
+    }
+
+    &__password {
+        .form__inner {
+            flex-direction: column;
+
+            > .formgroup {
+                width: 50%;
+            }
+
+            .bottom {
+                display: flex;
+
+                .formgroup {
+                    width:50%;
+
+                    &:last-child {
+                        margin-left: rem-calc(14);
+                    }
+                }
+            }
+        }
+    }
+}

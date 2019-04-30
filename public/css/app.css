@@ -15589,6 +15589,147 @@ be a descendant of the grid when it is being dragged.
   border-color: #5897fb;
 }
 
+fieldset[disabled] .vue-swatches {
+  pointer-events: none;
+}
+
+.vue-swatches {
+  position: relative;
+  outline: none;
+}
+
+.vue-swatches__trigger {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.vue-swatches__trigger.vue-swatches--is-empty {
+  border: 2px solid #ccc;
+}
+
+.vue-swatches__trigger.vue-swatches--is-disabled {
+  cursor: not-allowed;
+}
+
+.vue-swatches__container {
+  box-sizing: content-box;
+  padding: 5px;
+}
+
+.vue-swatches__container:not(.vue-swatches--inline) {
+  position: absolute;
+  display: block;
+  overflow: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px hsla(0, 0%, 4%, 0.2), 0 0 0 1px hsla(0, 0%, 4%, 0.2);
+  z-index: 50;
+}
+
+.vue-swatches__wrapper {
+  background-color: inherit;
+}
+
+.vue-swatches__row {
+  font-size: 0;
+}
+
+.vue-swatches__fallback__wrapper {
+  display: table;
+}
+
+.vue-swatches__fallback__input--wrapper {
+  display: table-cell;
+  padding-right: 10px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.vue-swatches__fallback__input {
+  width: 100%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 5px;
+  border: 1px solid #dcdcdc;
+  color: #35495e;
+  background: #fff;
+}
+
+.vue-swatches__fallback__button {
+  display: table-cell;
+  padding: 6px 15px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 700;
+  color: #fff;
+  background-color: #3571c8;
+  border-radius: 5px;
+}
+
+.vue-swatches-show-hide-enter-active,
+.vue-swatches-show-hide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.vue-swatches-show-hide-enter,
+.vue-swatches-show-hide-leave-active {
+  opacity: 0;
+}
+
+.vue-swatches--has-children-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vue-swatches__diagonal--wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.vue-swatches__diagonal {
+  width: 75%;
+  height: 75%;
+  background: linear-gradient(to top right, transparent 0, transparent calc(50% - 2.4px), #de080a 50%, transparent calc(50% + 2.4px), transparent);
+}
+
+.vue-swatches__swatch {
+  position: relative;
+  font-size: 0;
+}
+
+.vue-swatches__swatch:focus,
+.vue-swatches__swatch:hover {
+  opacity: 0.9;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.75);
+  outline: none;
+}
+
+.vue-swatches__swatch.vue-swatches__swatch--border,
+.vue-swatches__swatch.vue-swatches__swatch--selected {
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.75);
+}
+
+.vue-swatches__swatch .vue-swatches__diagonal--wrapper {
+  position: absolute;
+}
+
+.vue-swatches__check__wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.vue-swatches__check__circle {
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.vue-swatches__check__path {
+  fill: #fff;
+}
+
 .home {
   position: relative;
   display: flex;
@@ -15835,16 +15976,6 @@ be a descendant of the grid when it is being dragged.
   height: 2.625rem;
 }
 
-.newitem label {
-  font-weight: 600;
-}
-
-.newitem input,
-.newitem textarea {
-  padding: 0.6875rem 0.625rem;
-  margin: 0;
-}
-
 @media screen and (max-width: 39.99875em) {
   .newitem input,
   .newitem textarea {
@@ -16010,6 +16141,84 @@ be a descendant of the grid when it is being dragged.
 
 #main.active {
   margin-left: 15.625rem;
+}
+
+.profile {
+  margin-left: 6.125rem;
+  padding-top: 1.375rem;
+  max-width: 49.9375rem;
+}
+
+.profile__info,
+.profile__password,
+.profile__settings {
+  padding: 1.375rem 0 3.75rem 0;
+  border-top: 1px solid #BEBEBE;
+}
+
+.profile__info .form__inner,
+.profile__password .form__inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.profile__info .form__inner input,
+.profile__password .form__inner input {
+  width: 100%;
+}
+
+.profile__info .form__inner .left,
+.profile__info .form__inner .right,
+.profile__password .form__inner .left,
+.profile__password .form__inner .right {
+  width: 49%;
+}
+
+.profile__info .form__inner .right,
+.profile__password .form__inner .right {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.profile__info .form__inner .right .formgroup:first-child,
+.profile__password .form__inner .right .formgroup:first-child {
+  width: 100%;
+}
+
+.profile__info .form__inner .right .formgroup.small,
+.profile__password .form__inner .right .formgroup.small {
+  width: 11.75rem;
+}
+
+.profile__settings .colorpalette {
+  display: flex;
+  margin-bottom: 1.25rem;
+}
+
+.profile__settings .colorpalette .color:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.profile__password .form__inner {
+  flex-direction: column;
+}
+
+.profile__password .form__inner > .formgroup {
+  width: 50%;
+}
+
+.profile__password .form__inner .bottom {
+  display: flex;
+}
+
+.profile__password .form__inner .bottom .formgroup {
+  width: 50%;
+}
+
+.profile__password .form__inner .bottom .formgroup:last-child {
+  margin-left: 0.875rem;
 }
 
 .newItem .from,
@@ -16285,5 +16494,15 @@ be a descendant of the grid when it is being dragged.
 
 .off-canvas .menu .menu-item a.active {
   color: #b4ecff;
+}
+
+label {
+  font-weight: 600;
+}
+
+input,
+textarea {
+  padding: 0.6875rem 0.625rem;
+  margin: 0;
 }
 
