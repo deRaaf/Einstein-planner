@@ -12,7 +12,8 @@
         width: 100%;
 
         @include breakpoint(large) {
-            @include xy-cell(auto, false);
+            @include xy-cell(shrink, false);
+            max-width: 357px;
             border-left: 1px solid $light-gray;
         }
 

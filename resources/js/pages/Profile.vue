@@ -9,7 +9,7 @@
                 <div class="left">
                     <div class="formgroup">
                         <label for="firstname">Voornaam</label>
-                        <input v-model="user.name" type="text" name="firstname" id="firstname">
+                        <input v-model="user.firstname" type="text" name="firstname" id="firstname">
                     </div>
                     <div class="formgroup">
                         <label for="email">E-mail adres (school)</label>
@@ -19,7 +19,7 @@
                 <div class="right">
                     <div class="formgroup">
                         <label for="lastname">Achternaam</label>
-                        <input type="text" name="lastname" id="lastname">
+                        <input v-model="user.lastname" type="text" name="lastname" id="lastname">
                     </div>
                     <div class="formgroup small">
                         <label for="leerlingnummer">Leerlingnummer</label>
@@ -130,7 +130,8 @@ export default {
         },
         getUser() {
             this.user.email = this.$auth.user().email
-            this.user.name = this.$auth.user().name
+            this.user.firstname = this.$auth.user().first_name
+            this.user.lastname = this.$auth.user().last_name
             this.user.student_number = this.$auth.user().student_number
             // this.user.class = this.$auth.user().class
         }

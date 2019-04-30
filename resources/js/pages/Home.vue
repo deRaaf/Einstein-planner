@@ -104,8 +104,8 @@ export default {
             agenda_items: [],
             config: {
                 locale: 'nl',
-                minTime: "06:00:00",
-                maxTime: "22:00:00",
+                // minTime: "06:00:00",
+                // maxTime: "22:00:00",
                 timeFormat: "H:mm",
                 displayEventTime: false,
                 dropabble: true,
@@ -123,8 +123,8 @@ export default {
                     menu: {
                         text: ' ',
                         click: function() {
-                            $( ".off-canvas" ).toggleClass("active");
-                            $( "#main" ).toggleClass("active");
+                            $( ".off-canvas" ).addClass("active");
+                            $( ".overlay" ).addClass("active");
                         }
                     }
                 },
@@ -178,6 +178,7 @@ export default {
                     }
                 },
             },
+            notHome: true,
         }
     },
     mounted() {

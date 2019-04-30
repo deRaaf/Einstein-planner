@@ -1,7 +1,9 @@
 #main {
-    transition: margin-left .5s;
+   position: relative;
+}
 
-    &.active {
-        margin-left: rem-calc(250);
-    }
+.hide_menu {
+   .header {
+      display: none;
+   }
 }

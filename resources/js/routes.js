@@ -10,7 +10,10 @@ let routes = [
       path:'/',
       name: 'home',
       component: resolve => require(['./pages/Home.vue'], resolve),
-      meta: { auth: true }
+      meta: { 
+        auth: true,
+        header: false, 
+      }
     },
     {
       path: '/newitem',

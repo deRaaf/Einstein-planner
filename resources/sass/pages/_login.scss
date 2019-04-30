@@ -1,13 +1,78 @@
 .login {
-    @include xy-grid-container;
-    @include xy-grid;
+    padding-left: rem-calc(100);
+    padding-top: rem-calc(111);
+
+    &.centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        height: 100vh;
+
+        .form-container {
+            max-width: 90%;
+            width: 100%;
+
+            @include breakpoint(medium) {
+                max-width: rem-calc(391.48);
+            }
+
+            .logo_wrapper {
+                margin: 0 auto;
+                width: rem-calc(77);
+
+                @include breakpoint(medium) {
+                    width: rem-calc(107);
+                }
+
+                svg {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+    
+            .form-title {
+                text-align: center;
+
+                @include breakpoint(small down) {
+                    margin-top: rem-calc(15);
+                }
+            }
+
+            .button {
+                width: 100%;
+
+                @include breakpoint(medium) {
+                    width: rem-calc(120);
+                }
+            }
+
+            a {
+                display: block;
+                margin-top: rem-calc(20);
+                color: $black;
+                text-decoration: underline;
+                text-decoration-color: $primary-color;
+                font-size: rem-calc(12);
+            }
+        }
+    }
 
     .form-container {
-        @include xy-cell(6);
-        @include absolute-center;
+        max-width: rem-calc(797.48);
+        width: 100%;
+
+        .alert {
+            color: $alert-color;
+        }
+
+        .button {
+            width: rem-calc(120);
+        }
 
         .form-title {
             margin-top: rem-calc(20);
+            text-align: left;
         }
     }
 }

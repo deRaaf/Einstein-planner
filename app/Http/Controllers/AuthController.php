@@ -1,6 +1,4 @@
 <?php
-//TODO: Validation
-
 namespace App\Http\Controllers;
 
 use App\User;
@@ -14,8 +12,11 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'email' => 'required|email|unique:users',
-            'password'  => 'required|min:3|confirmed',
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'student_number' => ['required', 'int', 'unique:users'],
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'min:3', 'confirmed'],
         ]);
 
         if ($v->fails())
@@ -27,7 +28,8 @@ class AuthController extends Controller
         }
 
         $user = new User;
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->student_number = $request->student_number;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);

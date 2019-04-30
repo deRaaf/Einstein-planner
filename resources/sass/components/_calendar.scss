@@ -11,8 +11,10 @@
     }
 
     @include breakpoint(xxlarge) {
-        width: calc(80% - 1.875rem);
+        // width: calc(80% - 1.875rem);
         padding: rem-calc(40 50);
+
+        @include xy-cell(auto, false);
     }
     
     &.collapsed {
@@ -26,6 +28,12 @@
         }
 
         .fc-toolbar {
+
+            .fc-left {
+                h2 {
+                    font-size: rem-calc(40);
+                }
+            }
 
             .fc-right {
                 @include breakpoint(369 down) {
@@ -143,6 +151,13 @@
         .fc-view-container {
 
             .fc-view {
+                &.fc-month-view {
+                    .fc-day-grid {
+                        border: 1px solid $black;
+                        border-radius: $global-radius;
+                    }
+                }
+
                 > table {
                     border-collapse: separate;
                 }
@@ -166,7 +181,6 @@
         }
 
         .fc-body {
-            border-radius: $global-radius;
 
             .fc-scroller {
                 @include breakpoint(medium down) {
