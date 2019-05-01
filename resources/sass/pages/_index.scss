@@ -7,3 +7,14 @@
       display: none;
    }
 }
+
+.steps {
+   max-width: rem-calc(933);
+   font-size: rem-calc(14);
+   padding: rem-calc(20 15);
+
+   @include breakpoint(large) {
+      margin-left: rem-calc(100);
+      margin-top: rem-calc(22);
+  }
+}

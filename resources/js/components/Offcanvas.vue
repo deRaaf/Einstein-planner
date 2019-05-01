@@ -65,6 +65,10 @@
               path: 'home'
             },
             {
+              name: 'Stappenplan',
+              path: 'stappenplan'
+            },
+            {
               name: 'Profiel',
               path: 'profile'
             }

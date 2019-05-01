@@ -1,5 +1,9 @@
 .header {
-    padding: rem-calc(47 49 0 49);
+    padding: rem-calc(15);
+
+    @include breakpoint(large) {
+        padding: rem-calc(47 49 0 49);
+    }
 
     svg {
         cursor: pointer;

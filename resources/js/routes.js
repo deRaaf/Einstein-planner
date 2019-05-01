@@ -46,6 +46,12 @@ let routes = [
       component: resolve => require(['./pages/Profile'], resolve),
       meta: { auth: true },
     },
+    {
+      path: '/stappenplan',
+      name: 'stappenplan',
+      component: resolve => require(['./pages/Steps'], resolve),
+      meta: { auth: true },
+    },
     // ADMIN ROUTES
     {
       path: '/admin',

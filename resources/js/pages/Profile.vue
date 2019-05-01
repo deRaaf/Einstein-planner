@@ -12,14 +12,14 @@
                         <input v-model="user.firstname" type="text" name="firstname" id="firstname">
                     </div>
                     <div class="formgroup">
-                        <label for="email">E-mail adres (school)</label>
-                        <input v-model="user.email" type="text" name="email" id="email">
+                        <label for="lastname">Achternaam</label>
+                        <input v-model="user.lastname" type="text" name="lastname" id="lastname">
                     </div>
                 </div>
                 <div class="right">
                     <div class="formgroup">
-                        <label for="lastname">Achternaam</label>
-                        <input v-model="user.lastname" type="text" name="lastname" id="lastname">
+                        <label for="email">E-mail adres (school)</label>
+                        <input v-model="user.email" type="text" name="email" id="email">
                     </div>
                     <div class="formgroup small">
                         <label for="leerlingnummer">Leerlingnummer</label>
@@ -89,7 +89,7 @@ export default {
     data() {
         return {
             user: {},
-            color: [{hw: '', rep: '', so: '', ft: '', cl: ''}],
+            color: {hw: '', rep: '', so: '', ft: '', cl: ''},
             colors: [
                 ['#FF0000' , '#FF7900', '#FFE600', '#00FF0A', '#00FFD1', '#00BFFF', '#000000', '#8F00FF', '#FF00A6'],
                 ['#FF7E7E', '#FFB47E', '#FFEA7E', '#AFFF7E', '#7EFFD8', '#7EE8FF', '#818181', '#BC87FF', '#FF7EE3'],
@@ -101,22 +101,41 @@ export default {
     created() {
         this.getUser();
     },
+    mounted() {
+        this.appendLabels();
+    },
     methods: {
         submitInfo() {
-
-        },
-        submitColors() {
-            var colors = this.hw + ',' + this.rep + ',' + this.so + ',' + this.ft + ',' + this.cl
             var self = this
 
-            axios.put('/user/' + self.$auth.user().id, {
+            axios.put('/auth/update/', {
+                
+                first_name: self.user.firstname,
+                last_name: self.user.lastname,
+                student_number: self.user.student_number,
+                email: self.user.email,
+                class: self.user.class,
+
+            })
+            .then(function(response) {
+
+            })
+            .catch(function (error) {
+
+                console.log(error);
+
+            });
+        },
+        submitColors() {
+            var colors = this.color.hw + ',' + this.color.so + ',' + this.color.rep + ',' + this.color.ft + ',' + this.color.cl
+            var self = this
+
+            axios.put('/auth/edit/', {
                 
                 colors: colors
 
             })
             .then(function(response) {
-
-                alert('gelukt')
 
             })
             .catch(function (error) {
@@ -133,7 +152,25 @@ export default {
             this.user.firstname = this.$auth.user().first_name
             this.user.lastname = this.$auth.user().last_name
             this.user.student_number = this.$auth.user().student_number
-            // this.user.class = this.$auth.user().class
+            this.user.class = this.$auth.user().class
+            
+            var input = this.$auth.user().colors
+            var colors = input.split(',')
+
+            if (colors){
+                this.color.hw = colors[0]
+                this.color.so = colors[1]
+                this.color.rep = colors[2]
+                this.color.ft = colors[3]
+                this.color.cl = colors[4]
+            }
+        },
+        appendLabels() {
+            $( ".color:first-child .vue-swatches__trigger" ).append("Huiswerk");
+            $( ".color:nth-child(2) .vue-swatches__trigger" ).append("SO");
+            $( ".color:nth-child(3) .vue-swatches__trigger" ).append("Repetitie");
+            $( ".color:nth-child(4) .vue-swatches__trigger" ).append("Vrije tijd");
+            $( ".color:last-child .vue-swatches__trigger" ).append("Les rooster");
         }
     }
 }

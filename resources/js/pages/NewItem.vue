@@ -1,7 +1,7 @@
 <template>
 <div class="newitem">
     <div class="newitem__inner">
-        <h2>Nieuwe taak aanmaken</h2>
+        <h1>Nieuwe taak aanmaken</h1>
 
         <form @submit.prevent="formSubmit">
 
@@ -162,6 +162,9 @@ export default {
             }];
         },
         initSelect() {
+            var input = this.$auth.user().colors
+            var colors = input.split(',')
+
             $('#type').select2({
                 containerCssClass: "type",
             });
@@ -176,22 +179,22 @@ export default {
             function CheckValues(value) {
                 switch (value) {
                     case "hw":
-                        $(".select2-selection").css( "background-color", "blue");
+                        $(".type").css( "background-color", colors[0]);
                         break;
                     case "rep":
-                        $(".select2-selection").css( "background-color", "red");
+                        $(".type").css( "background-color", colors[1]);
                         break;
                     case "vrij":
-                        $(".select2-selection").css( "background-color", "yellow");
+                        $(".type").css( "background-color", colors[2]);
                         break;
                     case "so":
-                        $(".select2-selection").css( "background-color", "green");
+                        $(".type").css( "background-color", colors[3]);
                         break;
                 }
             }
 
             CheckValues($("#type").val());
-        }
+        },
     }
 }
 </script>

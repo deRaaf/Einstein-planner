@@ -1,7 +1,11 @@
 .profile {
-    margin-left: rem-calc(98);
-    padding-top: rem-calc(22);
-    max-width: rem-calc(799);
+    padding: rem-calc(15);
+
+    @include breakpoint(large) {
+        margin-left: rem-calc(98);
+        padding-top: rem-calc(22);
+        max-width: rem-calc(799);
+    }
     
     &__info,
     &__password,
@@ -23,7 +27,26 @@
 
         .left,
         .right {
-            width: 49%;
+
+            width: 100%;
+            
+            @include breakpoint(large) {
+                width: 49%;
+            }
+        }
+
+        .left {
+
+            @include breakpoint(medium down) {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .formgroup {
+                @include breakpoint(medium down) {
+                    max-width: 49%;
+                }
+            }
         }
 
         .right {
@@ -37,7 +60,11 @@
                 }
 
                 &.small {
-                    width: rem-calc(188);
+                    max-width: 49%;
+
+                    @include breakpoint(large) {
+                        max-width: rem-calc(188);
+                    }
                 }
             }
         }
@@ -45,18 +72,44 @@
     }
 
     &__settings {
+
+        @include breakpoint(small down) {
+            font-size: rem-calc(10);
+        }
         
         .colorpalette {
             display: flex;
+            flex-wrap: wrap;
             margin-bottom: rem-calc(20);
 
             .color {
-                // width: rem-calc(86);
-                // font-size: rem-calc(14);
-                // padding: rem-calc(11 9);
+                margin-bottom: rem-calc(10);
+
+                .vue-swatches__trigger {
+                    width: rem-calc(86) !important;
+                    font-size: rem-calc(14);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: $global-radius !important;
+
+                    @include breakpoint(small down) {
+                        width: rem-calc(61) !important;
+                        height: rem-calc(30) !important;
+                        font-size: rem-calc(10);
+                    }
+
+                    .vue-swatches__diagonal--wrapper {
+                        display: none !important;
+                    }
+                }
                 
                 &:not(:last-child) {
-                    margin-right: rem-calc(16);
+                    margin-right: rem-calc(10);
+
+                    @include breakpoint(large) {
+                        margin-right: rem-calc(16);
+                    }
                 }
             }
         }
@@ -66,18 +119,40 @@
         .form__inner {
             flex-direction: column;
 
+            label {
+                @include breakpoint(small down) {
+                    font-size: rem-calc(10);
+                }
+            }
+
             > .formgroup {
                 width: 50%;
+
+                @include breakpoint(320 down) {
+                    width: 100%;
+                }
             }
 
             .bottom {
                 display: flex;
 
+                @include breakpoint(320 down) {
+                    display: unset;
+                }
+
                 .formgroup {
                     width:50%;
 
+                    @include breakpoint(320 down) {
+                        width: 100%;
+                    }
+
                     &:last-child {
                         margin-left: rem-calc(14);
+                        
+                        @include breakpoint(320 down) {
+                            margin: 0;
+                        }
                     }
                 }
             }

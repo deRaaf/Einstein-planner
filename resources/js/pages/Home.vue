@@ -227,14 +227,24 @@ export default {
             });
         },
         setColors() {
+            var self = this
+
             this.agenda_items.forEach(agenda_item => {
 
-                if (agenda_item.type == "REP") {
-                    agenda_item.color = "#8b0000";
+                var input = self.$auth.user().colors
+                var colors = input.split(',')
+
+                if (agenda_item.type == "hw") {
+                    agenda_item.color = colors[0];
+                } else if (agenda_item.type == "rep") {
+                    agenda_item.color = colors[1];
+                } else if (agenda_item.type == "so") {
+                    agenda_item.color = colors[2];
+                } else if (agenda_item.type == "vrij") {
+                    agenda_item.color = colors[2];
                 }
-                else if (agenda_item.type == "SO") {
-                    agenda_item.color = "#ff8d00";
-                }
+
+                console.log(agenda_item.color)
             });
         },
         eventClick(item) {

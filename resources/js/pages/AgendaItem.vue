@@ -1,7 +1,7 @@
 <template>
 <div class="newitem">
     <div class="newitem__inner">
-        <h2>{{ form.title }} 
+        <h1>{{ form.title }} 
             <button class="button button-primary">
                 <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.48145 6.23462L5.66252 10.4916L14.5185 1.50836" stroke="#333333" stroke-opacity="0.5" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -9,7 +9,7 @@
 
                 Taak afvinken
             </button>
-        </h2>
+        </h1>
 
         <form @submit.prevent="formSubmit">
 
@@ -174,6 +174,9 @@ methods: {
         .catch(error => console.log(error))
     },
     initSelect() {
+        var input = this.$auth.user().colors
+        var colors = input.split(',')
+
         $('#type').select2({
             containerCssClass: "type",
         });
@@ -188,16 +191,16 @@ methods: {
         function CheckValues(value) {
             switch (value) {
                 case "hw":
-                    $(".type").css( "background-color", "blue");
+                    $(".type").css( "background-color", colors[0]);
                     break;
                 case "rep":
-                    $(".type").css( "background-color", "red");
+                    $(".type").css( "background-color", colors[1]);
                     break;
                 case "vrij":
-                    $(".type").css( "background-color", "yellow");
+                    $(".type").css( "background-color", colors[2]);
                     break;
                 case "so":
-                    $(".type").css( "background-color", "green");
+                    $(".type").css( "background-color", colors[3]);
                     break;
             }
         }

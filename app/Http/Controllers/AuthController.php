@@ -69,6 +69,36 @@ class AuthController extends Controller
         ]);
     }
 
+    public function edit(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $user->colors = $request->colors;
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->student_number = $request->student_number;
+        $user->email = $request->email;
+        $user->class = $request->class;
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ]);
+    }
+
     public function refresh()
     {
         if ($token = $this->guard()->refresh()) {

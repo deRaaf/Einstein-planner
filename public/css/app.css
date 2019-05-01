@@ -6381,7 +6381,7 @@ h6 small,
 
 h1,
 .h1 {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   line-height: 1.4;
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -6389,7 +6389,7 @@ h1,
 
 h2,
 .h2 {
-  font-size: 0.875rem;
+  font-size: 1.125rem;
   line-height: 1.4;
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -6397,7 +6397,7 @@ h2,
 
 h3,
 .h3 {
-  font-size: 0.75rem;
+  font-size: 1rem;
   line-height: 1.4;
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -6405,7 +6405,7 @@ h3,
 
 h4,
 .h4 {
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.4;
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -6413,7 +6413,7 @@ h4,
 
 h5,
 .h5 {
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.4;
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -6440,12 +6440,12 @@ h6,
 
   h3,
   .h3 {
-    font-size: 1.9375rem;
+    font-size: 1.25rem;
   }
 
   h4,
   .h4 {
-    font-size: 1.5625rem;
+    font-size: 1.25rem;
   }
 
   h5,
@@ -16020,8 +16020,6 @@ fieldset[disabled] .vue-swatches {
 .newitem .select2 .select2-selection--single .select2-selection__arrow {
   background: #fefefe;
   height: 2.5rem;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .newitem .select2 .select2-selection--single .select2-selection__rendered {
@@ -16200,10 +16198,29 @@ fieldset[disabled] .vue-swatches {
   display: none;
 }
 
+.steps {
+  max-width: 58.3125rem;
+  font-size: 0.875rem;
+  padding: 1.25rem 0.9375rem;
+}
+
+@media print, screen and (min-width: 64em) {
+  .steps {
+    margin-left: 6.25rem;
+    margin-top: 1.375rem;
+  }
+}
+
 .profile {
-  margin-left: 6.125rem;
-  padding-top: 1.375rem;
-  max-width: 49.9375rem;
+  padding: 0.9375rem;
+}
+
+@media print, screen and (min-width: 64em) {
+  .profile {
+    margin-left: 6.125rem;
+    padding-top: 1.375rem;
+    max-width: 49.9375rem;
+  }
 }
 
 .profile__info,
@@ -16229,7 +16246,31 @@ fieldset[disabled] .vue-swatches {
 .profile__info .form__inner .right,
 .profile__password .form__inner .left,
 .profile__password .form__inner .right {
-  width: 49%;
+  width: 100%;
+}
+
+@media print, screen and (min-width: 64em) {
+  .profile__info .form__inner .left,
+  .profile__info .form__inner .right,
+  .profile__password .form__inner .left,
+  .profile__password .form__inner .right {
+    width: 49%;
+  }
+}
+
+@media screen and (max-width: 63.99875em) {
+  .profile__info .form__inner .left,
+  .profile__password .form__inner .left {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 63.99875em) {
+  .profile__info .form__inner .left .formgroup,
+  .profile__password .form__inner .left .formgroup {
+    max-width: 49%;
+  }
 }
 
 .profile__info .form__inner .right,
@@ -16246,36 +16287,111 @@ fieldset[disabled] .vue-swatches {
 
 .profile__info .form__inner .right .formgroup.small,
 .profile__password .form__inner .right .formgroup.small {
-  width: 11.75rem;
+  max-width: 49%;
+}
+
+@media print, screen and (min-width: 64em) {
+  .profile__info .form__inner .right .formgroup.small,
+  .profile__password .form__inner .right .formgroup.small {
+    max-width: 11.75rem;
+  }
+}
+
+@media screen and (max-width: 39.99875em) {
+  .profile__settings {
+    font-size: 0.625rem;
+  }
 }
 
 .profile__settings .colorpalette {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 1.25rem;
 }
 
+.profile__settings .colorpalette .color {
+  margin-bottom: 0.625rem;
+}
+
+.profile__settings .colorpalette .color .vue-swatches__trigger {
+  width: 5.375rem !important;
+  font-size: 0.875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px !important;
+}
+
+@media screen and (max-width: 39.99875em) {
+  .profile__settings .colorpalette .color .vue-swatches__trigger {
+    width: 3.8125rem !important;
+    height: 1.875rem !important;
+    font-size: 0.625rem;
+  }
+}
+
+.profile__settings .colorpalette .color .vue-swatches__trigger .vue-swatches__diagonal--wrapper {
+  display: none !important;
+}
+
 .profile__settings .colorpalette .color:not(:last-child) {
-  margin-right: 1rem;
+  margin-right: 0.625rem;
+}
+
+@media print, screen and (min-width: 64em) {
+  .profile__settings .colorpalette .color:not(:last-child) {
+    margin-right: 1rem;
+  }
 }
 
 .profile__password .form__inner {
   flex-direction: column;
 }
 
+@media screen and (max-width: 39.99875em) {
+  .profile__password .form__inner label {
+    font-size: 0.625rem;
+  }
+}
+
 .profile__password .form__inner > .formgroup {
   width: 50%;
+}
+
+@media screen and (max-width: 20em) {
+  .profile__password .form__inner > .formgroup {
+    width: 100%;
+  }
 }
 
 .profile__password .form__inner .bottom {
   display: flex;
 }
 
+@media screen and (max-width: 20em) {
+  .profile__password .form__inner .bottom {
+    display: unset;
+  }
+}
+
 .profile__password .form__inner .bottom .formgroup {
   width: 50%;
 }
 
+@media screen and (max-width: 20em) {
+  .profile__password .form__inner .bottom .formgroup {
+    width: 100%;
+  }
+}
+
 .profile__password .form__inner .bottom .formgroup:last-child {
   margin-left: 0.875rem;
+}
+
+@media screen and (max-width: 20em) {
+  .profile__password .form__inner .bottom .formgroup:last-child {
+    margin: 0;
+  }
 }
 
 .newItem .from,
@@ -16360,7 +16476,7 @@ fieldset[disabled] .vue-swatches {
 }
 
 .calendar_wrap #calendar .fc-toolbar .fc-menu-button {
-  background: url(/images/menu-button.svg?545b2755801ac619fc95efb68bd4ba9f) transparent no-repeat;
+  background: url(/images/menu-button.svg?b01ac7c2b388ae27dbd7806eea02ebe8) transparent no-repeat;
   border: 0;
   height: 42px;
   width: 42px;
@@ -16525,7 +16641,13 @@ fieldset[disabled] .vue-swatches {
 }
 
 .header {
-  padding: 2.9375rem 3.0625rem 0 3.0625rem;
+  padding: 0.9375rem;
+}
+
+@media print, screen and (min-width: 64em) {
+  .header {
+    padding: 2.9375rem 3.0625rem 0 3.0625rem;
+  }
 }
 
 .header svg {
