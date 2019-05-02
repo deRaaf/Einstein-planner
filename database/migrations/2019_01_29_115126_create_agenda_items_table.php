@@ -20,6 +20,7 @@ class CreateAgendaItemsTable extends Migration
             $table->mediumText('description');
             $table->integer('student_number');
             $table->string('type');
+            $table->string('class')->nullable();
             $table->string('start');
             $table->string('end')->nullable();
             $table->boolean('completed')->default(false);

@@ -15889,19 +15889,34 @@ fieldset[disabled] .vue-swatches {
 }
 
 .newitem {
-  padding-right: 0.625rem;
-  padding-left: 0.625rem;
-  max-width: 75rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 1.25rem;
+  padding: 0.9375rem;
 }
 
-@media print, screen and (min-width: 40em) {
+@media print, screen and (min-width: 64em) {
   .newitem {
-    padding-right: 0.9375rem;
-    padding-left: 0.9375rem;
+    margin-left: 6.25rem;
+    max-width: 58.4375rem;
+    padding-top: 1.25rem;
   }
+}
+
+.newitem .newitem__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.newitem .newitem__header h1 {
+  margin: 0;
+}
+
+.newitem .newitem__header .button {
+  margin-left: 0.9375rem;
+  margin-bottom: 0;
+}
+
+.newitem .newitem__header .button svg {
+  margin-right: 0.3125rem;
 }
 
 .newitem .top,
@@ -15977,6 +15992,12 @@ fieldset[disabled] .vue-swatches {
   height: 2.625rem;
 }
 
+@media print, screen and (min-width: 40em) {
+  .newitem .top .left .deadline #deadline {
+    margin-bottom: 0;
+  }
+}
+
 @media screen and (max-width: 39.99875em) {
   .newitem input,
   .newitem textarea {
@@ -16020,6 +16041,17 @@ fieldset[disabled] .vue-swatches {
 .newitem .select2 .select2-selection--single .select2-selection__arrow {
   background: #fefefe;
   height: 2.5rem;
+  width: 1.9375rem;
+  top: 1px;
+  right: 0;
+  background: #fefefe url(/images/arrow.svg?0ebaed36126e89e200a2cbd47f1f34aa) center center no-repeat;
+  border-right: 1px solid #BEBEBE;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.newitem .select2 .select2-selection--single .select2-selection__arrow b[role=presentation] {
+  display: none;
 }
 
 .newitem .select2 .select2-selection--single .select2-selection__rendered {
@@ -16081,6 +16113,12 @@ fieldset[disabled] .vue-swatches {
 
 .newitem .date .date__item.allday #allDay {
   width: unset !important;
+}
+
+@media print, screen and (min-width: 40em) {
+  .newitem .date .date__item.allday #allDay {
+    margin-bottom: 0;
+  }
 }
 
 .newitem .form__footer {
@@ -16209,6 +16247,10 @@ fieldset[disabled] .vue-swatches {
     margin-left: 6.25rem;
     margin-top: 1.375rem;
   }
+}
+
+.swal2-confirm {
+  color: #333 !important;
 }
 
 .profile {

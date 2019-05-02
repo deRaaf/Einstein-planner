@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->integer('role')->default(1);
             $table->string('first_name');
             $table->string('last_name');
-            $table->integer('student_number')->unique()->nullable();
+            $table->string('student_number')->unique()->nullable();
             $table->integer('class')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

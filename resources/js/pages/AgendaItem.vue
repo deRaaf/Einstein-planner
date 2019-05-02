@@ -1,15 +1,17 @@
 <template>
 <div class="newitem">
     <div class="newitem__inner">
-        <h1>{{ form.title }} 
-            <button class="button button-primary">
+        <div class="newitem__header">
+            <h1>Taak bewerken</h1> 
+
+            <button @click="completeItem" class="button button-primary">
                 <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.48145 6.23462L5.66252 10.4916L14.5185 1.50836" stroke="#333333" stroke-opacity="0.5" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
 
                 Taak afvinken
             </button>
-        </h1>
+        </div>
 
         <form @submit.prevent="formSubmit">
 
@@ -23,7 +25,7 @@
                         <option value="vrij">Vrij</option>
                     </select>
 
-                    <select name="subject" id="subject">
+                    <select name="subject" v-model="form.class" id="subject">
                         <option value="vak" selected disabled>Vak</option>
                         <option value="en">ENG</option>
                         <option value="ned">NED</option>
@@ -79,7 +81,7 @@
 
             <div class="form__footer">
                 <router-link to="/">Terug</router-link>
-                <button @click="deleteItem" class="button delete">Verwijderen</button>
+                <a @click="deleteItem" class="button delete">Verwijderen</a>
                 <button class="button button-primary">Opslaan</button>
             </div>
         </form>
@@ -88,6 +90,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
 data() {
     return {
@@ -162,7 +166,6 @@ methods: {
 
             if (this.form.start) {
                 this.form.date = this.form.start.slice(0, 10)
-                console.log(this.form.date)
             }
 
             if (this.form.start && this.form.end) {
@@ -208,17 +211,24 @@ methods: {
         CheckValues($("#type").val());
     },
     deleteItem() {
+        var self = this
+
+        console.log(self.form.id)
+
         Swal.fire({
-            title: 'Weet je het zeker?',
-            text: "Je staat op het punt dit item te verwijderen",
-            type: 'warning',
+            title: '',
+            text: "Weet je zeker dat je deze taak wilt verwijderen?",
+            type: 'error',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#B3ECFF',
+            cancelButtonColor: '#EBEBE',
             confirmButtonText: 'Ja, verwijderen'
             }).then((result) => {
-                if (result.value) {                        
-                    axios.delete('/agenda_items/'+ event.id)
+                if (result.value) {
+                    
+                    axios.delete('/agenda_items/'+ self.form.id)
+
+                    self.$router.push({ path: '/' });
 
                     Swal.fire(
                     'Verwijderd!',
@@ -227,7 +237,81 @@ methods: {
                     )
                 }
             })
+        },
+        completeItem() {
+            var self = this
+            var date = new Date()
+            var month = date.getMonth() + 1; //months from 1-12
+            var day = date.getDate();
+            var year = date.getFullYear();
+
+            if (month <= 10 ) {
+                month = "0" + month
+            }
+
+            if (day <= 10 ) {
+                day = "0" + day
+            }
+
+            var today = year + '-' + month + '-' + day
+
+            if (this.form.date > today ){
+                
+                Swal.fire({
+                    title: '',
+                    text: "Volgens de planning heb je deze taak nog niet uitgevoerd. Weet je zeker dat je deze taak af wilt vinken?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#B3ECFF',
+                    cancelButtonColor: '#EBEBE',
+                    cancelButtonText: 'Nee, taak houden.',
+                    confirmButtonText: 'Ja, afvinken'
+                    }).then((result) => {
+                        if (result.value) {
+                            
+                            axios.patch('/agenda_items/' + self.$attrs.id, {
+                                completed: true
+                            })
+                            .then(function(response) {
+                                if ( response.status == '201') {
+                                    Swal.fire(
+                                        'Goedzo',
+                                        'Je hebt de taak afgerond!',
+                                        'success'
+                                    )
+                                    self.$router.push({ path : '/' });
+                                }
+                            })
+                            .catch(function (error) {
+
+                                console.log(error);
+
+                            });
+                        }
+                    })
+            } else {
+                Swal.fire({
+                    title: 'Goedzo',
+                    text: "Je hebt de taak afgerond!",
+                    type: 'success',
+                    confirmButtonColor: '#B3ECFF',
+                    }).then((result) => {
+                        if (result.value) {
+                            axios.patch('/agenda_items/' + self.$attrs.id, {
+                                completed: true
+                            })
+                            .then(function(response) {
+                                self.$router.push({ path : '/' });
+                            })
+                            .catch(function (error) {
+
+                                console.log(error);
+
+                            });
+                        }
+                    })
+            }
+        }
     }
-}
 }
 </script>

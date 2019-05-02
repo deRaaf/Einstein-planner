@@ -1,6 +1,30 @@
 .newitem {
-    @include xy-grid-container;
-    padding-top: rem-calc(20);
+    padding: rem-calc(15);
+
+    @include breakpoint(large) {
+        margin-left: rem-calc(100);
+        max-width: rem-calc(935);
+        padding-top: rem-calc(20);
+    }
+
+    .newitem__header {
+        display: flex;
+        align-items: center;
+        margin-bottom: rem-calc(16);
+
+        h1 {
+            margin: 0;
+        }
+
+        .button {
+            margin-left: rem-calc(15);
+            margin-bottom: 0;
+
+            svg {
+                margin-right: rem-calc(5);
+            }
+        }
+    }
 
     .top,
     .bottom {
@@ -60,6 +84,10 @@
                 #deadline {
                     width: rem-calc(113);
                     height: rem-calc(42);
+
+                    @include breakpoint(medium) {
+                        margin-bottom: 0;
+                    }
                 }
             }
         }
@@ -107,9 +135,17 @@
             .select2-selection__arrow {
                 background: $white;
                 height: rem-calc(40);
-
-                // border-top-right-radius: $global-radius;
-                // border-bottom-right-radius: $global-radius;
+                width: rem-calc(31);
+                top: 1px;
+                right: 0;
+                background: $white url('../../img/arrow.svg') center center no-repeat;
+                border-right: 1px solid #BEBEBE;
+                border-top-right-radius: $global-radius;
+                border-bottom-right-radius: $global-radius;
+                
+                b[role="presentation"] {
+                    display: none;
+                }
             }
 
             .select2-selection__rendered {
@@ -169,6 +205,10 @@
                 
                 #allDay {
                     width: unset !important;
+
+                    @include breakpoint(medium) {
+                        margin-bottom: 0;
+                    }
                 }
             }
         }

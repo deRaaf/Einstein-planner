@@ -1,7 +1,9 @@
 <template>
 <div class="newitem">
     <div class="newitem__inner">
-        <h1>Nieuwe taak aanmaken</h1>
+        <div class="newitem__header">
+            <h1>Nieuwe taak aanmaken</h1>
+        </div>
 
         <form @submit.prevent="formSubmit">
 

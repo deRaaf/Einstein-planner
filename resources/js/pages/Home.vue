@@ -92,7 +92,6 @@
 import { FullCalendar } from 'vue-full-calendar'
 import 'fullcalendar/dist/locale/nl'
 // import mSidebar from '../components/mSidebar.vue'
-import Swal from 'sweetalert2'
 
 export default {
     components: {
@@ -243,8 +242,6 @@ export default {
                 } else if (agenda_item.type == "vrij") {
                     agenda_item.color = colors[2];
                 }
-
-                console.log(agenda_item.color)
             });
         },
         eventClick(item) {

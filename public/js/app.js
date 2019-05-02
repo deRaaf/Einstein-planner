@@ -3166,6 +3166,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -3255,6 +3257,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3331,7 +3336,6 @@ __webpack_require__.r(__webpack_exports__);
 
         if (_this.form.start) {
           _this.form.date = _this.form.start.slice(0, 10);
-          console.log(_this.form.date);
         }
 
         if (_this.form.start && _this.form.end) {
@@ -3378,20 +3382,93 @@ __webpack_require__.r(__webpack_exports__);
       CheckValues($("#type").val());
     },
     deleteItem: function deleteItem() {
-      Swal.fire({
-        title: 'Weet je het zeker?',
-        text: "Je staat op het punt dit item te verwijderen",
-        type: 'warning',
+      var self = this;
+      console.log(self.form.id);
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+        title: '',
+        text: "Weet je zeker dat je deze taak wilt verwijderen?",
+        type: 'error',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#B3ECFF',
+        cancelButtonColor: '#EBEBE',
         confirmButtonText: 'Ja, verwijderen'
       }).then(function (result) {
         if (result.value) {
-          axios.delete('/agenda_items/' + event.id);
-          Swal.fire('Verwijderd!', 'De afspraak is verwijderd.', 'success');
+          axios.delete('/agenda_items/' + self.form.id);
+          self.$router.push({
+            path: '/'
+          });
+          sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Verwijderd!', 'De afspraak is verwijderd.', 'success');
         }
       });
+    },
+    completeItem: function completeItem() {
+      var self = this;
+      var date = new Date();
+      var month = date.getMonth() + 1; //months from 1-12
+
+      var day = date.getDate();
+      var year = date.getFullYear();
+
+      if (month <= 10) {
+        month = "0" + month;
+      }
+
+      if (day <= 10) {
+        day = "0" + day;
+      }
+
+      var today = year + '-' + month + '-' + day;
+
+      if (this.form.date > today) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+          title: '',
+          text: "Volgens de planning heb je deze taak nog niet uitgevoerd. Weet je zeker dat je deze taak af wilt vinken?",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#B3ECFF',
+          cancelButtonColor: '#EBEBE',
+          cancelButtonText: 'Nee, taak houden.',
+          confirmButtonText: 'Ja, afvinken'
+        }).then(function (result) {
+          if (result.value) {
+            axios.put('/agenda_items/' + self.$attrs.id, {
+              completed: true
+            }).then(function (response) {
+              if (response.status == '201') {
+                sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Goedzo', 'Je hebt de taak afgerond!', 'success');
+                self.$router.push({
+                  path: '/'
+                });
+              }
+            }).catch(function (error) {
+              console.log(error);
+            });
+          }
+        });
+      } else {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+          title: 'Goedzo',
+          text: "Je hebt de taak afgerond!",
+          type: 'success',
+          confirmButtonColor: '#B3ECFF'
+        }).then(function (result) {
+          if (result.value) {
+            axios.put('/agenda_items/' + self.$attrs.id, {
+              completed: true
+            }).then(function (response) {
+              if (response.status == '201') {
+                sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Goedzo', 'Je hebt de taak afgerond!', 'success');
+                self.$router.push({
+                  path: '/'
+                });
+              }
+            }).catch(function (error) {
+              console.log(error);
+            });
+          }
+        });
+      }
     }
   }
 });
@@ -3410,8 +3487,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_full_calendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-full-calendar */ "./node_modules/vue-full-calendar/index.js");
 /* harmony import */ var fullcalendar_dist_locale_nl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fullcalendar/dist/locale/nl */ "./node_modules/fullcalendar/dist/locale/nl.js");
 /* harmony import */ var fullcalendar_dist_locale_nl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fullcalendar_dist_locale_nl__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -3504,7 +3579,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 
  // import mSidebar from '../components/mSidebar.vue'
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3644,8 +3718,6 @@ __webpack_require__.r(__webpack_exports__);
         } else if (agenda_item.type == "vrij") {
           agenda_item.color = colors[2];
         }
-
-        console.log(agenda_item.color);
       });
     },
     eventClick: function eventClick(item) {
@@ -3760,6 +3832,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -89262,36 +89336,44 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "newitem" }, [
     _c("div", { staticClass: "newitem__inner" }, [
-      _c("h1", [
-        _vm._v(_vm._s(_vm.form.title) + " \r\n            "),
-        _c("button", { staticClass: "button button-primary" }, [
-          _c(
-            "svg",
-            {
-              attrs: {
-                width: "16",
-                height: "12",
-                viewBox: "0 0 16 12",
-                fill: "none",
-                xmlns: "http://www.w3.org/2000/svg"
-              }
-            },
-            [
-              _c("path", {
+      _c("div", { staticClass: "newitem__header" }, [
+        _c("h1", [_vm._v("Taak bewerken")]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "button button-primary",
+            on: { click: _vm.completeItem }
+          },
+          [
+            _c(
+              "svg",
+              {
                 attrs: {
-                  d: "M1.48145 6.23462L5.66252 10.4916L14.5185 1.50836",
-                  stroke: "#333333",
-                  "stroke-opacity": "0.5",
-                  "stroke-width": "2",
-                  "stroke-miterlimit": "10",
-                  "stroke-linecap": "round",
-                  "stroke-linejoin": "round"
+                  width: "16",
+                  height: "12",
+                  viewBox: "0 0 16 12",
+                  fill: "none",
+                  xmlns: "http://www.w3.org/2000/svg"
                 }
-              })
-            ]
-          ),
-          _vm._v("\r\n\r\n                Taak afvinken\r\n            ")
-        ])
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    d: "M1.48145 6.23462L5.66252 10.4916L14.5185 1.50836",
+                    stroke: "#333333",
+                    "stroke-opacity": "0.5",
+                    "stroke-width": "2",
+                    "stroke-miterlimit": "10",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round"
+                  }
+                })
+              ]
+            ),
+            _vm._v("\r\n\r\n                Taak afvinken\r\n            ")
+          ]
+        )
       ]),
       _vm._v(" "),
       _c(
@@ -89359,7 +89441,54 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(0),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.class,
+                      expression: "form.class"
+                    }
+                  ],
+                  attrs: { name: "subject", id: "subject" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.form,
+                        "class",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { value: "vak", selected: "", disabled: "" } },
+                    [_vm._v("Vak")]
+                  ),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "en" } }, [_vm._v("ENG")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "ned" } }, [_vm._v("NED")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "wis" } }, [_vm._v("WIS")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "bio" } }, [_vm._v("BIO")])
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "deadline" }, [
                 _c("label", [_vm._v("Deadline:")]),
@@ -89598,7 +89727,7 @@ var render = function() {
               _c("router-link", { attrs: { to: "/" } }, [_vm._v("Terug")]),
               _vm._v(" "),
               _c(
-                "button",
+                "a",
                 { staticClass: "button delete", on: { click: _vm.deleteItem } },
                 [_vm._v("Verwijderen")]
               ),
@@ -89614,26 +89743,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("select", { attrs: { name: "subject", id: "subject" } }, [
-      _c("option", { attrs: { value: "vak", selected: "", disabled: "" } }, [
-        _vm._v("Vak")
-      ]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "en" } }, [_vm._v("ENG")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "ned" } }, [_vm._v("NED")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "wis" } }, [_vm._v("WIS")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "bio" } }, [_vm._v("BIO")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -90202,7 +90312,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "newitem" }, [
     _c("div", { staticClass: "newitem__inner" }, [
-      _c("h1", [_vm._v("Nieuwe taak aanmaken")]),
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "form",
@@ -90269,7 +90379,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(0),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "deadline" }, [
                 _c("label", [_vm._v("Deadline:")]),
@@ -90519,6 +90629,14 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "newitem__header" }, [
+      _c("h1", [_vm._v("Nieuwe taak aanmaken")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

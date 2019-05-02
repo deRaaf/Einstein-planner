@@ -31,6 +31,12 @@ class AgendaController extends Controller
         $student_number = $user->student_number;
         $agenda_item = Agenda_item::find($id);
 
+        $method = Request::method();
+
+        if (Request::isMethod('PATCH')) {
+            dd("joe");
+        }
+
         $agenda_item->title = $request->title;
         $agenda_item->start = $request->start;
         $agenda_item->end = $request->end;
@@ -38,6 +44,17 @@ class AgendaController extends Controller
         $agenda_item->student_number = $user->student_number;
         $agenda_item->description = $request->description;
         $agenda_item->type = $request->type;
+        $agenda_item->save();
+
+        return response($agenda_item->jsonSerialize(), Response::HTTP_CREATED);
+    }
+
+    public function edit(Request $request, $id) {
+        $user = Auth::user();
+        $student_number = $user->student_number;
+        $agenda_item = Agenda_item::find($id);
+        
+        $agenda_item->completed = $request->completed;
         $agenda_item->save();
 
         return response($agenda_item->jsonSerialize(), Response::HTTP_CREATED);
