@@ -57,6 +57,10 @@
             #description {
                 height: rem-calc(266);
             }
+
+            #name {
+                height: rem-calc(114);
+            }
         }
     }
 
@@ -95,6 +99,12 @@
 
     input,
     textarea {
+        resize: none;
+
+        &::-webkit-calendar-picker-indicator,
+        &::-webkit-inner-spin-button {
+            display: none;
+        }
 
         @include breakpoint(small down) {
             width: 100% !important;
@@ -220,6 +230,7 @@
 
         a {
             color: $black;
+            margin-right: rem-calc(14);
         }
 
         button {
@@ -228,7 +239,8 @@
         }
 
         .delete {
-            margin: 0 rem-calc(14);
+            margin-bottom: 0;
+            margin-right: rem-calc(14);
             background-color: #EBEBEB;
         }
     }

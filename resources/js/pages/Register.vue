@@ -20,7 +20,7 @@
             </div>
 
             <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.email }">
-                <label for="student_number">Leerling number</label>
+                <label for="student_number">Leerling nummer</label>
                 <input type="text" id="student_number" class="form-control" placeholder="123456" v-model="student_number">
                 <span class="help-block" v-if="has_error && errors.student_number">{{ errors.student_number }}</span>
             </div>
@@ -47,7 +47,12 @@
                 <p v-else>Fout, kan momenteel niet registreren. Neem contact op met een beheerder als het probleem aanhoudt.</p>
             </div>
 
-            <button type="submit" class="button button-primary">Registreren</button>
+
+            <div class="form__footer">
+              <router-link to="login">Terug naar login</router-link>
+
+              <button type="submit" class="button button-primary">Registreren</button>
+            </div>
         </form>
       </div>
     </div>

@@ -75,7 +75,8 @@
         h2{
             font-size: rem-calc(20);
 
-            button {
+            button,
+            a {
                 @include breakpoint(large) {
                     display: none;
                 }

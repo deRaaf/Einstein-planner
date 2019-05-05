@@ -175,7 +175,14 @@
                     padding: rem-calc(5);
                     text-align: center;
                     color: $black;
-                    font-size: rem-calc(12);
+
+                    .fc-title {
+                        font-size: rem-calc(12);
+                        
+                        @include breakpoint(small down) {
+                            font-size: rem-calc(9);
+                        }
+                    }
                 }
             }
         }

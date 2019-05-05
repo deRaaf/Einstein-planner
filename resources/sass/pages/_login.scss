@@ -74,5 +74,19 @@
             margin-top: rem-calc(20);
             text-align: left;
         }
+
+        .form__footer {
+            display: flex;
+            align-items: center;
+
+            a {
+                margin-right: rem-calc(20);
+                color: $black;
+            }
+
+            .button {
+                margin: 0;
+            }
+        }
     }
 }

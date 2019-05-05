@@ -89,7 +89,7 @@ export default {
                 name: '',
                 date: '',
                 allDay: '',
-                description: '',
+                description: 'Om je goed voor te bereiden kun je antwoord geven op de volgende vragen: Wat ga je doen? Hoe ga je dit doen? Wanneer ga je dit doen? Waar ga je dit doen? Met wie ga je dit doen? Ook kun je hier een notitie schrijven:',
                 type: '',
                 from:'',
                 till: '',
@@ -165,37 +165,41 @@ export default {
         },
         initSelect() {
             var input = this.$auth.user().colors
-            var colors = input.split(',')
 
             $('#type').select2({
                 containerCssClass: "type",
             });
 
             $('#subject').select2();
+
+            if(input !== null) {
+
+                var colors = input.split(',')
             
-            $('#type').on('select2:select', function(e) {
-                var data = e.params.data;
-                CheckValues(data.element.value)
-            });
+                $('#type').on('select2:select', function(e) {
+                    var data = e.params.data;
+                    CheckValues(data.element.value)
+                });
 
-            function CheckValues(value) {
-                switch (value) {
-                    case "hw":
-                        $(".type").css( "background-color", colors[0]);
-                        break;
-                    case "rep":
-                        $(".type").css( "background-color", colors[1]);
-                        break;
-                    case "vrij":
-                        $(".type").css( "background-color", colors[2]);
-                        break;
-                    case "so":
-                        $(".type").css( "background-color", colors[3]);
-                        break;
+                function CheckValues(value) {
+                    switch (value) {
+                        case "hw":
+                            $(".type").css( "background-color", colors[0]);
+                            break;
+                        case "rep":
+                            $(".type").css( "background-color", colors[1]);
+                            break;
+                        case "vrij":
+                            $(".type").css( "background-color", colors[2]);
+                            break;
+                        case "so":
+                            $(".type").css( "background-color", colors[3]);
+                            break;
+                    }
                 }
-            }
 
-            CheckValues($("#type").val());
+                CheckValues($("#type").val());
+            }
         },
     }
 }

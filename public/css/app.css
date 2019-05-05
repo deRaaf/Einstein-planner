@@ -15822,7 +15822,8 @@ fieldset[disabled] .vue-swatches {
 }
 
 @media print, screen and (min-width: 64em) {
-  .home .sidebar h2 button {
+  .home .sidebar h2 button,
+  .home .sidebar h2 a {
     display: none;
   }
 }
@@ -15962,6 +15963,11 @@ fieldset[disabled] .vue-swatches {
   height: 16.625rem;
 }
 
+.newitem .top .right #name,
+.newitem .bottom .right #name {
+  height: 7.125rem;
+}
+
 .newitem .top {
   margin-bottom: 1.25rem;
 }
@@ -15996,6 +16002,18 @@ fieldset[disabled] .vue-swatches {
   .newitem .top .left .deadline #deadline {
     margin-bottom: 0;
   }
+}
+
+.newitem input,
+.newitem textarea {
+  resize: none;
+}
+
+.newitem input::-webkit-calendar-picker-indicator,
+.newitem input::-webkit-inner-spin-button,
+.newitem textarea::-webkit-calendar-picker-indicator,
+.newitem textarea::-webkit-inner-spin-button {
+  display: none;
 }
 
 @media screen and (max-width: 39.99875em) {
@@ -16044,7 +16062,7 @@ fieldset[disabled] .vue-swatches {
   width: 1.9375rem;
   top: 1px;
   right: 0;
-  background: #fefefe url(/images/arrow.svg?0ebaed36126e89e200a2cbd47f1f34aa) center center no-repeat;
+  background: #fefefe url(/images/arrow.svg?0e01d52939273c3c4f08a5d458705938) center center no-repeat;
   border-right: 1px solid #BEBEBE;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -16128,6 +16146,7 @@ fieldset[disabled] .vue-swatches {
 
 .newitem .form__footer a {
   color: #333;
+  margin-right: 0.875rem;
 }
 
 .newitem .form__footer button {
@@ -16136,7 +16155,8 @@ fieldset[disabled] .vue-swatches {
 }
 
 .newitem .form__footer .delete {
-  margin: 0 0.875rem;
+  margin-bottom: 0;
+  margin-right: 0.875rem;
   background-color: #EBEBEB;
 }
 
@@ -16226,6 +16246,20 @@ fieldset[disabled] .vue-swatches {
 .login .form-container .form-title {
   margin-top: 1.25rem;
   text-align: left;
+}
+
+.login .form-container .form__footer {
+  display: flex;
+  align-items: center;
+}
+
+.login .form-container .form__footer a {
+  margin-right: 1.25rem;
+  color: #333;
+}
+
+.login .form-container .form__footer .button {
+  margin: 0;
 }
 
 #main {
@@ -16518,7 +16552,7 @@ fieldset[disabled] .vue-swatches {
 }
 
 .calendar_wrap #calendar .fc-toolbar .fc-menu-button {
-  background: url(/images/menu-button.svg?b01ac7c2b388ae27dbd7806eea02ebe8) transparent no-repeat;
+  background: url(/images/menu-button.svg?545b2755801ac619fc95efb68bd4ba9f) transparent no-repeat;
   border: 0;
   height: 42px;
   width: 42px;
@@ -16640,7 +16674,16 @@ fieldset[disabled] .vue-swatches {
   padding: 0.3125rem;
   text-align: center;
   color: #333;
+}
+
+.calendar_wrap #calendar .fc-view-container .fc-event .fc-content .fc-title {
   font-size: 0.75rem;
+}
+
+@media screen and (max-width: 39.99875em) {
+  .calendar_wrap #calendar .fc-view-container .fc-event .fc-content .fc-title {
+    font-size: 0.5625rem;
+  }
 }
 
 @media screen and (max-width: 63.99875em) {

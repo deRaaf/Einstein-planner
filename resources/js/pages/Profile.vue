@@ -155,7 +155,10 @@ export default {
             this.user.class = this.$auth.user().class
             
             var input = this.$auth.user().colors
-            var colors = input.split(',')
+
+            if (input !== null) {
+                var colors = input.split(',')
+            }
 
             if (colors){
                 this.color.hw = colors[0]

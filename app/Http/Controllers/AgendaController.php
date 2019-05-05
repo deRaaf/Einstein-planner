@@ -31,11 +31,11 @@ class AgendaController extends Controller
         $student_number = $user->student_number;
         $agenda_item = Agenda_item::find($id);
 
-        $method = Request::method();
+        // $method = Request::method();
 
-        if (Request::isMethod('PATCH')) {
-            dd("joe");
-        }
+        // if (Request::isMethod('PATCH')) {
+        //     dd("joe");
+        // }
 
         $agenda_item->title = $request->title;
         $agenda_item->start = $request->start;

@@ -3153,6 +3153,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -3342,6 +3379,11 @@ __webpack_require__.r(__webpack_exports__);
           _this.form.from = _this.form.start.slice(11, 16);
           _this.form.till = _this.form.end.slice(11, 16);
           _this.form.allDay = 0;
+        } else if (_this.form.start && _this.form.end == null) {
+          var start = _this.form.start;
+          _this.form.from = start.slice(11, 16); // this.form.till = end
+
+          _this.form.allDay = 0;
         }
       }).catch(function (error) {
         return console.log(error);
@@ -3349,37 +3391,39 @@ __webpack_require__.r(__webpack_exports__);
     },
     initSelect: function initSelect() {
       var input = this.$auth.user().colors;
-      var colors = input.split(',');
       $('#type').select2({
         containerCssClass: "type"
       });
       $('#subject').select2();
-      $('#type').on('select2:select', function (e) {
-        var data = e.params.data;
-        CheckValues(data.element.value);
-      });
 
-      function CheckValues(value) {
-        switch (value) {
-          case "hw":
-            $(".type").css("background-color", colors[0]);
-            break;
+      if (input !== null) {
+        var CheckValues = function CheckValues(value) {
+          switch (value) {
+            case "hw":
+              $(".type").css("background-color", colors[0]);
+              break;
 
-          case "rep":
-            $(".type").css("background-color", colors[1]);
-            break;
+            case "rep":
+              $(".type").css("background-color", colors[1]);
+              break;
 
-          case "vrij":
-            $(".type").css("background-color", colors[2]);
-            break;
+            case "vrij":
+              $(".type").css("background-color", colors[2]);
+              break;
 
-          case "so":
-            $(".type").css("background-color", colors[3]);
-            break;
-        }
+            case "so":
+              $(".type").css("background-color", colors[3]);
+              break;
+          }
+        };
+
+        var colors = input.split(',');
+        $('#type').on('select2:select', function (e) {
+          var data = e.params.data;
+          CheckValues(data.element.value);
+        });
+        CheckValues($("#type").val());
       }
-
-      CheckValues($("#type").val());
     },
     deleteItem: function deleteItem() {
       var self = this;
@@ -3432,7 +3476,7 @@ __webpack_require__.r(__webpack_exports__);
           confirmButtonText: 'Ja, afvinken'
         }).then(function (result) {
           if (result.value) {
-            axios.put('/agenda_items/' + self.$attrs.id, {
+            axios.patch('/agenda_items/' + self.$attrs.id, {
               completed: true
             }).then(function (response) {
               if (response.status == '201') {
@@ -3454,15 +3498,12 @@ __webpack_require__.r(__webpack_exports__);
           confirmButtonColor: '#B3ECFF'
         }).then(function (result) {
           if (result.value) {
-            axios.put('/agenda_items/' + self.$attrs.id, {
+            axios.patch('/agenda_items/' + self.$attrs.id, {
               completed: true
             }).then(function (response) {
-              if (response.status == '201') {
-                sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Goedzo', 'Je hebt de taak afgerond!', 'success');
-                self.$router.push({
-                  path: '/'
-                });
-              }
+              self.$router.push({
+                path: '/'
+              });
             }).catch(function (error) {
               console.log(error);
             });
@@ -3588,14 +3629,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       agenda_items: [],
+      notHome: true,
       config: {
         locale: 'nl',
         // minTime: "06:00:00",
         // maxTime: "22:00:00",
         timeFormat: "H:mm",
         displayEventTime: false,
-        dropabble: true,
+        droppable: true,
         dragRevertDuration: 0,
+        defaultTimedEventDuration: '01:00:00',
         eventDurationEditable: false,
         nowIndicator: true,
         height: 'parent',
@@ -3627,9 +3670,36 @@ __webpack_require__.r(__webpack_exports__);
             columnHeaderFormat: "dddd"
           }
         },
-        drop: function drop() {
+        drop: function drop(e) {
           // remove the element from the "Draggable Events" list
           $(this).remove();
+        },
+        eventReceive: function eventReceive(e) {
+          var type2 = e.title.slice(0, 2);
+          var type3 = e.title.slice(0, 3);
+          var type4 = e.title.slice(0, 4);
+
+          if (type2 == "HW" || type2 == "SO") {
+            type = type2;
+          } else if (type3 == "REP") {
+            type = type3;
+          } else {
+            var type = type4;
+          }
+
+          var start = e.start.toISOString();
+          var desc = "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen: Wat ga je doen? Hoe ga je dit doen? Wanneer ga je dit doen? Waar ga je dit doen? Met wie ga je dit doen? Ook kun je hier een notitie schrijven:";
+          axios.post('/agenda_items', {
+            title: e.title,
+            start: start,
+            // end: end,
+            allDay: false,
+            description: desc,
+            type: type
+          }).then(function (response) {// app.get_agenda_items();
+          }).catch(function (error) {
+            console.log(error);
+          });
         },
         eventDragStop: function eventDragStop(event, jsEvent, ui, view) {
           var isEventOverDiv = function isEventOverDiv(x, y) {
@@ -3660,8 +3730,7 @@ __webpack_require__.r(__webpack_exports__);
             });
           }
         }
-      },
-      notHome: true
+      }
     };
   },
   mounted: function mounted() {
@@ -3695,28 +3764,26 @@ __webpack_require__.r(__webpack_exports__);
           // use the element's text as the event title
           stick: true // maintain when user navigates (see docs on the renderEvent method)
 
-        }); // make the event draggable using jQuery UI
-        // $(this).draggable({
-        //     zIndex: 999,
-        //     revert: true,      // will cause the event to go back to its
-        //     revertDuration: 0  //  original position after the drag
-        // });
+        });
       });
     },
     setColors: function setColors() {
       var self = this;
       this.agenda_items.forEach(function (agenda_item) {
         var input = self.$auth.user().colors;
-        var colors = input.split(',');
 
-        if (agenda_item.type == "hw") {
-          agenda_item.color = colors[0];
-        } else if (agenda_item.type == "rep") {
-          agenda_item.color = colors[1];
-        } else if (agenda_item.type == "so") {
-          agenda_item.color = colors[2];
-        } else if (agenda_item.type == "vrij") {
-          agenda_item.color = colors[2];
+        if (input !== null) {
+          var colors = input.split(',');
+
+          if (agenda_item.type == "hw") {
+            agenda_item.color = colors[0];
+          } else if (agenda_item.type == "rep") {
+            agenda_item.color = colors[1];
+          } else if (agenda_item.type == "so") {
+            agenda_item.color = colors[2];
+          } else if (agenda_item.type == "vrij") {
+            agenda_item.color = colors[2];
+          }
         }
       });
     },
@@ -3729,6 +3796,11 @@ __webpack_require__.r(__webpack_exports__);
     collapse: function collapse() {
       $(".calendar_wrap").toggleClass("collapsed");
       $(".sidebar").toggleClass("collapsed");
+    }
+  },
+  events: {
+    'refresh': function refresh() {
+      this.get_agenda_items();
     }
   }
 });
@@ -3922,7 +3994,7 @@ __webpack_require__.r(__webpack_exports__);
         name: '',
         date: '',
         allDay: '',
-        description: '',
+        description: 'Om je goed voor te bereiden kun je antwoord geven op de volgende vragen: Wat ga je doen? Hoe ga je dit doen? Wanneer ga je dit doen? Waar ga je dit doen? Met wie ga je dit doen? Ook kun je hier een notitie schrijven:',
         type: '',
         from: '',
         till: ''
@@ -3999,37 +4071,39 @@ __webpack_require__.r(__webpack_exports__);
     },
     initSelect: function initSelect() {
       var input = this.$auth.user().colors;
-      var colors = input.split(',');
       $('#type').select2({
         containerCssClass: "type"
       });
       $('#subject').select2();
-      $('#type').on('select2:select', function (e) {
-        var data = e.params.data;
-        CheckValues(data.element.value);
-      });
 
-      function CheckValues(value) {
-        switch (value) {
-          case "hw":
-            $(".type").css("background-color", colors[0]);
-            break;
+      if (input !== null) {
+        var CheckValues = function CheckValues(value) {
+          switch (value) {
+            case "hw":
+              $(".type").css("background-color", colors[0]);
+              break;
 
-          case "rep":
-            $(".type").css("background-color", colors[1]);
-            break;
+            case "rep":
+              $(".type").css("background-color", colors[1]);
+              break;
 
-          case "vrij":
-            $(".type").css("background-color", colors[2]);
-            break;
+            case "vrij":
+              $(".type").css("background-color", colors[2]);
+              break;
 
-          case "so":
-            $(".type").css("background-color", colors[3]);
-            break;
-        }
+            case "so":
+              $(".type").css("background-color", colors[3]);
+              break;
+          }
+        };
+
+        var colors = input.split(',');
+        $('#type').on('select2:select', function (e) {
+          var data = e.params.data;
+          CheckValues(data.element.value);
+        });
+        CheckValues($("#type").val());
       }
-
-      CheckValues($("#type").val());
     }
   }
 });
@@ -4184,7 +4258,10 @@ __webpack_require__.r(__webpack_exports__);
       this.user.student_number = this.$auth.user().student_number;
       this.user.class = this.$auth.user().class;
       var input = this.$auth.user().colors;
-      var colors = input.split(',');
+
+      if (input !== null) {
+        var colors = input.split(',');
+      }
 
       if (colors) {
         this.color.hw = colors[0];
@@ -4215,6 +4292,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4407,6 +4489,26 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/error404.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/error404.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -89228,15 +89330,253 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "sidebar" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "sidebar__header" }),
+    _c("div", { staticClass: "sidebar__header" }, [
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: { "aria-label": "Close menu", type: "button" },
+          on: { click: _vm.collapse }
+        },
+        [
+          _c(
+            "svg",
+            {
+              attrs: {
+                width: "20",
+                height: "20",
+                viewBox: "0 0 20 20",
+                fill: "none",
+                xmlns: "http://www.w3.org/2000/svg"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  d: "M6.66666 4L13.3333 10.6667L6.66666 17.3333",
+                  stroke: "#B3ECFF",
+                  "stroke-width": "2",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round"
+                }
+              })
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("h2", [_vm._v("Taken")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "right" },
+        [
+          _c(
+            "router-link",
+            { staticClass: "info", attrs: { to: "/stappenplan" } },
+            [
+              _c(
+                "svg",
+                {
+                  attrs: {
+                    width: "15",
+                    height: "15",
+                    viewBox: "0 0 15 15",
+                    fill: "none",
+                    xmlns: "http://www.w3.org/2000/svg"
+                  }
+                },
+                [
+                  _c("circle", {
+                    attrs: { cx: "7.5", cy: "7.5", r: "7.5", fill: "#B3ECFF" }
+                  }),
+                  _vm._v(" "),
+                  _c("path", {
+                    attrs: {
+                      d:
+                        "M7.50839 12.072C7.24439 12.072 7.02439 12 6.84839 11.856C6.68039 11.712 6.59639 11.5 6.59639 11.22V6.84C6.59639 6.56 6.68439 6.348 6.86039 6.204C7.03639 6.06 7.25239 5.988 7.50839 5.988C7.76439 5.988 7.97639 6.06 8.14439 6.204C8.32039 6.348 8.40839 6.56 8.40839 6.84V11.22C8.40839 11.5 8.32039 11.712 8.14439 11.856C7.97639 12 7.76439 12.072 7.50839 12.072ZM7.50839 5.028C7.18839 5.028 6.93639 4.948 6.75239 4.788C6.56839 4.62 6.47639 4.396 6.47639 4.116C6.47639 3.836 6.56839 3.616 6.75239 3.456C6.93639 3.296 7.18839 3.216 7.50839 3.216C7.82039 3.216 8.06839 3.3 8.25239 3.468C8.44439 3.628 8.54039 3.844 8.54039 4.116C8.54039 4.396 8.44839 4.62 8.26439 4.788C8.08039 4.948 7.82839 5.028 7.50839 5.028Z",
+                      fill: "white"
+                    }
+                  })
+                ]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("button", { staticClass: "refresh", on: { click: _vm.refresh } }, [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  width: "18",
+                  height: "14",
+                  viewBox: "0 0 18 14",
+                  fill: "none",
+                  xmlns: "http://www.w3.org/2000/svg"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    d:
+                      "M3.46343 5.65018C2.92992 7.61243 3.43178 9.79171 4.97355 11.3335C7.14754 13.5075 10.6035 13.6156 12.9011 11.6579",
+                    stroke: "#B3ECFF",
+                    "stroke-width": "1.5",
+                    "stroke-miterlimit": "10",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round"
+                  }
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M5.43711 7.31577L3.46046 4.94736L1.48975 7.31577",
+                    stroke: "#B3ECFF",
+                    "stroke-width": "1.5",
+                    "stroke-miterlimit": "10",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round"
+                  }
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d:
+                      "M14.4363 8.39914C14.9698 6.43688 14.4679 4.25761 12.9262 2.71584C10.6384 0.428053 6.93091 0.428053 4.64764 2.71584",
+                    stroke: "#B3ECFF",
+                    "stroke-width": "1.5",
+                    "stroke-miterlimit": "10",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round"
+                  }
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M12.5424 7.3158L14.519 9.68421L16.4897 7.3158",
+                    stroke: "#B3ECFF",
+                    "stroke-width": "1.5",
+                    "stroke-miterlimit": "10",
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round"
+                  }
+                })
+              ]
+            )
+          ])
+        ],
+        1
+      )
+    ]),
     _vm._v(" "),
     _c(
       "div",
       { staticClass: "sidebar__content" },
       [
-        _c("h2", [_vm._v("Taken")]),
+        _c(
+          "h2",
+          [
+            _vm._v("Taken \n            "),
+            _c(
+              "router-link",
+              { staticClass: "info", attrs: { to: "/stappenplan" } },
+              [
+                _c(
+                  "svg",
+                  {
+                    attrs: {
+                      width: "15",
+                      height: "15",
+                      viewBox: "0 0 15 15",
+                      fill: "none",
+                      xmlns: "http://www.w3.org/2000/svg"
+                    }
+                  },
+                  [
+                    _c("circle", {
+                      attrs: { cx: "7.5", cy: "7.5", r: "7.5", fill: "#B3ECFF" }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      attrs: {
+                        d:
+                          "M7.50839 12.072C7.24439 12.072 7.02439 12 6.84839 11.856C6.68039 11.712 6.59639 11.5 6.59639 11.22V6.84C6.59639 6.56 6.68439 6.348 6.86039 6.204C7.03639 6.06 7.25239 5.988 7.50839 5.988C7.76439 5.988 7.97639 6.06 8.14439 6.204C8.32039 6.348 8.40839 6.56 8.40839 6.84V11.22C8.40839 11.5 8.32039 11.712 8.14439 11.856C7.97639 12 7.76439 12.072 7.50839 12.072ZM7.50839 5.028C7.18839 5.028 6.93639 4.948 6.75239 4.788C6.56839 4.62 6.47639 4.396 6.47639 4.116C6.47639 3.836 6.56839 3.616 6.75239 3.456C6.93639 3.296 7.18839 3.216 7.50839 3.216C7.82039 3.216 8.06839 3.3 8.25239 3.468C8.44439 3.628 8.54039 3.844 8.54039 4.116C8.54039 4.396 8.44839 4.62 8.26439 4.788C8.08039 4.948 7.82839 5.028 7.50839 5.028Z",
+                        fill: "white"
+                      }
+                    })
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "refresh", on: { click: _vm.refresh } },
+              [
+                _c(
+                  "svg",
+                  {
+                    attrs: {
+                      width: "18",
+                      height: "14",
+                      viewBox: "0 0 18 14",
+                      fill: "none",
+                      xmlns: "http://www.w3.org/2000/svg"
+                    }
+                  },
+                  [
+                    _c("path", {
+                      attrs: {
+                        d:
+                          "M3.46343 5.65018C2.92992 7.61243 3.43178 9.79171 4.97355 11.3335C7.14754 13.5075 10.6035 13.6156 12.9011 11.6579",
+                        stroke: "#B3ECFF",
+                        "stroke-width": "1.5",
+                        "stroke-miterlimit": "10",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      attrs: {
+                        d: "M5.43711 7.31577L3.46046 4.94736L1.48975 7.31577",
+                        stroke: "#B3ECFF",
+                        "stroke-width": "1.5",
+                        "stroke-miterlimit": "10",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      attrs: {
+                        d:
+                          "M14.4363 8.39914C14.9698 6.43688 14.4679 4.25761 12.9262 2.71584C10.6384 0.428053 6.93091 0.428053 4.64764 2.71584",
+                        stroke: "#B3ECFF",
+                        "stroke-width": "1.5",
+                        "stroke-miterlimit": "10",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      attrs: {
+                        d: "M12.5424 7.3158L14.519 9.68421L16.4897 7.3158",
+                        stroke: "#B3ECFF",
+                        "stroke-width": "1.5",
+                        "stroke-miterlimit": "10",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round"
+                      }
+                    })
+                  ]
+                )
+              ]
+            )
+          ],
+          1
+        ),
         _vm._v(" "),
         _c("p", [
           _vm._v(
@@ -89250,26 +89590,13 @@ var render = function() {
           [_vm._v("Nieuw agenda item")]
         ),
         _vm._v(" "),
-        _vm._m(1)
+        _vm._m(0)
       ],
       1
     )
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "close-button",
-        attrs: { "aria-label": "Close menu", type: "button" }
-      },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -89290,12 +89617,12 @@ var staticRenderFns = [
       _c("div", { staticClass: "fc-event" }, [
         _c("div", { staticClass: "type" }, [_vm._v("HW")]),
         _vm._v(" "),
-        _c("div", { staticClass: "class" }, [_vm._v("Engels")]),
+        _c("div", { staticClass: "class" }, [_vm._v("Aardrijkskunde")]),
         _vm._v(" "),
         _c("div", { staticClass: "date" }, [
-          _c("span", { staticClass: "date__day" }, [_vm._v("3")]),
+          _c("span", { staticClass: "date__day" }, [_vm._v("5")]),
           _vm._v(" "),
-          _c("span", { staticClass: "date__month" }, [_vm._v("mei")])
+          _c("span", { staticClass: "date__month" }, [_vm._v("aug")])
         ])
       ]),
       _vm._v(" "),
@@ -89750,10 +90077,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&":
-/*!**************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30& ***!
-  \**************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&ref=foo&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&ref=foo& ***!
+  \**********************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -89816,132 +90143,41 @@ var render = function() {
         _vm._v(" "),
         _c("h2", [_vm._v("Taken")]),
         _vm._v(" "),
-        _c("div", { staticClass: "right" }, [
-          _c("button", { staticClass: "info" }, [
+        _c(
+          "div",
+          { staticClass: "right" },
+          [
             _c(
-              "svg",
-              {
-                attrs: {
-                  width: "15",
-                  height: "15",
-                  viewBox: "0 0 15 15",
-                  fill: "none",
-                  xmlns: "http://www.w3.org/2000/svg"
-                }
-              },
+              "router-link",
+              { staticClass: "info", attrs: { to: "/stappenplan" } },
               [
-                _c("circle", {
-                  attrs: { cx: "7.5", cy: "7.5", r: "7.5", fill: "#B3ECFF" }
-                }),
-                _vm._v(" "),
-                _c("path", {
-                  attrs: {
-                    d:
-                      "M7.50839 12.072C7.24439 12.072 7.02439 12 6.84839 11.856C6.68039 11.712 6.59639 11.5 6.59639 11.22V6.84C6.59639 6.56 6.68439 6.348 6.86039 6.204C7.03639 6.06 7.25239 5.988 7.50839 5.988C7.76439 5.988 7.97639 6.06 8.14439 6.204C8.32039 6.348 8.40839 6.56 8.40839 6.84V11.22C8.40839 11.5 8.32039 11.712 8.14439 11.856C7.97639 12 7.76439 12.072 7.50839 12.072ZM7.50839 5.028C7.18839 5.028 6.93639 4.948 6.75239 4.788C6.56839 4.62 6.47639 4.396 6.47639 4.116C6.47639 3.836 6.56839 3.616 6.75239 3.456C6.93639 3.296 7.18839 3.216 7.50839 3.216C7.82039 3.216 8.06839 3.3 8.25239 3.468C8.44439 3.628 8.54039 3.844 8.54039 4.116C8.54039 4.396 8.44839 4.62 8.26439 4.788C8.08039 4.948 7.82839 5.028 7.50839 5.028Z",
-                    fill: "white"
-                  }
-                })
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("button", { staticClass: "refresh", on: { click: _vm.refresh } }, [
-            _c(
-              "svg",
-              {
-                attrs: {
-                  width: "18",
-                  height: "14",
-                  viewBox: "0 0 18 14",
-                  fill: "none",
-                  xmlns: "http://www.w3.org/2000/svg"
-                }
-              },
-              [
-                _c("path", {
-                  attrs: {
-                    d:
-                      "M3.46343 5.65018C2.92992 7.61243 3.43178 9.79171 4.97355 11.3335C7.14754 13.5075 10.6035 13.6156 12.9011 11.6579",
-                    stroke: "#B3ECFF",
-                    "stroke-width": "1.5",
-                    "stroke-miterlimit": "10",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round"
-                  }
-                }),
-                _vm._v(" "),
-                _c("path", {
-                  attrs: {
-                    d: "M5.43711 7.31577L3.46046 4.94736L1.48975 7.31577",
-                    stroke: "#B3ECFF",
-                    "stroke-width": "1.5",
-                    "stroke-miterlimit": "10",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round"
-                  }
-                }),
-                _vm._v(" "),
-                _c("path", {
-                  attrs: {
-                    d:
-                      "M14.4363 8.39914C14.9698 6.43688 14.4679 4.25761 12.9262 2.71584C10.6384 0.428053 6.93091 0.428053 4.64764 2.71584",
-                    stroke: "#B3ECFF",
-                    "stroke-width": "1.5",
-                    "stroke-miterlimit": "10",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round"
-                  }
-                }),
-                _vm._v(" "),
-                _c("path", {
-                  attrs: {
-                    d: "M12.5424 7.3158L14.519 9.68421L16.4897 7.3158",
-                    stroke: "#B3ECFF",
-                    "stroke-width": "1.5",
-                    "stroke-miterlimit": "10",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round"
-                  }
-                })
-              ]
-            )
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "sidebar__content" },
-        [
-          _c("h2", [
-            _vm._v("Taken \n                "),
-            _c("button", { staticClass: "info" }, [
-              _c(
-                "svg",
-                {
-                  attrs: {
-                    width: "15",
-                    height: "15",
-                    viewBox: "0 0 15 15",
-                    fill: "none",
-                    xmlns: "http://www.w3.org/2000/svg"
-                  }
-                },
-                [
-                  _c("circle", {
-                    attrs: { cx: "7.5", cy: "7.5", r: "7.5", fill: "#B3ECFF" }
-                  }),
-                  _vm._v(" "),
-                  _c("path", {
+                _c(
+                  "svg",
+                  {
                     attrs: {
-                      d:
-                        "M7.50839 12.072C7.24439 12.072 7.02439 12 6.84839 11.856C6.68039 11.712 6.59639 11.5 6.59639 11.22V6.84C6.59639 6.56 6.68439 6.348 6.86039 6.204C7.03639 6.06 7.25239 5.988 7.50839 5.988C7.76439 5.988 7.97639 6.06 8.14439 6.204C8.32039 6.348 8.40839 6.56 8.40839 6.84V11.22C8.40839 11.5 8.32039 11.712 8.14439 11.856C7.97639 12 7.76439 12.072 7.50839 12.072ZM7.50839 5.028C7.18839 5.028 6.93639 4.948 6.75239 4.788C6.56839 4.62 6.47639 4.396 6.47639 4.116C6.47639 3.836 6.56839 3.616 6.75239 3.456C6.93639 3.296 7.18839 3.216 7.50839 3.216C7.82039 3.216 8.06839 3.3 8.25239 3.468C8.44439 3.628 8.54039 3.844 8.54039 4.116C8.54039 4.396 8.44839 4.62 8.26439 4.788C8.08039 4.948 7.82839 5.028 7.50839 5.028Z",
-                      fill: "white"
+                      width: "15",
+                      height: "15",
+                      viewBox: "0 0 15 15",
+                      fill: "none",
+                      xmlns: "http://www.w3.org/2000/svg"
                     }
-                  })
-                ]
-              )
-            ]),
+                  },
+                  [
+                    _c("circle", {
+                      attrs: { cx: "7.5", cy: "7.5", r: "7.5", fill: "#B3ECFF" }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      attrs: {
+                        d:
+                          "M7.50839 12.072C7.24439 12.072 7.02439 12 6.84839 11.856C6.68039 11.712 6.59639 11.5 6.59639 11.22V6.84C6.59639 6.56 6.68439 6.348 6.86039 6.204C7.03639 6.06 7.25239 5.988 7.50839 5.988C7.76439 5.988 7.97639 6.06 8.14439 6.204C8.32039 6.348 8.40839 6.56 8.40839 6.84V11.22C8.40839 11.5 8.32039 11.712 8.14439 11.856C7.97639 12 7.76439 12.072 7.50839 12.072ZM7.50839 5.028C7.18839 5.028 6.93639 4.948 6.75239 4.788C6.56839 4.62 6.47639 4.396 6.47639 4.116C6.47639 3.836 6.56839 3.616 6.75239 3.456C6.93639 3.296 7.18839 3.216 7.50839 3.216C7.82039 3.216 8.06839 3.3 8.25239 3.468C8.44439 3.628 8.54039 3.844 8.54039 4.116C8.54039 4.396 8.44839 4.62 8.26439 4.788C8.08039 4.948 7.82839 5.028 7.50839 5.028Z",
+                        fill: "white"
+                      }
+                    })
+                  ]
+                )
+              ]
+            ),
             _vm._v(" "),
             _c(
               "button",
@@ -90008,7 +90244,124 @@ var render = function() {
                 )
               ]
             )
-          ]),
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "sidebar__content" },
+        [
+          _c(
+            "h2",
+            [
+              _vm._v("Taken \n                "),
+              _c(
+                "router-link",
+                { staticClass: "info", attrs: { to: "/stappenplan" } },
+                [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        width: "15",
+                        height: "15",
+                        viewBox: "0 0 15 15",
+                        fill: "none",
+                        xmlns: "http://www.w3.org/2000/svg"
+                      }
+                    },
+                    [
+                      _c("circle", {
+                        attrs: {
+                          cx: "7.5",
+                          cy: "7.5",
+                          r: "7.5",
+                          fill: "#B3ECFF"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("path", {
+                        attrs: {
+                          d:
+                            "M7.50839 12.072C7.24439 12.072 7.02439 12 6.84839 11.856C6.68039 11.712 6.59639 11.5 6.59639 11.22V6.84C6.59639 6.56 6.68439 6.348 6.86039 6.204C7.03639 6.06 7.25239 5.988 7.50839 5.988C7.76439 5.988 7.97639 6.06 8.14439 6.204C8.32039 6.348 8.40839 6.56 8.40839 6.84V11.22C8.40839 11.5 8.32039 11.712 8.14439 11.856C7.97639 12 7.76439 12.072 7.50839 12.072ZM7.50839 5.028C7.18839 5.028 6.93639 4.948 6.75239 4.788C6.56839 4.62 6.47639 4.396 6.47639 4.116C6.47639 3.836 6.56839 3.616 6.75239 3.456C6.93639 3.296 7.18839 3.216 7.50839 3.216C7.82039 3.216 8.06839 3.3 8.25239 3.468C8.44439 3.628 8.54039 3.844 8.54039 4.116C8.54039 4.396 8.44839 4.62 8.26439 4.788C8.08039 4.948 7.82839 5.028 7.50839 5.028Z",
+                          fill: "white"
+                        }
+                      })
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "refresh", on: { click: _vm.refresh } },
+                [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        width: "18",
+                        height: "14",
+                        viewBox: "0 0 18 14",
+                        fill: "none",
+                        xmlns: "http://www.w3.org/2000/svg"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          d:
+                            "M3.46343 5.65018C2.92992 7.61243 3.43178 9.79171 4.97355 11.3335C7.14754 13.5075 10.6035 13.6156 12.9011 11.6579",
+                          stroke: "#B3ECFF",
+                          "stroke-width": "1.5",
+                          "stroke-miterlimit": "10",
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("path", {
+                        attrs: {
+                          d: "M5.43711 7.31577L3.46046 4.94736L1.48975 7.31577",
+                          stroke: "#B3ECFF",
+                          "stroke-width": "1.5",
+                          "stroke-miterlimit": "10",
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("path", {
+                        attrs: {
+                          d:
+                            "M14.4363 8.39914C14.9698 6.43688 14.4679 4.25761 12.9262 2.71584C10.6384 0.428053 6.93091 0.428053 4.64764 2.71584",
+                          stroke: "#B3ECFF",
+                          "stroke-width": "1.5",
+                          "stroke-miterlimit": "10",
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("path", {
+                        attrs: {
+                          d: "M12.5424 7.3158L14.519 9.68421L16.4897 7.3158",
+                          stroke: "#B3ECFF",
+                          "stroke-width": "1.5",
+                          "stroke-miterlimit": "10",
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round"
+                        }
+                      })
+                    ]
+                  )
+                ]
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           _c("p", [
             _vm._v(
@@ -90041,7 +90394,7 @@ var staticRenderFns = [
       _c("div", { staticClass: "fc-event" }, [
         _c("div", { staticClass: "type" }, [_vm._v("HW")]),
         _vm._v(" "),
-        _c("div", { staticClass: "class" }, [_vm._v("Engels")]),
+        _c("div", { staticClass: "class" }, [_vm._v("EN: H5 opdr 21-...")]),
         _vm._v(" "),
         _c("div", { staticClass: "date" }, [
           _c("span", { staticClass: "date__day" }, [_vm._v("3")]),
@@ -90051,7 +90404,7 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "fc-event" }, [
-        _c("div", { staticClass: "type" }, [_vm._v("HW")]),
+        _c("div", { staticClass: "type" }, [_vm._v("SO")]),
         _vm._v(" "),
         _c("div", { staticClass: "class" }, [_vm._v("Aardrijkskunde")]),
         _vm._v(" "),
@@ -90063,7 +90416,7 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "fc-event" }, [
-        _c("div", { staticClass: "type" }, [_vm._v("HW")]),
+        _c("div", { staticClass: "type" }, [_vm._v("REP")]),
         _vm._v(" "),
         _c("div", { staticClass: "class" }, [_vm._v("Engels")]),
         _vm._v(" "),
@@ -91127,7 +91480,7 @@ var render = function() {
                 },
                 [
                   _c("label", { attrs: { for: "student_number" } }, [
-                    _vm._v("Leerling number")
+                    _vm._v("Leerling nummer")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -91300,12 +91653,23 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               _c(
-                "button",
-                {
-                  staticClass: "button button-primary",
-                  attrs: { type: "submit" }
-                },
-                [_vm._v("Registreren")]
+                "div",
+                { staticClass: "form__footer" },
+                [
+                  _c("router-link", { attrs: { to: "login" } }, [
+                    _vm._v("Terug naar login")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button button-primary",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v("Registreren")]
+                  )
+                ],
+                1
               )
             ]
           )
@@ -91529,6 +91893,41 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/error404.vue?vue&type=template&id=518e7899&":
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/error404.vue?vue&type=template&id=518e7899& ***!
+  \******************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "error404" }, [
+    _c("h1", [_vm._v("Deze pagina bestaat niet")]),
+    _vm._v(" "),
+    _c(
+      "p",
+      [
+        _vm._v("Ga "),
+        _c("router-link", { attrs: { to: "/" } }, [_vm._v("terug naar home")])
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -106300,7 +106699,8 @@ var map = {
 	"./pages/Profile.vue": "./resources/js/pages/Profile.vue",
 	"./pages/Register.vue": "./resources/js/pages/Register.vue",
 	"./pages/Steps.vue": "./resources/js/pages/Steps.vue",
-	"./pages/admin/AdminDashboard.vue": "./resources/js/pages/admin/AdminDashboard.vue"
+	"./pages/admin/AdminDashboard.vue": "./resources/js/pages/admin/AdminDashboard.vue",
+	"./pages/error404.vue": "./resources/js/pages/error404.vue"
 };
 
 
@@ -106948,7 +107348,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Home_vue_vue_type_template_id_b3c5cf30___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Home.vue?vue&type=template&id=b3c5cf30& */ "./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&");
+/* harmony import */ var _Home_vue_vue_type_template_id_b3c5cf30_ref_foo___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Home.vue?vue&type=template&id=b3c5cf30&ref=foo& */ "./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&ref=foo&");
 /* harmony import */ var _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Home.vue?vue&type=script&lang=js& */ "./resources/js/pages/Home.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -106960,8 +107360,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Home_vue_vue_type_template_id_b3c5cf30___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Home_vue_vue_type_template_id_b3c5cf30___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Home_vue_vue_type_template_id_b3c5cf30_ref_foo___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Home_vue_vue_type_template_id_b3c5cf30_ref_foo___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -106990,19 +107390,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&":
-/*!********************************************************************!*\
-  !*** ./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30& ***!
-  \********************************************************************/
+/***/ "./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&ref=foo&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&ref=foo& ***!
+  \****************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_b3c5cf30___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Home.vue?vue&type=template&id=b3c5cf30& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_b3c5cf30___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_b3c5cf30_ref_foo___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Home.vue?vue&type=template&id=b3c5cf30&ref=foo& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Home.vue?vue&type=template&id=b3c5cf30&ref=foo&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_b3c5cf30_ref_foo___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_b3c5cf30___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_b3c5cf30_ref_foo___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -107417,6 +107817,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminDashboard_vue_vue_type_template_id_94ed8564___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminDashboard_vue_vue_type_template_id_94ed8564___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/error404.vue":
+/*!*****************************************!*\
+  !*** ./resources/js/pages/error404.vue ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _error404_vue_vue_type_template_id_518e7899___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error404.vue?vue&type=template&id=518e7899& */ "./resources/js/pages/error404.vue?vue&type=template&id=518e7899&");
+/* harmony import */ var _error404_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error404.vue?vue&type=script&lang=js& */ "./resources/js/pages/error404.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _error404_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _error404_vue_vue_type_template_id_518e7899___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _error404_vue_vue_type_template_id_518e7899___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/pages/error404.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/pages/error404.vue?vue&type=script&lang=js&":
+/*!******************************************************************!*\
+  !*** ./resources/js/pages/error404.vue?vue&type=script&lang=js& ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_error404_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./error404.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/error404.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_error404_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/pages/error404.vue?vue&type=template&id=518e7899&":
+/*!************************************************************************!*\
+  !*** ./resources/js/pages/error404.vue?vue&type=template&id=518e7899& ***!
+  \************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_error404_vue_vue_type_template_id_518e7899___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./error404.vue?vue&type=template&id=518e7899& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/error404.vue?vue&type=template&id=518e7899&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_error404_vue_vue_type_template_id_518e7899___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_error404_vue_vue_type_template_id_518e7899___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
