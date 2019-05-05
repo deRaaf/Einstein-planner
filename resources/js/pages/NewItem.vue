@@ -85,15 +85,15 @@
 export default {
     data() {
         return {
-            form: [{
+            form: {
                 name: '',
                 date: '',
                 allDay: '',
-                description: 'Om je goed voor te bereiden kun je antwoord geven op de volgende vragen: Wat ga je doen? Hoe ga je dit doen? Wanneer ga je dit doen? Waar ga je dit doen? Met wie ga je dit doen? Ook kun je hier een notitie schrijven:',
+                description: "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen:\nWat ga je doen?\nHoe ga je dit doen?\nWanneer ga je dit doen?\nWaar ga je dit doen?\nMet wie ga je dit doen?\n\nOok kun je hier een notitie schrijven:",
                 type: '',
                 from:'',
                 till: '',
-            }],
+            },
         }
     },
     directives: {

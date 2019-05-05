@@ -15898,6 +15898,7 @@ fieldset[disabled] .vue-swatches {
     margin-left: 6.25rem;
     max-width: 58.4375rem;
     padding-top: 1.25rem;
+    height: 92.5vh;
   }
 }
 
