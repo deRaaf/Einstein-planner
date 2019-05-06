@@ -18,7 +18,7 @@
             <div class="top">
                 <div class="left">
 
-                    <v-select v-if="form.type !== 'les'" :searchable="false" v-model="form.type" :options="['SO', 'REP', 'HW', 'Vrij', 'Les']"></v-select>
+                    <v-select :class="{ 'has-error': has_error && errors.type }" v-if="form.type !== 'les'" :searchable="false" v-model="form.type" :options="['SO', 'REP', 'HW', 'Vrij', 'Les']"></v-select>
 
                     <v-select :searchable="false" v-model="form.class" :options="['ENG', 'NED', 'WIS', 'BIO', 'GES', 'AARD']"></v-select>
 
@@ -30,6 +30,7 @@
 
                 <div class="right">
                     <textarea name="name" id="name" v-model="form.title" rows="3"></textarea>
+                    <span class="help-block" v-if="has_error && errors.title">{{ errors.title[0] }}</span>
                 </div>
             </div>
 
@@ -38,13 +39,13 @@
                 
                     <div class="date__item planned">
                         <label for="date">Ingeplande datum:</label>
-                        <input type="date" name="date" id="date" v-model="form.date">
+                        <input :class="{ 'has-error': has_error && errors.start }" type="date" name="date" id="date" v-model="form.date">
                     </div>
 
                     <div v-if="!this.form.allDay" class="date__item wrap">
                         <div>
                             <label for="from">Van</label>
-                            <input type="time" name="from" id="from" v-model="form.from">
+                            <input :class="{ 'has-error': has_error && errors.start }" type="time" name="from" id="from" v-model="form.from">
                         </div>
 
                         <div>
@@ -61,6 +62,8 @@
                         <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
                         <label for="allDay">Hele dag</label>
                     </div>
+
+                     <span class="help-block" v-if="has_error && errors.start">{{ errors.start[0] }}</span>
                 </div>
                 
                 <div class="right">
@@ -89,6 +92,8 @@ export default {
 data() {
     return {
         form: {},
+        errors: {},
+        has_error: false,
     }
 },
 directives: {
@@ -137,7 +142,8 @@ methods: {
             allDay: this.form.allDay,
             description: this.form.description,
             type: this.form.type,
-            class: this.form.class
+            class: this.form.class,
+            completed: false
         })
         .then(function(response) {
             if ( response.status == '201') {
@@ -146,7 +152,8 @@ methods: {
         })
         .catch(function (error) {
 
-            console.log(error);
+            self.has_error = true
+            self.errors = error.response.data.errors
 
         });
 
@@ -193,11 +200,9 @@ methods: {
             function CheckValues(value) {
                 switch (value) {
                     case "HW":
-                        console.log("yoyo")
                         $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[0]);
                         break;
                     case "REP":
-                        console.log("asdasd")
                         $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[1]);
                         break;
                     case "SO":
@@ -207,7 +212,7 @@ methods: {
                         $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
                         break;
                     case "Les":
-                        $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
+                        $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[4]);
                         break;
                 }
             }
@@ -261,8 +266,22 @@ methods: {
 
             var today = year + '-' + month + '-' + day
 
+            if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
+                this.form.allDay = "false";
+            } else {
+                this.form.allDay = "true";
+            }
+
+            if (this.form.from) {
+                var start = this.form.date + 'T' + this.form.from;
+            }
+
+            if (this.form.till) {
+                var end = this.form.date + 'T' + this.form.till;
+            }
+
             if (this.form.date > today ){
-                
+               
                 Swal.fire({
                     title: '',
                     text: "Volgens de planning heb je deze taak nog niet uitgevoerd. Weet je zeker dat je deze taak af wilt vinken?",
@@ -274,8 +293,15 @@ methods: {
                     confirmButtonText: 'Ja, afvinken'
                     }).then((result) => {
                         if (result.value) {
-                            
-                            axios.patch('/agenda_items/' + self.$attrs.id, {
+                            // This should be going differently -> only completed
+                            axios.put('/agenda_items/' + self.$attrs.id, {
+                                title: this.form.title,
+                                start: start,
+                                end: end,
+                                allDay: this.form.allDay,
+                                description: this.form.description,
+                                type: this.form.type,
+                                class: this.form.class,
                                 completed: true
                             })
                             .then(function(response) {
@@ -303,7 +329,14 @@ methods: {
                     confirmButtonColor: '#B3ECFF',
                     }).then((result) => {
                         if (result.value) {
-                            axios.patch('/agenda_items/' + self.$attrs.id, {
+                            axios.put('/agenda_items/' + self.$attrs.id, {
+                                title: this.form.title,
+                                start: start,
+                                end: end,
+                                allDay: this.form.allDay,
+                                description: this.form.description,
+                                type: this.form.type,
+                                class: this.form.class,
                                 completed: true
                             })
                             .then(function(response) {

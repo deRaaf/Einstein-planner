@@ -62,7 +62,16 @@
         max-width: rem-calc(797.48);
         width: 100%;
 
-        .alert {
+        .form-group {
+            &.has-error {
+                input {
+                    border-color: $alert-color;
+                }
+            }
+        }
+
+        .alert,
+        .help-block {
             color: $alert-color;
         }
 

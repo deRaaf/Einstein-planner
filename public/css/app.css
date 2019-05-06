@@ -16258,6 +16258,12 @@ fieldset[disabled] .vue-swatches {
   padding: 0.9375rem;
 }
 
+.newitem .help-block {
+  color: #E41B1B;
+  margin-top: 0.625rem;
+  display: block;
+}
+
 @media print, screen and (min-width: 64em) {
   .newitem {
     margin-left: 6.25rem;
@@ -16372,6 +16378,10 @@ fieldset[disabled] .vue-swatches {
 
 .newitem input,
 .newitem textarea {
+  border: 1px solid #BEBEBE;
+  box-shadow: none;
+  border-radius: 5px;
+  font-size: 0.875rem;
   resize: none;
 }
 
@@ -16382,6 +16392,11 @@ fieldset[disabled] .vue-swatches {
   display: none;
 }
 
+.newitem input.has-error,
+.newitem textarea.has-error {
+  border-color: #E41B1B;
+}
+
 @media screen and (max-width: 39.99875em) {
   .newitem input,
   .newitem textarea {
@@ -16389,23 +16404,15 @@ fieldset[disabled] .vue-swatches {
   }
 }
 
-.newitem input,
-.newitem textarea {
-  border: 1px solid #BEBEBE;
-  box-shadow: none;
-  border-radius: 5px;
-  font-size: 0.875rem;
-}
-
-.newitem .select2-container--open .select2-selection__arrow {
-  border-bottom-right-radius: 0 !important;
-}
-
 .newitem .v-select {
   margin-bottom: 1.25rem;
   width: 6.1875rem !important;
   font-size: 0.875rem;
   height: 2.625rem;
+}
+
+.newitem .v-select.has-error .vs__dropdown-toggle {
+  border-color: #E41B1B;
 }
 
 .newitem .v-select .vs__dropdown-toggle {
@@ -16607,7 +16614,12 @@ fieldset[disabled] .vue-swatches {
   width: 100%;
 }
 
-.login .form-container .alert {
+.login .form-container .form-group.has-error input {
+  border-color: #E41B1B;
+}
+
+.login .form-container .alert,
+.login .form-container .help-block {
   color: #E41B1B;
 }
 
@@ -16924,7 +16936,7 @@ fieldset[disabled] .vue-swatches {
 }
 
 .calendar_wrap #calendar .fc-toolbar .fc-menu-button {
-  background: url(/images/menu-button.svg?b01ac7c2b388ae27dbd7806eea02ebe8) transparent no-repeat;
+  background: url(/images/menu-button.svg?545b2755801ac619fc95efb68bd4ba9f) transparent no-repeat;
   border: 0;
   height: 42px;
   width: 42px;

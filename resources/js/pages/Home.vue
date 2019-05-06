@@ -107,12 +107,10 @@
 <script>
 import { FullCalendar } from 'vue-full-calendar'
 import 'fullcalendar/dist/locale/nl'
-// import mSidebar from '../components/mSidebar.vue'
 
 export default {
     components: {
         FullCalendar,
-        // 'sidebar': mSidebar,
     },
     data() {
         return {
@@ -125,6 +123,7 @@ export default {
                 timeFormat: "H:mm",
                 displayEventTime: false,
                 droppable: true,
+                eventStartEditable: false,
                 dragRevertDuration: 0,
                 defaultTimedEventDuration: '01:00:00',
                 eventDurationEditable: false,
@@ -285,16 +284,20 @@ export default {
 
                     var colors = input.split(',')
 
-                    if (agenda_item.type == "hw") {
+                    if (agenda_item.type == "HW") {
                         agenda_item.color = colors[0];
-                    } else if (agenda_item.type == "rep") {
+                    } else if (agenda_item.type == "REP") {
                         agenda_item.color = colors[1];
-                    } else if (agenda_item.type == "so") {
+                    } else if (agenda_item.type == "SO") {
                         agenda_item.color = colors[2];
-                    } else if (agenda_item.type == "vrij") {
+                    } else if (agenda_item.type == "Vrij") {
                         agenda_item.color = colors[3];
-                    } else if (agenda_item.type == "les") {
+                    } else if (agenda_item.type == "Les") {
                         agenda_item.color = colors[4];
+                    } 
+                    
+                    if (agenda_item.completed == 1) {
+                        agenda_item.color = "rgba(63, 195, 128, 0.1)";
                     }
                 }
             });
@@ -306,12 +309,7 @@ export default {
         collapse() {
             $(".calendar_wrap").toggleClass("collapsed");
             $(".sidebar").toggleClass("collapsed");
-        }
+        },
     },
-    events: {
-        'refresh': function() {
-            this.get_agenda_items();
-        }
-    }
   }
 </script>

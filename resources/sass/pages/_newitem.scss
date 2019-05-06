@@ -1,6 +1,12 @@
 .newitem {
     padding: rem-calc(15);
 
+    .help-block {
+        color: $alert-color;
+        margin-top: rem-calc(10);
+        display: block;
+    }
+
     @include breakpoint(large) {
         margin-left: rem-calc(100);
         max-width: rem-calc(935);
@@ -100,6 +106,10 @@
 
     input,
     textarea {
+        border: 1px solid #BEBEBE;
+        box-shadow: none;
+        border-radius: $global-radius;
+        font-size: rem-calc(14);
         resize: none;
 
         &::-webkit-calendar-picker-indicator,
@@ -107,22 +117,12 @@
             display: none;
         }
 
+        &.has-error {
+            border-color: $alert-color;
+        }
+
         @include breakpoint(small down) {
             width: 100% !important;
-        }
-    }
-
-    input,
-    textarea {
-        border: 1px solid #BEBEBE;
-        box-shadow: none;
-        border-radius: $global-radius;
-        font-size: rem-calc(14);
-    }
-
-    .select2-container--open {
-        .select2-selection__arrow {
-            border-bottom-right-radius: 0 !important;
         }
     }
 
@@ -131,6 +131,12 @@
         width: rem-calc(99) !important;
         font-size: rem-calc(14);
         height: 2.625rem;
+
+        &.has-error {
+            .vs__dropdown-toggle { 
+                border-color: $alert-color;
+            }
+        }
         
         .vs__dropdown-toggle {
             border: 1px solid #BEBEBE;

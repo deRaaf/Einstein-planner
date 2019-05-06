@@ -46,6 +46,7 @@
       return {
         email: null,
         password: null,
+        errors: {},
         has_error: false,
       }
     },
@@ -68,6 +69,7 @@
           },
           error: function(res) {
             app.has_error = true
+            app.errors = error.response.data.errors
           },
           rememberMe: true,
           fetchUser: true

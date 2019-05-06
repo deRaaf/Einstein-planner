@@ -3288,13 +3288,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      form: {}
+      form: {},
+      errors: {},
+      has_error: false
     };
   },
   directives: {
@@ -3347,7 +3352,8 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
         allDay: this.form.allDay,
         description: this.form.description,
         type: this.form.type,
-        class: this.form.class
+        class: this.form.class,
+        completed: false
       }).then(function (response) {
         if (response.status == '201') {
           self.$router.push({
@@ -3355,7 +3361,8 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
           });
         }
       }).catch(function (error) {
-        console.log(error);
+        self.has_error = true;
+        self.errors = error.response.data.errors;
       });
       this.form = [];
     },
@@ -3392,12 +3399,10 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
         var CheckValues = function CheckValues(value) {
           switch (value) {
             case "HW":
-              console.log("yoyo");
               $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[0]);
               break;
 
             case "REP":
-              console.log("asdasd");
               $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[1]);
               break;
 
@@ -3410,7 +3415,7 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
               break;
 
             case "Les":
-              $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[3]);
+              $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[4]);
               break;
           }
         };
@@ -3447,6 +3452,8 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       });
     },
     completeItem: function completeItem() {
+      var _this2 = this;
+
       var self = this;
       var date = new Date();
       var month = date.getMonth() + 1; //months from 1-12
@@ -3464,6 +3471,20 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
 
       var today = year + '-' + month + '-' + day;
 
+      if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
+        this.form.allDay = "false";
+      } else {
+        this.form.allDay = "true";
+      }
+
+      if (this.form.from) {
+        var start = this.form.date + 'T' + this.form.from;
+      }
+
+      if (this.form.till) {
+        var end = this.form.date + 'T' + this.form.till;
+      }
+
       if (this.form.date > today) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
           title: '',
@@ -3476,7 +3497,15 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
           confirmButtonText: 'Ja, afvinken'
         }).then(function (result) {
           if (result.value) {
-            axios.patch('/agenda_items/' + self.$attrs.id, {
+            // This should be going differently -> only completed
+            axios.put('/agenda_items/' + self.$attrs.id, {
+              title: _this2.form.title,
+              start: start,
+              end: end,
+              allDay: _this2.form.allDay,
+              description: _this2.form.description,
+              type: _this2.form.type,
+              class: _this2.form.class,
               completed: true
             }).then(function (response) {
               if (response.status == '201') {
@@ -3498,7 +3527,14 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
           confirmButtonColor: '#B3ECFF'
         }).then(function (result) {
           if (result.value) {
-            axios.patch('/agenda_items/' + self.$attrs.id, {
+            axios.put('/agenda_items/' + self.$attrs.id, {
+              title: _this2.form.title,
+              start: start,
+              end: end,
+              allDay: _this2.form.allDay,
+              description: _this2.form.description,
+              type: _this2.form.type,
+              class: _this2.form.class,
               completed: true
             }).then(function (response) {
               self.$router.push({
@@ -3635,12 +3671,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
- // import mSidebar from '../components/mSidebar.vue'
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    FullCalendar: vue_full_calendar__WEBPACK_IMPORTED_MODULE_0__["FullCalendar"] // 'sidebar': mSidebar,
-
+    FullCalendar: vue_full_calendar__WEBPACK_IMPORTED_MODULE_0__["FullCalendar"]
   },
   data: function data() {
     return {
@@ -3653,6 +3687,7 @@ __webpack_require__.r(__webpack_exports__);
         timeFormat: "H:mm",
         displayEventTime: false,
         droppable: true,
+        eventStartEditable: false,
         dragRevertDuration: 0,
         defaultTimedEventDuration: '01:00:00',
         eventDurationEditable: false,
@@ -3791,16 +3826,20 @@ __webpack_require__.r(__webpack_exports__);
         if (input !== null) {
           var colors = input.split(',');
 
-          if (agenda_item.type == "hw") {
+          if (agenda_item.type == "HW") {
             agenda_item.color = colors[0];
-          } else if (agenda_item.type == "rep") {
+          } else if (agenda_item.type == "REP") {
             agenda_item.color = colors[1];
-          } else if (agenda_item.type == "so") {
+          } else if (agenda_item.type == "SO") {
             agenda_item.color = colors[2];
-          } else if (agenda_item.type == "vrij") {
+          } else if (agenda_item.type == "Vrij") {
             agenda_item.color = colors[3];
-          } else if (agenda_item.type == "les") {
+          } else if (agenda_item.type == "Les") {
             agenda_item.color = colors[4];
+          }
+
+          if (agenda_item.completed == 1) {
+            agenda_item.color = "rgba(63, 195, 128, 0.1)";
           }
         }
       });
@@ -3814,11 +3853,6 @@ __webpack_require__.r(__webpack_exports__);
     collapse: function collapse() {
       $(".calendar_wrap").toggleClass("collapsed");
       $(".sidebar").toggleClass("collapsed");
-    }
-  },
-  events: {
-    'refresh': function refresh() {
-      this.get_agenda_items();
     }
   }
 });
@@ -3881,6 +3915,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       email: null,
       password: null,
+      errors: {},
       has_error: false
     };
   },
@@ -3901,9 +3936,20 @@ __webpack_require__.r(__webpack_exports__);
             name: redirectTo
           });
         },
-        error: function error(res) {
+        error: function (_error) {
+          function error(_x) {
+            return _error.apply(this, arguments);
+          }
+
+          error.toString = function () {
+            return _error.toString();
+          };
+
+          return error;
+        }(function (res) {
           app.has_error = true;
-        },
+          app.errors = error.response.data.errors;
+        }),
         rememberMe: true,
         fetchUser: true
       });
@@ -4000,17 +4046,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
+Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4019,10 +4056,13 @@ __webpack_require__.r(__webpack_exports__);
         date: '',
         allDay: '',
         description: "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen:\nWat ga je doen?\nHoe ga je dit doen?\nWanneer ga je dit doen?\nWaar ga je dit doen?\nMet wie ga je dit doen?\n\nOok kun je hier een notitie schrijven:",
-        type: '',
+        type: 'Soort',
         from: '',
-        till: ''
-      }
+        till: '',
+        class: 'Vak'
+      },
+      errors: {},
+      has_error: false
     };
   },
   directives: {
@@ -4059,11 +4099,11 @@ __webpack_require__.r(__webpack_exports__);
         this.form.allDay = "true";
       }
 
-      if (this.form.from) {
+      if (this.form.from && this.form.date) {
         var start = this.form.date + 'T' + this.form.from;
       }
 
-      if (this.form.till) {
+      if (this.form.till && this.form.date) {
         var end = this.form.date + 'T' + this.form.till;
       }
 
@@ -4081,7 +4121,8 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       }).catch(function (error) {
-        console.log(error);
+        self.has_error = true;
+        self.errors = error.response.data.errors;
       });
       this.form = [{
         name: '',
@@ -4101,12 +4142,10 @@ __webpack_require__.r(__webpack_exports__);
         var CheckValues = function CheckValues(value) {
           switch (value) {
             case "HW":
-              console.log("yoyo");
               $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[0]);
               break;
 
             case "REP":
-              console.log("asdasd");
               $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[1]);
               break;
 
@@ -4119,7 +4158,7 @@ __webpack_require__.r(__webpack_exports__);
               break;
 
             case "Les":
-              $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[3]);
+              $(".v-select:first .vs__dropdown-toggle").css("background-color", colors[4]);
               break;
           }
         };
@@ -4331,7 +4370,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -89996,6 +90034,7 @@ var render = function() {
               [
                 _vm.form.type !== "les"
                   ? _c("v-select", {
+                      class: { "has-error": _vm.has_error && _vm.errors.type },
                       attrs: {
                         searchable: false,
                         options: ["SO", "REP", "HW", "Vrij", "Les"]
@@ -90072,7 +90111,13 @@ var render = function() {
                     _vm.$set(_vm.form, "title", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.has_error && _vm.errors.title
+                ? _c("span", { staticClass: "help-block" }, [
+                    _vm._v(_vm._s(_vm.errors.title[0]))
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
@@ -90092,6 +90137,7 @@ var render = function() {
                       expression: "form.date"
                     }
                   ],
+                  class: { "has-error": _vm.has_error && _vm.errors.start },
                   attrs: { type: "date", name: "date", id: "date" },
                   domProps: { value: _vm.form.date },
                   on: {
@@ -90119,6 +90165,9 @@ var render = function() {
                             expression: "form.from"
                           }
                         ],
+                        class: {
+                          "has-error": _vm.has_error && _vm.errors.start
+                        },
                         attrs: { type: "time", name: "from", id: "from" },
                         domProps: { value: _vm.form.from },
                         on: {
@@ -90225,7 +90274,13 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("label", { attrs: { for: "allDay" } }, [_vm._v("Hele dag")])
-              ])
+              ]),
+              _vm._v(" "),
+              _vm.has_error && _vm.errors.start
+                ? _c("span", { staticClass: "help-block" }, [
+                    _vm._v(_vm._s(_vm.errors.start[0]))
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "right" }, [
@@ -90912,113 +90967,74 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "top" }, [
-            _c("div", { staticClass: "left" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.type,
-                      expression: "form.type"
-                    },
-                    { name: "select2", rawName: "v-select2" }
-                  ],
-                  attrs: { name: "type", id: "type" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.form,
-                        "type",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "option",
-                    {
-                      attrs: { value: "soort taak", selected: "", disabled: "" }
-                    },
-                    [_vm._v("Soort taak")]
-                  ),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "so" } }, [_vm._v("SO")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "rep" } }, [_vm._v("REP")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "hw" } }, [_vm._v("HW")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "vrij" } }, [_vm._v("Vrij")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "vrij" } }, [_vm._v("Les")])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [{ name: "select2", rawName: "v-select2" }],
-                  attrs: { name: "subject", id: "subject" }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { value: "vak", selected: "", disabled: "" } },
-                    [_vm._v("Vak")]
-                  ),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "en" } }, [_vm._v("ENG")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "ned" } }, [_vm._v("NED")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "wis" } }, [_vm._v("WIS")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "bio" } }, [_vm._v("BIO")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "ges" } }, [_vm._v("GES")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "aard" } }, [_vm._v("AARD")])
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "deadline" }, [
-                _c("label", [_vm._v("Deadline:")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.deadline,
-                      expression: "form.deadline"
-                    }
-                  ],
-                  attrs: { type: "date", name: "deadline", id: "deadline" },
-                  domProps: { value: _vm.form.deadline },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+            _c(
+              "div",
+              { staticClass: "left" },
+              [
+                _vm.form.type !== "les"
+                  ? _c("v-select", {
+                      class: { "has-error": _vm.has_error && _vm.errors.type },
+                      attrs: {
+                        searchable: false,
+                        options: ["SO", "REP", "HW", "Vrij", "Les"]
+                      },
+                      model: {
+                        value: _vm.form.type,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "type", $$v)
+                        },
+                        expression: "form.type"
                       }
-                      _vm.$set(_vm.form, "deadline", $event.target.value)
-                    }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("v-select", {
+                  attrs: {
+                    searchable: false,
+                    options: ["ENG", "NED", "WIS", "BIO", "GES", "AARD"]
+                  },
+                  model: {
+                    value: _vm.form.class,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "class", $$v)
+                    },
+                    expression: "form.class"
                   }
-                })
-              ])
-            ]),
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "deadline" }, [
+                  _c("label", [_vm._v("Deadline:")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.deadline,
+                        expression: "form.deadline"
+                      }
+                    ],
+                    attrs: { type: "date", name: "deadline", id: "deadline" },
+                    domProps: { value: _vm.form.deadline },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "deadline", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _vm.has_error && _vm.errors.type
+                  ? _c("span", { staticClass: "help-block" }, [
+                      _vm._v(_vm._s(_vm.errors.type[0]))
+                    ])
+                  : _vm._e()
+              ],
+              1
+            ),
             _vm._v(" "),
             _c("div", { staticClass: "right" }, [
               _c("textarea", {
@@ -91030,6 +91046,7 @@ var render = function() {
                     expression: "form.name"
                   }
                 ],
+                class: { "has-error": _vm.has_error && _vm.errors.title },
                 attrs: { name: "name", id: "name", rows: "3" },
                 domProps: { value: _vm.form.name },
                 on: {
@@ -91040,7 +91057,13 @@ var render = function() {
                     _vm.$set(_vm.form, "name", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.has_error && _vm.errors.title
+                ? _c("span", { staticClass: "help-block" }, [
+                    _vm._v(_vm._s(_vm.errors.title[0]))
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
@@ -91060,6 +91083,7 @@ var render = function() {
                       expression: "form.date"
                     }
                   ],
+                  class: { "has-error": _vm.has_error && _vm.errors.start },
                   attrs: { type: "date", name: "date", id: "date" },
                   domProps: { value: _vm.form.date },
                   on: {
@@ -91087,6 +91111,9 @@ var render = function() {
                             expression: "form.from"
                           }
                         ],
+                        class: {
+                          "has-error": _vm.has_error && _vm.errors.start
+                        },
                         attrs: { type: "time", name: "from", id: "from" },
                         domProps: { value: _vm.form.from },
                         on: {
@@ -91193,7 +91220,13 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("label", { attrs: { for: "allDay" } }, [_vm._v("Hele dag")])
-              ])
+              ]),
+              _vm._v(" "),
+              _vm.has_error && _vm.errors.start
+                ? _c("span", { staticClass: "help-block" }, [
+                    _vm._v(_vm._s(_vm.errors.start[0]))
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "right" }, [
@@ -91632,7 +91665,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "form-group",
-                  class: { "has-error": _vm.has_error && _vm.errors.email }
+                  class: { "has-error": _vm.has_error && _vm.errors.first_name }
                 },
                 [
                   _c("label", { attrs: { for: "firstname" } }, [
@@ -91665,9 +91698,9 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _vm.has_error && _vm.errors.name
+                  _vm.has_error && _vm.errors.first_name
                     ? _c("span", { staticClass: "help-block" }, [
-                        _vm._v(_vm._s(_vm.errors.name))
+                        _vm._v(_vm._s(_vm.errors.first_name[0]))
                       ])
                     : _vm._e()
                 ]
@@ -91677,7 +91710,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "form-group",
-                  class: { "has-error": _vm.has_error && _vm.errors.email }
+                  class: { "has-error": _vm.has_error && _vm.errors.last_name }
                 },
                 [
                   _c("label", { attrs: { for: "lastname" } }, [
@@ -91706,9 +91739,9 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _vm.has_error && _vm.errors.name
+                  _vm.has_error && _vm.errors.last_name
                     ? _c("span", { staticClass: "help-block" }, [
-                        _vm._v(_vm._s(_vm.errors.name))
+                        _vm._v(_vm._s(_vm.errors.last_name[0]))
                       ])
                     : _vm._e()
                 ]
@@ -91718,7 +91751,9 @@ var render = function() {
                 "div",
                 {
                   staticClass: "form-group",
-                  class: { "has-error": _vm.has_error && _vm.errors.email }
+                  class: {
+                    "has-error": _vm.has_error && _vm.errors.student_number
+                  }
                 },
                 [
                   _c("label", { attrs: { for: "student_number" } }, [
@@ -91753,7 +91788,7 @@ var render = function() {
                   _vm._v(" "),
                   _vm.has_error && _vm.errors.student_number
                     ? _c("span", { staticClass: "help-block" }, [
-                        _vm._v(_vm._s(_vm.errors.student_number))
+                        _vm._v(_vm._s(_vm.errors.student_number[0]))
                       ])
                     : _vm._e()
                 ]
@@ -91796,7 +91831,7 @@ var render = function() {
                   _vm._v(" "),
                   _vm.has_error && _vm.errors.email
                     ? _c("span", { staticClass: "help-block" }, [
-                        _vm._v(_vm._s(_vm.errors.email))
+                        _vm._v(_vm._s(_vm.errors.email[0]))
                       ])
                     : _vm._e()
                 ]
@@ -91837,7 +91872,7 @@ var render = function() {
                   _vm._v(" "),
                   _vm.has_error && _vm.errors.password
                     ? _c("span", { staticClass: "help-block" }, [
-                        _vm._v(_vm._s(_vm.errors.password))
+                        _vm._v(_vm._s(_vm.errors.password[0]))
                       ])
                     : _vm._e()
                 ]
@@ -91880,17 +91915,11 @@ var render = function() {
               _vm._v(" "),
               _vm.has_error && !_vm.success
                 ? _c("div", { staticClass: "alert" }, [
-                    _vm.error == "registration_validation_error"
-                      ? _c("p", [
-                          _vm._v(
-                            "Valideringsfout(en), raadpleeg de onderstaande velden."
-                          )
-                        ])
-                      : _c("p", [
-                          _vm._v(
-                            "Fout, kan momenteel niet registreren. Neem contact op met een beheerder als het probleem aanhoudt."
-                          )
-                        ])
+                    _c("p", [
+                      _vm._v(
+                        "Valideringsfout(en), raadpleeg de bovenstaande velden."
+                      )
+                    ])
                   ])
                 : _vm._e(),
               _vm._v(" "),

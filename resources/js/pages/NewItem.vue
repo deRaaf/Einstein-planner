@@ -9,33 +9,21 @@
 
             <div class="top">
                 <div class="left">
-                    <select name="type" id="type" v-model="form.type" v-select2>
-                        <option value="soort taak" selected disabled>Soort taak</option>
-                        <option value="so">SO</option>
-                        <option value="rep">REP</option>
-                        <option value="hw">HW</option>
-                        <option value="vrij">Vrij</option>
-                        <option value="vrij">Les</option>
-                    </select>
+                    
+                    <v-select :class="{ 'has-error': has_error && errors.type }" v-if="form.type !== 'les'" :searchable="false" v-model="form.type" :options="['SO', 'REP', 'HW', 'Vrij', 'Les']"></v-select>
 
-                    <select name="subject" id="subject" v-select2>
-                        <option value="vak" selected disabled>Vak</option>
-                        <option value="en">ENG</option>
-                        <option value="ned">NED</option>
-                        <option value="wis">WIS</option>
-                        <option value="bio">BIO</option>
-                        <option value="ges">GES</option>
-                        <option value="aard">AARD</option>
-                    </select>
+                    <v-select :searchable="false" v-model="form.class" :options="['ENG', 'NED', 'WIS', 'BIO', 'GES', 'AARD']"></v-select>
                     
                     <div class="deadline">
                         <label>Deadline:</label>
                         <input type="date" name="deadline" id="deadline" v-model="form.deadline">
                     </div>
+                    <span class="help-block" v-if="has_error && errors.type">{{ errors.type[0] }}</span>
                 </div>
 
                 <div class="right">
-                    <textarea name="name" id="name" v-model="form.name" rows="3"></textarea>
+                    <textarea :class="{ 'has-error': has_error && errors.title }" name="name" id="name" v-model="form.name" rows="3"></textarea>
+                    <span class="help-block" v-if="has_error && errors.title">{{ errors.title[0] }}</span>
                 </div>
             </div>
 
@@ -44,13 +32,13 @@
                 
                     <div class="date__item planned">
                         <label for="date">Ingeplande datum:</label>
-                        <input type="date" name="date" id="date" v-model="form.date">
+                        <input :class="{ 'has-error': has_error && errors.start }" type="date" name="date" id="date" v-model="form.date">
                     </div>
 
                     <div v-if="!this.form.allDay" class="date__item wrap">
                         <div>
                             <label for="from">Van</label>
-                            <input type="time" name="from" id="from" v-model="form.from">
+                            <input :class="{ 'has-error': has_error && errors.start }" type="time" name="from" id="from" v-model="form.from">
                         </div>
 
                         <div>
@@ -67,6 +55,8 @@
                         <input type="checkbox" name="allDay" id="allDay" v-model="form.allDay">
                         <label for="allDay">Hele dag</label>
                     </div>
+
+                    <span class="help-block" v-if="has_error && errors.start">{{ errors.start[0] }}</span>
                 </div>
                 
                 <div class="right">
@@ -87,6 +77,8 @@
 <script>
 import vSelect from 'vue-select'
 
+Vue.component('v-select', vSelect)
+
 export default {
     data() {
         return {
@@ -95,10 +87,13 @@ export default {
                 date: '',
                 allDay: '',
                 description: "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen:\nWat ga je doen?\nHoe ga je dit doen?\nWanneer ga je dit doen?\nWaar ga je dit doen?\nMet wie ga je dit doen?\n\nOok kun je hier een notitie schrijven:",
-                type: '',
+                type: 'Soort',
                 from:'',
                 till: '',
+                class: 'Vak',
             },
+            errors: {},
+            has_error: false,
         }
     },
     directives: {
@@ -116,7 +111,7 @@ export default {
                 })
             }
         }
-    },
+    },  
     mounted() {
         this.initSelect();
     },
@@ -130,11 +125,11 @@ export default {
                 this.form.allDay = "true";
             }
 
-            if (this.form.from) {
+            if (this.form.from && this.form.date) {
                 var start = this.form.date + 'T' + this.form.from;
             }
 
-            if (this.form.till) {
+            if (this.form.till && this.form.date) {
                 var end = this.form.date + 'T' + this.form.till;
             }
 
@@ -154,7 +149,8 @@ export default {
             })
             .catch(function (error) {
 
-                console.log(error);
+                self.has_error = true
+                self.errors = error.response.data.errors
 
             });
 
@@ -185,11 +181,9 @@ export default {
                 function CheckValues(value) {
                     switch (value) {
                         case "HW":
-                            console.log("yoyo")
                             $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[0]);
                             break;
                         case "REP":
-                            console.log("asdasd")
                             $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[1]);
                             break;
                         case "SO":
@@ -199,7 +193,7 @@ export default {
                             $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
                             break;
                         case "Les":
-                            $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
+                            $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[4]);
                             break;
                     }
                 }
