@@ -15,14 +15,17 @@
                         <option value="rep">REP</option>
                         <option value="hw">HW</option>
                         <option value="vrij">Vrij</option>
+                        <option value="vrij">Les</option>
                     </select>
 
-                    <select name="subject" id="subject">
+                    <select name="subject" id="subject" v-select2>
                         <option value="vak" selected disabled>Vak</option>
                         <option value="en">ENG</option>
                         <option value="ned">NED</option>
                         <option value="wis">WIS</option>
                         <option value="bio">BIO</option>
+                        <option value="ges">GES</option>
+                        <option value="aard">AARD</option>
                     </select>
                     
                     <div class="deadline">
@@ -82,6 +85,8 @@
 </template>
 
 <script>
+import vSelect from 'vue-select'
+
 export default {
     data() {
         return {
@@ -166,39 +171,43 @@ export default {
         initSelect() {
             var input = this.$auth.user().colors
 
-            $('#type').select2({
-                containerCssClass: "type",
-            });
-
-            $('#subject').select2();
+            $('.vs__actions').append('<svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6.5 6L12 1" stroke="#333333"/></svg>');
 
             if(input !== null) {
 
                 var colors = input.split(',')
-            
-                $('#type').on('select2:select', function(e) {
-                    var data = e.params.data;
-                    CheckValues(data.element.value)
-                });
 
+                $('body').on('DOMSubtreeModified', ".vs__selected", function() {
+                    var txt = $(".v-select:first .vs__selected").text();
+                    CheckValues($.trim(txt));
+                });
+            
                 function CheckValues(value) {
                     switch (value) {
-                        case "hw":
-                            $(".type").css( "background-color", colors[0]);
+                        case "HW":
+                            console.log("yoyo")
+                            $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[0]);
                             break;
-                        case "rep":
-                            $(".type").css( "background-color", colors[1]);
+                        case "REP":
+                            console.log("asdasd")
+                            $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[1]);
                             break;
-                        case "vrij":
-                            $(".type").css( "background-color", colors[2]);
+                        case "SO":
+                            $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[2]);
                             break;
-                        case "so":
-                            $(".type").css( "background-color", colors[3]);
+                        case "Vrij":
+                            $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
+                            break;
+                        case "Les":
+                            $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
                             break;
                     }
                 }
 
-                CheckValues($("#type").val());
+                setTimeout(function(){ 
+                    var txt = $(".v-select:first .vs__selected").text();
+                    CheckValues($.trim(txt));
+                }, 500);
             }
         },
     }

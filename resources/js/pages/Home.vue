@@ -62,23 +62,39 @@
                         <div class="type">HW</div>
                         <div class="class">EN: H5 opdr 21-...</div>
                         <div class="date"> 
-                            <span class="date__day">3</span>
+                            <span class="date__day">7</span>
                             <span class="date__month">mei</span>
                         </div>
                     </div>
                     <div class="fc-event">
                         <div class="type">SO</div>
-                        <div class="class">Aardrijkskunde</div>
+                        <div class="class">BIO: H2 opdr 4</div>
                         <div class="date"> 
-                            <span class="date__day">5</span>
-                            <span class="date__month">aug</span>
+                            <span class="date__day">9</span>
+                            <span class="date__month">mei</span>
                         </div>
                     </div>
                     <div class="fc-event">
                         <div class="type">REP</div>
-                        <div class="class">Engels</div>
+                        <div class="class">Engels H4</div>
                         <div class="date"> 
-                            <span class="date__day">3</span>
+                            <span class="date__day">7</span>
+                            <span class="date__month">mei</span>
+                        </div>
+                    </div>
+                    <div class="fc-event">
+                        <div class="type">HW</div>
+                        <div class="class">WIS: H3 opdr 4/5/6</div>
+                        <div class="date"> 
+                            <span class="date__day">10</span>
+                            <span class="date__month">mei</span>
+                        </div>
+                    </div>
+                    <div class="fc-event">
+                        <div class="type">SO</div>
+                        <div class="class">WIS H2</div>
+                        <div class="date"> 
+                            <span class="date__day">8</span>
                             <span class="date__month">mei</span>
                         </div>
                     </div>
@@ -276,7 +292,9 @@ export default {
                     } else if (agenda_item.type == "so") {
                         agenda_item.color = colors[2];
                     } else if (agenda_item.type == "vrij") {
-                        agenda_item.color = colors[2];
+                        agenda_item.color = colors[3];
+                    } else if (agenda_item.type == "les") {
+                        agenda_item.color = colors[4];
                     }
                 }
             });

@@ -44,6 +44,7 @@ class AgendaController extends Controller
         $agenda_item->student_number = $user->student_number;
         $agenda_item->description = $request->description;
         $agenda_item->type = $request->type;
+        $agenda_item->class = $request->class;
         $agenda_item->save();
 
         return response($agenda_item->jsonSerialize(), Response::HTTP_CREATED);

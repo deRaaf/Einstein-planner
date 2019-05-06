@@ -113,7 +113,6 @@
     }
 
     input,
-    .select2-selection--single,
     textarea {
         border: 1px solid #BEBEBE;
         box-shadow: none;
@@ -127,42 +126,79 @@
         }
     }
 
-    .select2{
-        width: rem-calc(99) !important;
-        border-radius: $global-radius;
+    .v-select {
         margin-bottom: rem-calc(20);
+        width: rem-calc(99) !important;
+        font-size: rem-calc(14);
+        height: 2.625rem;
+        
+        .vs__dropdown-toggle {
+            border: 1px solid #BEBEBE;
+            border-radius: $global-radius;
+            height: 100%;
+            padding: 0;
 
-        @include breakpoint(large) {
-            margin: 0;
-        }
+            .vs__selected-options {
+                padding: 0;
+            }
 
-        .select2-selection__rendered {
-            line-height: rem-calc(40) !important;
-        }
+            .vs__selected,
+            .vs__actions {
+                height: 100%;
+            }
 
-        .select2-selection--single {
-            height: rem-calc(42) !important;
+            .vs__selected {
+                width: 126%;
+                margin: 0;
+                border: 0;
+            }
 
-            .select2-selection__arrow {
+            .vs__actions {
                 background: $white;
-                height: rem-calc(40);
                 width: rem-calc(31);
-                top: 1px;
-                right: 0;
-                background: $white url('../../img/arrow.svg') center center no-repeat;
+                justify-content: center;
                 border-right: 1px solid #BEBEBE;
                 border-top-right-radius: $global-radius;
                 border-bottom-right-radius: $global-radius;
-                
-                b[role="presentation"] {
+
+                .vs__clear,
+                .vs__open-indicator {
                     display: none;
                 }
             }
-
-            .select2-selection__rendered {
-                font-size: rem-calc(14);
-            }
         }
+
+        .vs__search {
+            display: none;
+        }
+
+        // .select2-selection__rendered {
+        //     line-height: rem-calc(40) !important;
+        // }
+
+        // .select2-selection--single {
+        //     height: rem-calc(42) !important;
+
+        //     .select2-selection__arrow {
+        //         background: $white;
+        //         height: rem-calc(40);
+        //         width: rem-calc(31);
+        //         top: 1px;
+        //         right: 0;
+        //         background: $white url('../../img/arrow.svg') center center no-repeat;
+        //         border-right: 1px solid #BEBEBE;
+        //         border-top-right-radius: $global-radius;
+        //         border-bottom-right-radius: $global-radius;
+                
+        //         b[role="presentation"] {
+        //             display: none;
+        //         }
+        //     }
+
+        //     .select2-selection__rendered {
+        //         font-size: rem-calc(14);
+        //     }
+        // }
     }
 
     .date {

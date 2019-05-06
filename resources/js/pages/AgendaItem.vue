@@ -4,7 +4,7 @@
         <div class="newitem__header">
             <h1>Taak bewerken</h1> 
 
-            <button @click="completeItem" class="button button-primary">
+            <button v-if="form.type !== 'les'" @click="completeItem" class="button button-primary">
                 <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.48145 6.23462L5.66252 10.4916L14.5185 1.50836" stroke="#333333" stroke-opacity="0.5" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -17,21 +17,11 @@
 
             <div class="top">
                 <div class="left">
-                    <select name="type" id="type" v-model="form.type" v-select2>
-                        <option value="soort taak" selected disabled>Soort taak</option>
-                        <option value="so">SO</option>
-                        <option value="rep">REP</option>
-                        <option value="hw">HW</option>
-                        <option value="vrij">Vrij</option>
-                    </select>
 
-                    <select name="subject" v-model="form.class" id="subject">
-                        <option value="vak" selected disabled>Vak</option>
-                        <option value="en">ENG</option>
-                        <option value="ned">NED</option>
-                        <option value="wis">WIS</option>
-                        <option value="bio">BIO</option>
-                    </select>
+                    <v-select v-if="form.type !== 'les'" :searchable="false" v-model="form.type" :options="['SO', 'REP', 'HW', 'Vrij', 'Les']"></v-select>
+
+                    <v-select :searchable="false" v-model="form.class" :options="['ENG', 'NED', 'WIS', 'BIO', 'GES', 'AARD']"></v-select>
+
                     <div class="deadline">
                         <label>Deadline:</label>
                         <input type="date" name="deadline" id="deadline" v-model="form.deadline">
@@ -91,6 +81,9 @@
 
 <script>
 import Swal from 'sweetalert2'
+import vSelect from 'vue-select'
+
+Vue.component('v-select', vSelect)
 
 export default {
 data() {
@@ -143,7 +136,8 @@ methods: {
             end: end,
             allDay: this.form.allDay,
             description: this.form.description,
-            type: this.form.type
+            type: this.form.type,
+            class: this.form.class
         })
         .then(function(response) {
             if ( response.status == '201') {
@@ -185,45 +179,47 @@ methods: {
     initSelect() {
         var input = this.$auth.user().colors
 
-        $('#type').select2({
-            containerCssClass: "type",
-        });
-
-        $('#subject').select2();
+        $('.vs__actions').append('<svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6.5 6L12 1" stroke="#333333"/></svg>');
 
         if(input !== null) {
 
             var colors = input.split(',')
-        
-            $('#type').on('select2:select', function(e) {
-                var data = e.params.data;
-                CheckValues(data.element.value)
-            });
 
+            $('body').on('DOMSubtreeModified', ".vs__selected", function() {
+                var txt = $(".v-select:first .vs__selected").text();
+                CheckValues($.trim(txt));
+            });
+          
             function CheckValues(value) {
                 switch (value) {
-                    case "hw":
-                        $(".type").css( "background-color", colors[0]);
+                    case "HW":
+                        console.log("yoyo")
+                        $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[0]);
                         break;
-                    case "rep":
-                        $(".type").css( "background-color", colors[1]);
+                    case "REP":
+                        console.log("asdasd")
+                        $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[1]);
                         break;
-                    case "vrij":
-                        $(".type").css( "background-color", colors[2]);
+                    case "SO":
+                        $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[2]);
                         break;
-                    case "so":
-                        $(".type").css( "background-color", colors[3]);
+                    case "Vrij":
+                        $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
+                        break;
+                    case "Les":
+                        $(".v-select:first .vs__dropdown-toggle").css( "background-color", colors[3]);
                         break;
                 }
             }
 
-            CheckValues($("#type").val());
+            setTimeout(function(){ 
+                var txt = $(".v-select:first .vs__selected").text();
+                CheckValues($.trim(txt));
+            }, 500);
         }
     },
     deleteItem() {
         var self = this
-
-        console.log(self.form.id)
 
         Swal.fire({
             title: '',

@@ -83,6 +83,7 @@
 
 <script>
 import Swatches from 'vue-swatches'
+import Swal from 'sweetalert2'
 
 export default {
     components: { Swatches },
@@ -118,7 +119,11 @@ export default {
 
             })
             .then(function(response) {
-
+                Swal.fire(
+                    'Opgeslagen!',
+                    'Je gegevens zijn opgeslagen',
+                    'success'
+                )
             })
             .catch(function (error) {
 
@@ -137,6 +142,12 @@ export default {
             })
             .then(function(response) {
 
+                Swal.fire(
+                    'Opgeslagen!',
+                    'Je kleuren zijn veranderd (Misschien moet je nog refreshen om ze te tonen)',
+                    'success'
+                )
+
             })
             .catch(function (error) {
 
@@ -145,7 +156,11 @@ export default {
             });
         },
         resetPassword() {
-
+            Swal.fire(
+                'Opgeslagen!',
+                'Je wachtwoord is veranderd',
+                'success'
+            )
         },
         getUser() {
             this.user.email = this.$auth.user().email
