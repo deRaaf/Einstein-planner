@@ -96,22 +96,6 @@ export default {
             has_error: false,
         }
     },
-    directives: {
-        select2: {
-            // directive definition
-            inserted: function (el) {
-                $(el).on('select2:select', () => {
-                    const event = new Event('change', { bubbles: true, cancelable: true });
-                    el.dispatchEvent(event);
-                });
-
-                $(el).on('select2:unselect', () => {
-                    const event = new Event('change', {bubbles: true, cancelable: true})
-                    el.dispatchEvent(event)
-                })
-            }
-        }
-    },  
     mounted() {
         this.initSelect();
     },
@@ -119,12 +103,14 @@ export default {
         formSubmit() {
             var self = this;
 
+            // Determine if the event is the whole day or has a time
             if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
                 this.form.allDay = "false";
             } else {
                 this.form.allDay = "true";
             }
 
+            // Put date + time together so fullcalendar can read it.
             if (this.form.from && this.form.date) {
                 var start = this.form.date + 'T' + this.form.from;
             }

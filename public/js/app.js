@@ -3302,42 +3302,22 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       has_error: false
     };
   },
-  directives: {
-    select2: {
-      // directive definition
-      inserted: function inserted(el) {
-        $(el).on('select2:select', function () {
-          var event = new Event('change', {
-            bubbles: true,
-            cancelable: true
-          });
-          el.dispatchEvent(event);
-        });
-        $(el).on('select2:unselect', function () {
-          var event = new Event('change', {
-            bubbles: true,
-            cancelable: true
-          });
-          el.dispatchEvent(event);
-        });
-      }
-    }
-  },
   mounted: function mounted() {
     this.fetchPost();
     this.initSelect();
   },
   methods: {
     formSubmit: function formSubmit() {
-      var self = this;
+      var self = this; // Determine if the event is the whole day or has a time
 
       if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
         this.form.allDay = "false";
       } else {
         this.form.allDay = "true";
-      }
+      } // Put date + time together so fullcalendar can read it.
 
-      if (this.form.from) {
+
+      if (this.form.from && this.form.date) {
         var start = this.form.date + 'T' + this.form.from;
       }
 
@@ -3371,11 +3351,12 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
 
       var id = this.$attrs.id;
       axios.get('/agenda_items/' + id).then(function (response) {
-        _this.form = response.data[0];
+        _this.form = response.data[0]; // Format the starting date
 
         if (_this.form.start) {
           _this.form.date = _this.form.start.slice(0, 10);
-        }
+        } // Format the start and/or end times
+
 
         if (_this.form.start && _this.form.end) {
           _this.form.from = _this.form.start.slice(11, 16);
@@ -3722,35 +3703,8 @@ __webpack_require__.r(__webpack_exports__);
           }
         },
         drop: function drop(e) {
-          // remove the element from the "Draggable Events" list
+          // remove the element from the "External Events" list
           $(this).remove();
-        },
-        eventReceive: function eventReceive(e) {
-          var type2 = e.title.slice(0, 2);
-          var type3 = e.title.slice(0, 3);
-          var type4 = e.title.slice(0, 4);
-
-          if (type2 == "HW" || type2 == "SO") {
-            type = type2;
-          } else if (type3 == "REP") {
-            type = type3;
-          } else {
-            var type = type4;
-          }
-
-          var start = e.start.toISOString();
-          var desc = "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen:\nWat ga je doen?\nHoe ga je dit doen?\nWanneer ga je dit doen?\nWaar ga je dit doen?\nMet wie ga je dit doen?\n\nOok kun je hier een notitie schrijven:";
-          axios.post('/agenda_items', {
-            title: e.title,
-            start: start,
-            // end: end,
-            allDay: false,
-            description: desc,
-            type: type
-          }).then(function (response) {// app.get_agenda_items();
-          })["catch"](function (error) {
-            console.log(error);
-          });
         },
         eventDragStop: function eventDragStop(event, jsEvent, ui, view) {
           var isEventOverDiv = function isEventOverDiv(x, y) {
@@ -3792,17 +3746,13 @@ __webpack_require__.r(__webpack_exports__);
     get_agenda_items: function get_agenda_items() {
       var _this = this;
 
-      window.axios.get('/agenda_items').then(function (_ref) {
+      axios.get('/agenda_items').then(function (_ref) {
         var data = _ref.data;
-        // console.log(data);
-        _this.agenda_items = data;
+        // Populate the agenda_items array in data()
+        _this.agenda_items = data; // Set user colors
 
         _this.setColors();
       });
-    },
-    refresh: function refresh() {
-      this.get_agenda_items();
-      $('.refresh').toggleClass("rotate");
     },
     makeDraggable: function makeDraggable() {
       // initialize the external events
@@ -3819,8 +3769,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     setColors: function setColors() {
-      var self = this;
+      var self = this; // Set the color for each agenda item, if they are of a specific type
+
       this.agenda_items.forEach(function (agenda_item) {
+        // Get the colors from the database
         var input = self.$auth.user().colors;
 
         if (input !== null) {
@@ -3836,7 +3788,8 @@ __webpack_require__.r(__webpack_exports__);
             agenda_item.color = colors[3];
           } else if (agenda_item.type == "Les") {
             agenda_item.color = colors[4];
-          }
+          } // If a task is completed, change to color + opacity
+
 
           if (agenda_item.completed == 1) {
             agenda_item.color = "rgba(63, 195, 128, 0.1)";
@@ -3853,6 +3806,37 @@ __webpack_require__.r(__webpack_exports__);
     collapse: function collapse() {
       $(".calendar_wrap").toggleClass("collapsed");
       $(".sidebar").toggleClass("collapsed");
+    },
+    eventReceive: function eventReceive(e) {
+      var self = this; // Determine the type
+
+      var type2 = e.title.slice(0, 2);
+      var type3 = e.title.slice(0, 3);
+      var type4 = e.title.slice(0, 4);
+
+      if (type2 == "HW" || type2 == "SO") {
+        type = type2;
+      } else if (type3 == "REP") {
+        type = type3;
+      } else {
+        var type = type4;
+      }
+
+      var start = e.start.toISOString(); //Format to readable date
+
+      var desc = "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen:\nWat ga je doen?\nHoe ga je dit doen?\nWanneer ga je dit doen?\nWaar ga je dit doen?\nMet wie ga je dit doen?\n\nOok kun je hier een notitie schrijven:";
+      axios.post('/agenda_items', {
+        title: e.title,
+        start: start,
+        // end: end,
+        allDay: false,
+        description: desc,
+        type: type
+      }).then(function (response) {
+        self.get_agenda_items();
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -3930,7 +3914,7 @@ __webpack_require__.r(__webpack_exports__);
           password: app.password
         },
         success: function success() {
-          // handle redirection
+          // Redirect to home
           var redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'admin.dashboard' : 'home';
           this.$router.push({
             name: redirectTo
@@ -3947,6 +3931,7 @@ __webpack_require__.r(__webpack_exports__);
 
           return error;
         }(function (res) {
+          // Login failed, display errors
           app.has_error = true;
           app.errors = error.response.data.errors;
         }),
@@ -4065,39 +4050,19 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_0___default.a);
       has_error: false
     };
   },
-  directives: {
-    select2: {
-      // directive definition
-      inserted: function inserted(el) {
-        $(el).on('select2:select', function () {
-          var event = new Event('change', {
-            bubbles: true,
-            cancelable: true
-          });
-          el.dispatchEvent(event);
-        });
-        $(el).on('select2:unselect', function () {
-          var event = new Event('change', {
-            bubbles: true,
-            cancelable: true
-          });
-          el.dispatchEvent(event);
-        });
-      }
-    }
-  },
   mounted: function mounted() {
     this.initSelect();
   },
   methods: {
     formSubmit: function formSubmit() {
-      var self = this;
+      var self = this; // Determine if the event is the whole day or has a time
 
       if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
         this.form.allDay = "false";
       } else {
         this.form.allDay = "true";
-      }
+      } // Put date + time together so fullcalendar can read it.
+
 
       if (this.form.from && this.form.date) {
         var start = this.form.date + 'T' + this.form.from;
@@ -4456,6 +4421,7 @@ __webpack_require__.r(__webpack_exports__);
           password_confirmation: self.password_confirmation
         },
         success: function success() {
+          // Redirect to home
           self.success = true;
           this.$router.push({
             name: 'login',
@@ -4465,7 +4431,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         },
         error: function error(res) {
-          console.log(res.response.data.errors);
+          // Registration failed, display errors
           self.has_error = true;
           self.error = res.response.data.error;
           self.errors = res.response.data.errors || {};
@@ -4578,6 +4544,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -90539,7 +90507,10 @@ var render = function() {
       [
         _c("full-calendar", {
           attrs: { config: _vm.config, events: _vm.agenda_items },
-          on: { "event-selected": _vm.eventClick }
+          on: {
+            "event-selected": _vm.eventClick,
+            "event-receive": _vm.eventReceive
+          }
         })
       ],
       1
@@ -90621,7 +90592,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "button",
-              { staticClass: "refresh", on: { click: _vm.refresh } },
+              { staticClass: "refresh", on: { click: _vm.get_agenda_items } },
               [
                 _c(
                   "svg",
@@ -92362,16 +92333,18 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "error404" }, [
-    _c("h1", [_vm._v("Deze pagina bestaat niet")]),
-    _vm._v(" "),
-    _c(
-      "p",
-      [
-        _vm._v("Ga "),
-        _c("router-link", { attrs: { to: "/" } }, [_vm._v("terug naar home")])
-      ],
-      1
-    )
+    _c("div", { staticClass: "section__inner" }, [
+      _c("h1", [_vm._v("Deze pagina bestaat niet (404)")]),
+      _vm._v(" "),
+      _c(
+        "p",
+        [
+          _vm._v("Ga "),
+          _c("router-link", { attrs: { to: "/" } }, [_vm._v("terug naar home")])
+        ],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -108449,7 +108422,18 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); // Initialize VueRouter
 
-var routes = [{
+var routes = [// { 
+//   path: '/404',
+//   name: 'error404',
+//   component: resolve => require(['./pages/error404'], resolve),
+//   meta: { auth: false }
+// },  
+{
+  path: '*',
+  component: function component(resolve) {
+    return Promise.resolve(/*! AMD require */).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./pages/error404 */ "./resources/js/pages/error404.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+  }
+}, {
   path: '/',
   name: 'home',
   component: function component(resolve) {

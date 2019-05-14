@@ -6,6 +6,13 @@ Vue.use(VueRouter);
 
 // Initialize VueRouter
 let routes = [
+    // { 
+    //   path: '/404',
+    //   name: 'error404',
+    //   component: resolve => require(['./pages/error404'], resolve),
+    //   meta: { auth: false }
+    // },  
+    { path: '*', component: resolve => require(['./pages/error404'], resolve), }, 
     {
       path:'/',
       name: 'home',
@@ -58,7 +65,7 @@ let routes = [
       name: 'admin.dashboard',
       component: resolve => require(['./pages/admin/AdminDashboard'], resolve),
       meta: {
-        auth: {roles: 2, redirect: {name: 'login'}, forbiddenRedirect: '/403'}
+      auth: {roles: 2, redirect: {name: 'login'}, forbiddenRedirect: '/403'}
     }
   },
 ];

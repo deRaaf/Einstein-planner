@@ -1,7 +1,7 @@
 <template ref="foo">
     <div class="home">
         <div class="calendar_wrap">
-            <full-calendar :config="config" :events="agenda_items"  @event-selected="eventClick"/>
+            <full-calendar :config="config" :events="agenda_items"  @event-selected="eventClick" @event-receive="eventReceive"/>
         </div>
         
         <div class="sidebar">
@@ -23,7 +23,7 @@
                         </svg>
                     </router-link>
 
-                    <button class="refresh" @click="refresh">
+                    <button class="refresh" @click="get_agenda_items">
                         <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3.46343 5.65018C2.92992 7.61243 3.43178 9.79171 4.97355 11.3335C7.14754 13.5075 10.6035 13.6156 12.9011 11.6579" stroke="#B3ECFF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M5.43711 7.31577L3.46046 4.94736L1.48975 7.31577" stroke="#B3ECFF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -162,47 +162,8 @@ export default {
                     }
                 },
                 drop(e) {
-                    // remove the element from the "Draggable Events" list
+                    // remove the element from the "External Events" list
                     $(this).remove();
-                },
-                eventReceive(e) {
-                    var type2 = e.title.slice(0, 2)
-
-                    var type3 = e.title.slice(0, 3)
-
-                    var type4 = e.title.slice(0, 4)
-
-                    if (type2 == "HW" || type2 == "SO") {
-                        type = type2
-                    } else if (type3 == "REP"){
-                        type = type3
-                    } else {
-                        var type = type4
-                    }
-
-                    var start = e.start.toISOString()
-
-                    var desc = "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen:\nWat ga je doen?\nHoe ga je dit doen?\nWanneer ga je dit doen?\nWaar ga je dit doen?\nMet wie ga je dit doen?\n\nOok kun je hier een notitie schrijven:"
-
-                    axios.post('/agenda_items', {
-
-                        title: e.title,
-                        start: start,
-                        // end: end,
-                        allDay: false,
-                        description: desc,
-                        type: type
-                    })
-                    .then(function(response) {
-
-                        // app.get_agenda_items();
-
-                    })
-                    .catch(function (error) {
-
-                        console.log(error);
-
-                    });
                 },
                 eventDragStop: function( event, jsEvent, ui, view ) {
 
@@ -241,20 +202,14 @@ export default {
     },
     methods: {
         get_agenda_items() {
-            window.axios.get('/agenda_items').then(({ data }) => {
-                // console.log(data);
+            axios.get('/agenda_items').then(({ data }) => {
 
+                // Populate the agenda_items array in data()
                 this.agenda_items = data;
 
+                // Set user colors
                 this.setColors();
             });
-        },
-        refresh() {
-
-            this.get_agenda_items();
-
-            $('.refresh').toggleClass("rotate");
-
         },
         makeDraggable() {
             // initialize the external events
@@ -276,8 +231,10 @@ export default {
         setColors() {
             var self = this
 
+            // Set the color for each agenda item, if they are of a specific type
             this.agenda_items.forEach(agenda_item => {
 
+                // Get the colors from the database
                 var input = self.$auth.user().colors
 
                 if(input !== null) {
@@ -296,6 +253,7 @@ export default {
                         agenda_item.color = colors[4];
                     } 
                     
+                    // If a task is completed, change to color + opacity
                     if (agenda_item.completed == 1) {
                         agenda_item.color = "rgba(63, 195, 128, 0.1)";
                     }
@@ -309,6 +267,48 @@ export default {
         collapse() {
             $(".calendar_wrap").toggleClass("collapsed");
             $(".sidebar").toggleClass("collapsed");
+        },
+        eventReceive(e) {
+            var self = this
+
+            // Determine the type
+            var type2 = e.title.slice(0, 2)
+
+            var type3 = e.title.slice(0, 3)
+
+            var type4 = e.title.slice(0, 4)
+
+            if (type2 == "HW" || type2 == "SO") {
+                type = type2
+            } else if (type3 == "REP"){
+                type = type3
+            } else {
+                var type = type4
+            }
+
+            var start = e.start.toISOString() //Format to readable date
+
+            var desc = "Om je goed voor te bereiden kun je antwoord geven op de volgende vragen:\nWat ga je doen?\nHoe ga je dit doen?\nWanneer ga je dit doen?\nWaar ga je dit doen?\nMet wie ga je dit doen?\n\nOok kun je hier een notitie schrijven:"
+
+            axios.post('/agenda_items', {
+
+                title: e.title,
+                start: start,
+                // end: end,
+                allDay: false,
+                description: desc,
+                type: type
+            })
+            .then(function(response) {
+
+                self.get_agenda_items();
+
+            })
+            .catch(function (error) {
+
+                console.log(error);
+
+            });
         },
     },
   }

@@ -18,12 +18,12 @@
         </div>
 
         <form autocomplete="off" @submit.prevent="login" method="post">
-            <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.email }">
+            <div class="form-group" :class="{ 'has-error': has_error && errors.email }">
               <label for="email">E-mail adres:</label>
               <input type="email" id="email" class="form-control" placeholder="email@domein.com" v-model="email" required>
             </div>
 
-            <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.password }">
+            <div class="form-group" :class="{ 'has-error': has_error && errors.password }">
               <label for="password">Wachtwoord:</label>
               <input type="password" id="password" class="form-control" v-model="password" required>
             </div>
@@ -62,12 +62,13 @@
             password: app.password
           },
           success: function() {
-            // handle redirection
+            // Redirect to home
             const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'admin.dashboard' : 'home'
 
             this.$router.push({name: redirectTo})
           },
           error: function(res) {
+            // Login failed, display errors
             app.has_error = true
             app.errors = error.response.data.errors
           },

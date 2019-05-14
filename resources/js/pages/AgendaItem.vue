@@ -96,22 +96,6 @@ data() {
         has_error: false,
     }
 },
-directives: {
-    select2: {
-        // directive definition
-        inserted: function (el) {
-            $(el).on('select2:select', () => {
-                const event = new Event('change', { bubbles: true, cancelable: true });
-                el.dispatchEvent(event);
-            });
-
-            $(el).on('select2:unselect', () => {
-                const event = new Event('change', {bubbles: true, cancelable: true})
-                el.dispatchEvent(event)
-            })
-        }
-    }
-},
 mounted() {
     this.fetchPost();
     this.initSelect();
@@ -120,13 +104,15 @@ methods: {
     formSubmit() {
         var self = this;
 
+        // Determine if the event is the whole day or has a time
         if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
             this.form.allDay = "false";
         } else {
             this.form.allDay = "true";
         }
 
-        if (this.form.from) {
+        // Put date + time together so fullcalendar can read it.
+        if (this.form.from && this.form.date) {
             var start = this.form.date + 'T' + this.form.from;
         }
 
@@ -165,10 +151,12 @@ methods: {
         axios.get('/agenda_items/' + id).then(response => {
             this.form = response.data[0];
 
+            // Format the starting date
             if (this.form.start) {
                 this.form.date = this.form.start.slice(0, 10)
             }
 
+            // Format the start and/or end times
             if (this.form.start && this.form.end) {
                 this.form.from = this.form.start.slice(11, 16)
                 this.form.till = this.form.end.slice(11, 16)
@@ -249,108 +237,108 @@ methods: {
                 }
             })
         },
-        completeItem() {
-            var self = this
-            var date = new Date()
-            var month = date.getMonth() + 1; //months from 1-12
-            var day = date.getDate();
-            var year = date.getFullYear();
+    completeItem() {
+        var self = this
+        var date = new Date()
+        var month = date.getMonth() + 1; //months from 1-12
+        var day = date.getDate();
+        var year = date.getFullYear();
 
-            if (month <= 10 ) {
-                month = "0" + month
-            }
-
-            if (day <= 10 ) {
-                day = "0" + day
-            }
-
-            var today = year + '-' + month + '-' + day
-
-            if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
-                this.form.allDay = "false";
-            } else {
-                this.form.allDay = "true";
-            }
-
-            if (this.form.from) {
-                var start = this.form.date + 'T' + this.form.from;
-            }
-
-            if (this.form.till) {
-                var end = this.form.date + 'T' + this.form.till;
-            }
-
-            if (this.form.date > today ){
-               
-                Swal.fire({
-                    title: '',
-                    text: "Volgens de planning heb je deze taak nog niet uitgevoerd. Weet je zeker dat je deze taak af wilt vinken?",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#B3ECFF',
-                    cancelButtonColor: '#EBEBE',
-                    cancelButtonText: 'Nee, taak houden.',
-                    confirmButtonText: 'Ja, afvinken'
-                    }).then((result) => {
-                        if (result.value) {
-                            // This should be going differently -> only completed
-                            axios.put('/agenda_items/' + self.$attrs.id, {
-                                title: this.form.title,
-                                start: start,
-                                end: end,
-                                allDay: this.form.allDay,
-                                description: this.form.description,
-                                type: this.form.type,
-                                class: this.form.class,
-                                completed: true
-                            })
-                            .then(function(response) {
-                                if ( response.status == '201') {
-                                    Swal.fire(
-                                        'Goedzo',
-                                        'Je hebt de taak afgerond!',
-                                        'success'
-                                    )
-                                    self.$router.push({ path : '/' });
-                                }
-                            })
-                            .catch(function (error) {
-
-                                console.log(error);
-
-                            });
-                        }
-                    })
-            } else {
-                Swal.fire({
-                    title: 'Goedzo',
-                    text: "Je hebt de taak afgerond!",
-                    type: 'success',
-                    confirmButtonColor: '#B3ECFF',
-                    }).then((result) => {
-                        if (result.value) {
-                            axios.put('/agenda_items/' + self.$attrs.id, {
-                                title: this.form.title,
-                                start: start,
-                                end: end,
-                                allDay: this.form.allDay,
-                                description: this.form.description,
-                                type: this.form.type,
-                                class: this.form.class,
-                                completed: true
-                            })
-                            .then(function(response) {
-                                self.$router.push({ path : '/' });
-                            })
-                            .catch(function (error) {
-
-                                console.log(error);
-
-                            });
-                        }
-                    })
-            }
+        if (month <= 10 ) {
+            month = "0" + month
         }
+
+        if (day <= 10 ) {
+            day = "0" + day
+        }
+
+        var today = year + '-' + month + '-' + day
+
+        if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
+            this.form.allDay = "false";
+        } else {
+            this.form.allDay = "true";
+        }
+
+        if (this.form.from) {
+            var start = this.form.date + 'T' + this.form.from;
+        }
+
+        if (this.form.till) {
+            var end = this.form.date + 'T' + this.form.till;
+        }
+
+        if (this.form.date > today ){
+            
+            Swal.fire({
+                title: '',
+                text: "Volgens de planning heb je deze taak nog niet uitgevoerd. Weet je zeker dat je deze taak af wilt vinken?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#B3ECFF',
+                cancelButtonColor: '#EBEBE',
+                cancelButtonText: 'Nee, taak houden.',
+                confirmButtonText: 'Ja, afvinken'
+                }).then((result) => {
+                    if (result.value) {
+                        // This should be going differently -> only completed
+                        axios.put('/agenda_items/' + self.$attrs.id, {
+                            title: this.form.title,
+                            start: start,
+                            end: end,
+                            allDay: this.form.allDay,
+                            description: this.form.description,
+                            type: this.form.type,
+                            class: this.form.class,
+                            completed: true
+                        })
+                        .then(function(response) {
+                            if ( response.status == '201') {
+                                Swal.fire(
+                                    'Goedzo',
+                                    'Je hebt de taak afgerond!',
+                                    'success'
+                                )
+                                self.$router.push({ path : '/' });
+                            }
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        });
+                    }
+                })
+        } else {
+            Swal.fire({
+                title: 'Goedzo',
+                text: "Je hebt de taak afgerond!",
+                type: 'success',
+                confirmButtonColor: '#B3ECFF',
+                }).then((result) => {
+                    if (result.value) {
+                        axios.put('/agenda_items/' + self.$attrs.id, {
+                            title: this.form.title,
+                            start: start,
+                            end: end,
+                            allDay: this.form.allDay,
+                            description: this.form.description,
+                            type: this.form.type,
+                            class: this.form.class,
+                            completed: true
+                        })
+                        .then(function(response) {
+                            self.$router.push({ path : '/' });
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        });
+                    }
+                })
+        }
+    }
     }
 }
 </script>

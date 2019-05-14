@@ -16117,6 +16117,13 @@ fieldset[disabled] .vue-swatches {
   color: #333 !important;
 }
 
+.error404 {
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .profile {
   padding: 0.9375rem;
 }

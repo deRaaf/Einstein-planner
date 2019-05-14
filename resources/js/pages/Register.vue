@@ -87,11 +87,12 @@
             password_confirmation: self.password_confirmation
           },
           success: function () {
+            // Redirect to home
             self.success = true
             this.$router.push({name: 'login', params: {successRegistrationRedirect: true}})
           },
           error: function (res) {
-            console.log(res.response.data.errors)
+            // Registration failed, display errors
             self.has_error = true
             self.error = res.response.data.error
             self.errors = res.response.data.errors || {}
