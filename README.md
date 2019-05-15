@@ -3,7 +3,7 @@
 </p>
 
 # Einstein planner
-The Einstein planner originated out of the need for a way to teach students with ASS (autism) to structure their planning. Because at the Einstein Class of the Anna Maria van Schuurman school in Franeker this was done by the administration per student, per day. Because every student needs different support, so all students had a different daily schedule. This time costly. The students themselves also have no overview of, for example, their homework. To give the students insight into their lives, it is important that the students learn to plan themselves. They also need to be able to do this at further educations (MBO / HAVO) and other periods in their lives. 
+The Einstein planner originated out of the need for a way to teach students with ASS (autism) to structure their planning. For example at the Einstein Class of the Anna Maria van Schuurman school in Franeker this was done for the students by the administration per student, per day. Because every student needs different support, all students had a different daily schedule. This is very time costly, and on top of that the students themselves also have no overview of, for example, their homework. To give the students insight into their lives, it is important that the students learn to plan themselves. They also need to be able to do this at further educations (MBO / HAVO) and other periods in their lives.
 
 To solve this problem, the Einstein planner was created. Einstein planner is a plan-learn-tool. The tool’s design is tailored to the needs of the target audience, students with ASS. The tool provides overview, both functionally and visually. The user gets an overview over their tasks and agenda at the same time. This way users can see their tasks, prioritize them and schedule them. The user can get support with the use of a step-by-step plan which can help them learn to schedule their tasks.
 
@@ -13,13 +13,21 @@ To solve this problem, the Einstein planner was created. Einstein planner is a p
 
 ## Table of contents
 [Demo](https://github.com/deRaaf/Einstein-planner#demo)
+
 [Requirements](https://github.com/deRaaf/Einstein-planner#requirements)
+
 [External components](https://github.com/deRaaf/Einstein-planner#external-components)
+
 [Quickstart](https://github.com/deRaaf/Einstein-planner#quickstart)
+
 [Configuration](https://github.com/deRaaf/Einstein-planner#configuration)
+
 [Project structure](https://github.com/deRaaf/Einstein-planner#project-structure)
+
 [Functions per page](https://github.com/deRaaf/Einstein-planner#functions-per-page)
+
 [Known issues](https://github.com/deRaaf/Einstein-planner#known-issues)
+
 [Potential functionalities](https://github.com/deRaaf/Einstein-planner#potential-functionalities)
 
 ## Demo
@@ -695,7 +703,7 @@ completeItem() {
 ### Login.vue
 The page used to login to the Einstein planner. If a user is not logged in and they try to access the application, they will be redirected to this page. Auth is done with vue-auth.
 
-`login()` determines if the login info is correct. If so the user get's redirected to their homepage. If not, validation errors are displayed under the inputs.
+`login()` determines if the login info is correct witch vue-auth. If so the user get's redirected to their homepage. If not, validation errors are displayed under the inputs.
 ```javascript
 login() {
     // get the redirect object
@@ -863,22 +871,24 @@ getUser() {
 
 To display the name of the event type colors `appendLabels` is used, as there is no title prop for vue-swatches.
 ```javascript
-$( ".color:first-child .vue-swatches__trigger" ).append("Huiswerk");
-$( ".color:nth-child(2) .vue-swatches__trigger" ).append("SO");
-$( ".color:nth-child(3) .vue-swatches__trigger" ).append("Repetitie");
-$( ".color:nth-child(4) .vue-swatches__trigger" ).append("Vrije tijd");
-$( ".color:last-child .vue-swatches__trigger" ).append("Les rooster");
+appendLabels() {
+    $( ".color:first-child .vue-swatches__trigger" ).append("Huiswerk");
+    $( ".color:nth-child(2) .vue-swatches__trigger" ).append("SO");
+    $( ".color:nth-child(3) .vue-swatches__trigger" ).append("Repetitie");
+    $( ".color:nth-child(4) .vue-swatches__trigger" ).append("Vrije tijd");
+    $( ".color:last-child .vue-swatches__trigger" ).append("Les rooster");
+}
 ```
 
 ## Known issues
 There are some issues which need te be fixed before the tool is implemented.
-* The Magister API is not (yet) implemented because of budgetary reasons
-* Arrows on the select on newItem and AgendaItem are not clickable
-* 
+* The Magister API is not (yet) implemented.
+* Arrows on the select on newItem and AgendaItem are not clickable.
+* Forms are emptied if a value is not filled in or not correct.
+* If an event is all day, time is still expected.
 
 ## Potential functionalities
 Functionalities which can strengthen the product, but could not (yet) be implemented.
-
 * Moment of reflection
 * Repeated tasks
 * Print functionality
