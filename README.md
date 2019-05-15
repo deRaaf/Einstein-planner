@@ -1,9 +1,15 @@
+//logo
+
 # Einstein planner
 The Einstein planner is a plan-learn-tool. The tool’s design is tailored to the needs of the target audience, students with ASS. The tool provides overview, both functionally and visually. The user gets an overview over their tasks and agenda at the same time. This way users can see their tasks, prioritize them and schedule them. The user can get support with the use of a step-by-step plan which can help them learn to schedule their tasks.
 
 **Note: This is a proof of concept, the Einstein planner was designed to work with the [Magister][1] API in mind, which we unfortunately could not implement.**
 
 ![Screenshot Einstein Planner][screen]
+
+## Table of contents
+
+## Features
 
 ## Demo
 If you want to see the Einstein planner in action, you can access the demo [here][2]
@@ -30,9 +36,9 @@ For the calendar [vue-fullcalendar][full] is used.
 
 Selectboxes are [vue-select][select].
 
-Color preferences are set with [vue-swatches][swatch]
+Color preferences are set with [vue-swatches][swatch].
 
-Login and register auth is done with [vue-auth][auth]
+Login and register auth is done with [vue-auth][auth].
 
 [SweetAlert2][sweet] is used to convey messages.
 
@@ -146,17 +152,17 @@ resources/views/layouts/app.blade.php
 
 ## Functions per page
 ### Home.vue
-Home is the page where the user will spend most of their time, itcontains the calendar component and the sidebar which contains their tasks.
+Home is the page where the user will spend most of their time, it contains the calendar component and the sidebar which contains their tasks.
 
 The calendar component has a config and a few functions attached to it. For an explaination of the config properties see the [Fullcalendar documentation][8].
 
 Translation (Dutch) is imported by ```import 'fullcalendar/dist/locale/nl'```
-```
+```javascript
 <full-calendar :config="config" :events="agenda_items" @event-selected="eventClick" @event-receive="eventReceive"/>
 ```
 
 Events are loaded by an array in ```data()```, like this:
-```
+```javascript
 data() {
     return {
         events: [
@@ -189,7 +195,7 @@ data() {
 ```
 
 When a user clicks on an event ```eventClick``` is triggered, and the user is sent to the AgendaItem page.
-```
+```javascript
 eventClick(item) {
     var data = item.id
     this.$router.push({ path: '/agendaitem/' + data });
@@ -197,7 +203,7 @@ eventClick(item) {
 ```
 
 When a task is dragged in the calendar ```eventRecieve()``` is triggered, and the event will first be formatted and then sent to the database.
-```
+```javascript
 eventReceive(e) {
     var self = this
 
@@ -243,7 +249,7 @@ eventReceive(e) {
 ```
 
 ```get_agenda_items()``` gets all the events from the database and after that calls setColors()
-```
+```javascript
 get_agenda_items() {
     axios.get('/agenda_items').then(({ data }) => {
 
@@ -256,7 +262,7 @@ get_agenda_items() {
 }
 ```
 This function can also be triggered with the refresh button in the sidebar. 
-```
+```javascript
 <button class="refresh" @click="get_agenda_items">
     <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M3.46343 5.65018C2.92992 7.61243 3.43178 9.79171 4.97355 11.3335C7.14754 13.5075 10.6035 13.6156 12.9011 11.6579" stroke="#B3ECFF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -268,7 +274,7 @@ This function can also be triggered with the refresh button in the sidebar.
 ```
 
 ```setColors()``` sets the colors the user has selected in their profile or when a task is completed.
-```
+```javascript
 setColors() {
     var self = this
     
@@ -304,7 +310,7 @@ setColors() {
 ```
 
 ```makeDraggable()``` makes the tasks sortable/draggable via Jquery sortable
-```
+```javascript
 makeDraggable() {
     // initialize the external events
 
@@ -324,7 +330,7 @@ makeDraggable() {
 },
 ```
 ```collapse()``` collapses the tasklist by toggling the class ```.collapse``` to the ```.sidebar``` and ```.calendar_wrap```.
-```
+```javascript
 collapse() {
     $(".calendar_wrap").toggleClass("collapsed");
     $(".sidebar").toggleClass("collapsed");
@@ -335,7 +341,7 @@ Two functions reside in the fullcalendar config as there are no props for the co
 
 ```eventDragStop()``` is triggered when dragging of an event stops. ```isEventOverDiv``` determines if the event left the external event list.
 The event is put back in the list if the dragging stops.
-```
+```javascript
 eventDragStop: function( event, jsEvent, ui, view ) {
 
     var isEventOverDiv = function(x, y) {
@@ -366,7 +372,7 @@ eventDragStop: function( event, jsEvent, ui, view ) {
 },
 ```
 ```drop()``` is triggered when an event is dropped in the calendar. The event is removed from the external events list.
-```
+```javascript
 drop(e) {
     // remove the element from the "External Events" list
     $(this).remove();
@@ -386,7 +392,7 @@ Vue.component('v-select', vSelect)
 
 ```data()``` has three objects.
 ```form``` contains the event form data, ```errors``` contains the validation errors and ```has_errors``` is true or false depending if there is a validation error.
-```
+```javascript
 data() {
     return {
         form: {
@@ -406,7 +412,7 @@ data() {
 ```
 
 ```formsubmit()``` sends the new agenda item or the edited item to the database.
-```
+```javascript
 formSubmit() {
     var self = this;
 
@@ -459,7 +465,7 @@ formSubmit() {
 },
 ```
 ```initselect()``` is used for setting the background color of the type of event based on the user's preferences. It also sets the arrow icon.
-```
+```javascript
 initSelect() {
     var input = this.$auth.user().colors
 
@@ -505,7 +511,7 @@ initSelect() {
 AgendaItem has three extra functions ```fetchPost()```, ```deleteItem()``` and ```completeItem```.
 
 ```fetchPost()``` fetches the current agenda_item based on the ```event.id``` which it gets from the router prop in ```this.$attrs.id```.
-```
+```javascript
 fetchPost() {
     var id = this.$attrs.id;
 
@@ -535,7 +541,7 @@ fetchPost() {
 ```
 
 ```deleteItem()``` deletes the current item if the user presses the corresponding button. A sweetAlert is fired which asks the user if they are sure they want to delete this item. A second sweetAlert is fired when the item is succesfully deleted.
-```
+```javascript
 deleteItem() {
     var self = this
 
@@ -571,7 +577,7 @@ The delete button is located in the form footer.
 ```completeItem()``` completes the current item if the user presses the corresponding button. A SweetAlert is fired if the completion was succesfull. And the user is rederected to the home page.
 
 If an event is later than the current date a SweetAlert is fired which asks the user if they are sure they want to complete this item. If so a second SweetAlert is fired when the item is succesfully completed.
-```
+```javascript
 completeItem() {
     var self = this
     var date = new Date()
@@ -679,7 +685,7 @@ completeItem() {
 The page used to login to the Einstein planner. If a user is not logged in and they try to access the application, they will be redirected to this page. Auth is done with vue-auth.
 
 ```login()``` determines if the login info is correct. If so the user get's redirected to their homepage. If not, validation errors are displayed under the inputs.
-```
+```javascript
 login() {
     // get the redirect object
     var redirect = this.$auth.redirect()
@@ -711,7 +717,7 @@ On this page users register their account. Form data is saved in the ```data()``
 
 The ```register()``` function gets the form data and sends it to the user controller. If all data is correct the user is redirected to the login page.
 
-```
+```javascript
 register() {
     var self = this
 
@@ -744,7 +750,7 @@ The user profile. This page has three sections where the user can change their i
 External component vue-swatches is used to set these colors.
 
 Profile has three items in ```data()```. ```user``` is used to save the user data in. ```color``` is for saving the selected colors by the user. And ```colors``` is the color preset for vue-swatches.
-```
+```javascript
 data() {
     return {
         user: {},
@@ -760,7 +766,7 @@ data() {
 ```
 
 ```submitInfo()``` is the function used for saving the edited user info to the database. A sweetAlert is fired when it's succesfull.
-```
+```javascript
 submitInfo() {
     var self = this
 
@@ -789,7 +795,7 @@ submitInfo() {
 ```
 
 ```submitColors()``` is the function used for saving the selected colors to the database. First all colors are comma seperated in a single string to make it easier to access the data. Again a sweetAlert is fired when it's succesfull.
-```
+```javascript
 submitColors() {
     var colors = this.color.hw + ',' + this.color.so + ',' + this.color.rep + ',' + this.color.ft + ',' + this.color.cl
     var self = this
@@ -817,7 +823,7 @@ submitColors() {
 ```
 
 ```getUser()``` fetches the current user data from corresponding vue-auth variables and displays the data in the top section, ready to be edited.
-```
+```javascript
 getUser() {
     // Fetch user data from vue-auth
     this.user.email = this.$auth.user().email
@@ -845,7 +851,7 @@ getUser() {
 ```
 
 To display the name of the event type colors ```appendLabels``` is used, as there is no title prop for vue-swatches.
-```
+```javascript
 $( ".color:first-child .vue-swatches__trigger" ).append("Huiswerk");
 $( ".color:nth-child(2) .vue-swatches__trigger" ).append("SO");
 $( ".color:nth-child(3) .vue-swatches__trigger" ).append("Repetitie");
