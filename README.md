@@ -1,7 +1,7 @@
 # Einstein planner
 The Einstein planner is a plan-learn-tool. The tool’s design is tailored to the needs of the target audience, students with ASS. The tool provides overview, both functionally and visually. The user gets an overview over their tasks and agenda at the same time. This way users can see their tasks, prioritize them and schedule them. The user can get support with the use of a step-by-step plan which can help them learn to schedule their tasks.
 
-**Note: This is a proof of concept, the Einstein planner was designed to work with the [Magister][1] API in mind, which we unfortunately could not implement. (See Known issues)**
+**Note: This is a proof of concept, the Einstein planner was designed to work with the [Magister][1] API in mind, which we unfortunately could not implement.**
 
 ![Screenshot Einstein Planner][screen]
 
@@ -135,7 +135,7 @@ Home contains the calendar component and sidebar which contains the tasks.
 
 The calendar component has a config and a few functions attached to it. For an explaination of the config properties see the [Fullcalendar documentation][8].
 
-Dutch translation is imported by ```import 'fullcalendar/dist/locale/nl'```
+Translation (Dutch) is imported by ```import 'fullcalendar/dist/locale/nl'```
 ```
 <full-calendar :config="config" :events="agenda_items" @event-selected="eventClick" @event-receive="eventReceive"/>
 ```
@@ -730,14 +730,129 @@ register() {
 ```
 
 ### Profile.vue
+The user profile. This page has three sections where the user can change their info. Personal info, agenda colors and their password.
 
+External component vue-swatches is used to set these colors.
+
+Profile has three items in ```data()```. ```user``` is used to save the user data in. ```color``` is for saving the selected colors by the user. And ```colors``` is the color preset for vue-swatches.
+```
+data() {
+    return {
+        user: {},
+        color: {hw: '', rep: '', so: '', ft: '', cl: ''},
+        colors: [
+            ['#FF0000' , '#FF7900', '#FFE600', '#00FF0A', '#00FFD1', '#00BFFF', '#000000', '#8F00FF', '#FF00A6'],
+            ['#FF7E7E', '#FFB47E', '#FFEA7E', '#AFFF7E', '#7EFFD8', '#7EE8FF', '#818181', '#BC87FF', '#FF7EE3'],
+            ['#FEB8B8', '#FFD7B3', '#FFF5D1', '#CDFFCF', '#CDFFF6', '#B3ECFF', '#E9E9E9', '#E9E2FF', '#FFD1EF'],
+            ['#FFD1D1', '#FFF0E2', '#FFFCEA', '#E4FFE2', '#E2FFF6', '#E2FAFF', '#F4F4F4', '#F2EEFF', '#FFE2FE'],
+        ]
+    }
+},
+```
+
+```submitInfo()``` is the function used for saving the edited user info to the database. A sweetAlert is fired when it's succesfull.
+```
+submitInfo() {
+    var self = this
+
+    axios.put('/auth/update/', {
+        
+        first_name: self.user.firstname,
+        last_name: self.user.lastname,
+        student_number: self.user.student_number,
+        email: self.user.email,
+        class: self.user.class,
+
+    })
+    .then(function(response) {
+        Swal.fire(
+            'Opgeslagen!',
+            'Je gegevens zijn opgeslagen',
+            'success'
+        )
+    })
+    .catch(function (error) {
+
+        console.log(error);
+
+    });
+},
+```
+
+```submitColors()``` is the function used for saving the selected colors to the database. First all colors are comma seperated in a single string to make it easier to access the data. Again a sweetAlert is fired when it's succesfull.
+```
+submitColors() {
+    var colors = this.color.hw + ',' + this.color.so + ',' + this.color.rep + ',' + this.color.ft + ',' + this.color.cl
+    var self = this
+
+    axios.put('/auth/edit/', {
+        
+        colors: colors
+
+    })
+    .then(function(response) {
+
+        Swal.fire(
+            'Opgeslagen!',
+            'Je kleuren zijn veranderd (Misschien moet je nog refreshen om ze te tonen)',
+            'success'
+        )
+
+    })
+    .catch(function (error) {
+
+        console.log(error);
+
+    });
+},
+```
+
+```getUser()``` fetches the current user data from corresponding vue-auth variables and displays the data in the top section, ready to be edited.
+```
+getUser() {
+    // Fetch user data from vue-auth
+    this.user.email = this.$auth.user().email
+    this.user.firstname = this.$auth.user().first_name
+    this.user.lastname = this.$auth.user().last_name
+    this.user.student_number = this.$auth.user().student_number
+    this.user.class = this.$auth.user().class
+    
+    var input = this.$auth.user().colors
+
+    // Split colors from eachother
+    if (input !== null) {
+        var colors = input.split(',')
+    }
+
+    // Assign colors to data
+    if (colors){
+        this.color.hw = colors[0]
+        this.color.so = colors[1]
+        this.color.rep = colors[2]
+        this.color.ft = colors[3]
+        this.color.cl = colors[4]
+    }
+},
+```
+
+To display the name of the event type colors ```appendLabels``` is used, as there is no title prop for vue-swatches.
+```
+$( ".color:first-child .vue-swatches__trigger" ).append("Huiswerk");
+$( ".color:nth-child(2) .vue-swatches__trigger" ).append("SO");
+$( ".color:nth-child(3) .vue-swatches__trigger" ).append("Repetitie");
+$( ".color:nth-child(4) .vue-swatches__trigger" ).append("Vrije tijd");
+$( ".color:last-child .vue-swatches__trigger" ).append("Les rooster");
+```
 
 ## Known issues
+There are some issues which need te be fixed before the tool is implemented.
 * The Magister API is not (yet) implemented because of budgetary reasons
 * Arrows on the select on newItem and AgendaItem are not clickable
 * 
 
 ## Potential functionalities
+Functionalities which can strengthen the product, but could not (yet) be implemented.
+
 * Moment of reflection
 * Repeated tasks
 * Print functionality

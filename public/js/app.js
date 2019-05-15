@@ -4295,16 +4295,18 @@ __webpack_require__.r(__webpack_exports__);
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.fire('Opgeslagen!', 'Je wachtwoord is veranderd', 'success');
     },
     getUser: function getUser() {
+      // Fetch user data from vue-auth
       this.user.email = this.$auth.user().email;
       this.user.firstname = this.$auth.user().first_name;
       this.user.lastname = this.$auth.user().last_name;
       this.user.student_number = this.$auth.user().student_number;
       this.user["class"] = this.$auth.user()["class"];
-      var input = this.$auth.user().colors;
+      var input = this.$auth.user().colors; // Split colors from eachother
 
       if (input !== null) {
         var colors = input.split(',');
-      }
+      } // Assign colors to data
+
 
       if (colors) {
         this.color.hw = colors[0];

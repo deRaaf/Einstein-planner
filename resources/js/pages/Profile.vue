@@ -163,6 +163,7 @@ export default {
             )
         },
         getUser() {
+            // Fetch user data from vue-auth
             this.user.email = this.$auth.user().email
             this.user.firstname = this.$auth.user().first_name
             this.user.lastname = this.$auth.user().last_name
@@ -171,10 +172,12 @@ export default {
             
             var input = this.$auth.user().colors
 
+            // Split colors from eachother
             if (input !== null) {
                 var colors = input.split(',')
             }
 
+            // Assign colors to data
             if (colors){
                 this.color.hw = colors[0]
                 this.color.so = colors[1]
