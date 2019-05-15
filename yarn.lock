@@ -635,11 +635,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@fortawesome/fontawesome-free@^5.7.1":
-  version "5.8.2"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.8.2.tgz#fae4112c4fb47086f6ae167e32524b280000abd5"
-  integrity sha512-E4fDUF4fbu9AxKpaQQqCN3XBnNzb/5e0Gvd9OaQsYkK574LVI57v/EqqPfIm/mC7jYbxaPNrhvT5AF+Yzwyizg==
-
 "@magisterjs/authcode@*", "@magisterjs/authcode@^1.6.0":
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/@magisterjs/authcode/-/authcode-1.13.0.tgz#25fd3f1820ffa282c416beb8df5ef01ef9d9b1db"

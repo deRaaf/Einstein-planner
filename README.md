@@ -21,6 +21,17 @@ JavaScript dependencies are installed with npm (or [yarn][6]). You'll need to ha
 
 Einstein planner uses Sass for all styling. (Sass is a CSS pre-processor that allows you to write styles more effectively and tidy.)
 
+Zurb's [Foundation framework][zurb] is used instead of Bootstrap.
+
+## External components
+The Einstein planner uses a few external components to add certain functionalities.
+
+For the calendar [vue-fullcalendar][full] is used.
+Selectboxes are [vue-select][select].
+Color preferences are set with [vue-swatches][swatch]
+Login and register auth is done with [vue-auth][auth]
+[SweetAlert2][sweet] is used to convey messages.
+
 ## Quickstart
 
 Install composer dependencies
@@ -76,7 +87,7 @@ Controllers are found in
 ```
 app/Http/Controllers
 ```
-AgendaController contains al the CRUD for agenda items.
+AgendaController is used to perform CRUD functions for the agenda items.
 AuthController contains everything for login and register.
 
 The routes can be found in:
@@ -96,7 +107,7 @@ Components like the header and Offcanvas can be found in:
 ```
 resources/js/components
 ```
-Routes are located in:
+Routes are located in (Vue-router):
 ```
 resources/js/routes.js
 ```
@@ -131,7 +142,7 @@ resources/views/layouts/app.blade.php
 
 ## Functions per page
 ### Home.vue
-Home contains the calendar component and sidebar which contains the tasks.
+Home is the page where the user will spend most of their time, itcontains the calendar component and the sidebar which contains their tasks.
 
 The calendar component has a config and a few functions attached to it. For an explaination of the config properties see the [Fullcalendar documentation][8].
 
@@ -173,7 +184,7 @@ data() {
 }
 ```
 
-When a user clicks on an event eventClick is triggered, and the user is sent to the AgendaItem page.
+When a user clicks on an event ```eventClick``` is triggered, and the user is sent to the AgendaItem page.
 ```
 eventClick(item) {
     var data = item.id
@@ -181,7 +192,7 @@ eventClick(item) {
 }
 ```
 
-When a task is dragged in the calendar eventRecieve is triggered, and the event will be sent to the database.
+When a task is dragged in the calendar ```eventRecieve()``` is triggered, and the event will first be formatted and then sent to the database.
 ```
 eventReceive(e) {
     var self = this
@@ -227,8 +238,7 @@ eventReceive(e) {
 },
 ```
 
-get_agenda_items() gets all the events from the database and after that calls setColors()
-
+```get_agenda_items()``` gets all the events from the database and after that calls setColors()
 ```
 get_agenda_items() {
     axios.get('/agenda_items').then(({ data }) => {
@@ -241,7 +251,7 @@ get_agenda_items() {
     });
 }
 ```
-This function can also be triggered by the refresh button in the sidebar. 
+This function can also be triggered with the refresh button in the sidebar. 
 ```
 <button class="refresh" @click="get_agenda_items">
     <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -253,7 +263,7 @@ This function can also be triggered by the refresh button in the sidebar.
 </button>
 ```
 
-setColors() sets the colors the user has selected in their profile or when a task is completed
+```setColors()``` sets the colors the user has selected in their profile or when a task is completed.
 ```
 setColors() {
     var self = this
@@ -289,7 +299,7 @@ setColors() {
 },
 ```
 
-makeDraggable() makes the tasks sortable/draggable via Jquery sortable
+```makeDraggable()``` makes the tasks sortable/draggable via Jquery sortable
 ```
 makeDraggable() {
     // initialize the external events
@@ -309,7 +319,7 @@ makeDraggable() {
     });
 },
 ```
-collapse() collapses the tasklist by toggling the class ```.collapse``` to the ```.sidebar``` and ```.calendar_wrap```.
+```collapse()``` collapses the tasklist by toggling the class ```.collapse``` to the ```.sidebar``` and ```.calendar_wrap```.
 ```
 collapse() {
     $(".calendar_wrap").toggleClass("collapsed");
@@ -317,9 +327,9 @@ collapse() {
 }
 ```
 
-Two functions reside in the fullcalendar config as there are no props for the component as there are for ```eventRecieve``` and ```eventClick```. These are fullCalendar functions. Docs: [eventDragstop][9], [drop][10].
+Two functions reside in the fullcalendar config as there are no props for the component as there are for ```eventRecieve()``` and ```eventClick()```. These are fullCalendar functions. Docs: [eventDragstop][9], [drop][10].
 
-eventDragStop() is triggered when dragging of an event stops. isEventOverDiv determines if the event left the external event list.
+```eventDragStop()``` is triggered when dragging of an event stops. ```isEventOverDiv``` determines if the event left the external event list.
 The event is put back in the list if the dragging stops.
 ```
 eventDragStop: function( event, jsEvent, ui, view ) {
@@ -351,8 +361,7 @@ eventDragStop: function( event, jsEvent, ui, view ) {
     }
 },
 ```
-drop() is triggered when an event is dropped in the calendar.
-The event is removed from the external events list.
+```drop()``` is triggered when an event is dropped in the calendar. The event is removed from the external events list.
 ```
 drop(e) {
     // remove the element from the "External Events" list
@@ -392,7 +401,7 @@ data() {
 },
 ```
 
-formsubmit() sends the new agenda item or the edited item to the database.
+```formsubmit()``` sends the new agenda item or the edited item to the database.
 ```
 formSubmit() {
     var self = this;
@@ -445,7 +454,7 @@ formSubmit() {
     }];
 },
 ```
-initselect() is used for setting the background color of the type of event based on the user's preferences. It also sets the arrow icon.
+```initselect()``` is used for setting the background color of the type of event based on the user's preferences. It also sets the arrow icon.
 ```
 initSelect() {
     var input = this.$auth.user().colors
@@ -492,7 +501,6 @@ initSelect() {
 AgendaItem has three extra functions ```fetchPost()```, ```deleteItem()``` and ```completeItem```.
 
 ```fetchPost()``` fetches the current agenda_item based on the ```event.id``` which it gets from the router prop in ```this.$attrs.id```.
-
 ```
 fetchPost() {
     var id = this.$attrs.id;
@@ -522,8 +530,7 @@ fetchPost() {
 },
 ```
 
-```deleteItem()``` deletes the current item if the user presses the corresponding button. A sweetAlert is fired which asks the user if they are sure they want to delete this item.
-A second sweetAlert is fired when the item is succesfully deleted.
+```deleteItem()``` deletes the current item if the user presses the corresponding button. A sweetAlert is fired which asks the user if they are sure they want to delete this item. A second sweetAlert is fired when the item is succesfully deleted.
 ```
 deleteItem() {
     var self = this
@@ -559,8 +566,7 @@ The delete button is located in the form footer.
 
 ```completeItem()``` completes the current item if the user presses the corresponding button. A SweetAlert is fired if the completion was succesfull. And the user is rederected to the home page.
 
-If an event is later than the current date A sweetAlert is fired which asks the user if they are sure they want to complete this item. If so a second sweetAlert is fired when the item is succesfully completed.
-
+If an event is later than the current date a SweetAlert is fired which asks the user if they are sure they want to complete this item. If so a second SweetAlert is fired when the item is succesfully completed.
 ```
 completeItem() {
     var self = this
@@ -728,7 +734,6 @@ register() {
     })
 }
 ```
-
 ### Profile.vue
 The user profile. This page has three sections where the user can change their info. Personal info, agenda colors and their password.
 
@@ -874,3 +879,9 @@ Functionalities which can strengthen the product, but could not (yet) be impleme
 [8]: https://fullcalendar.io/docs
 [9]: https://fullcalendar.io/docs/eventDragStop
 [10]: https://fullcalendar.io/docs/drop
+[swatch]: https://saintplay.github.io/vue-swatches/
+[auth]: https://github.com/websanova/vue-auth
+[zurb]: https://foundation.zurb.com/sites/docs/
+[select]: https://vue-select.org/
+[full]: https://github.com/CroudTech/vue-fullcalendar#readme
+[sweet]: https://sweetalert2.github.io/
