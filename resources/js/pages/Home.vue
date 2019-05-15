@@ -43,7 +43,7 @@
                         </svg>
                     </router-link>
 
-                    <button class="refresh" @click="refresh">
+                    <button class="refresh" @click="get_agenda_items">
                         <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3.46343 5.65018C2.92992 7.61243 3.43178 9.79171 4.97355 11.3335C7.14754 13.5075 10.6035 13.6156 12.9011 11.6579" stroke="#B3ECFF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M5.43711 7.31577L3.46046 4.94736L1.48975 7.31577" stroke="#B3ECFF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -58,44 +58,12 @@
 
                 <div id="external_events">
 
-                    <div class="fc-event">
-                        <div class="type">HW</div>
-                        <div class="class">EN: H5 opdr 21-...</div>
+                    <div class="fc-event" :key="magister_item.id" v-for="magister_item in magister_items">
+                        <div class="type" :style="'background:' + magister_item.color">{{ magister_item.type }}</div>
+                        <div class="class">{{ magister_item.exc }}</div>
                         <div class="date"> 
-                            <span class="date__day">7</span>
-                            <span class="date__month">mei</span>
-                        </div>
-                    </div>
-                    <div class="fc-event">
-                        <div class="type">SO</div>
-                        <div class="class">BIO: H2 opdr 4</div>
-                        <div class="date"> 
-                            <span class="date__day">9</span>
-                            <span class="date__month">mei</span>
-                        </div>
-                    </div>
-                    <div class="fc-event">
-                        <div class="type">REP</div>
-                        <div class="class">Engels H4</div>
-                        <div class="date"> 
-                            <span class="date__day">7</span>
-                            <span class="date__month">mei</span>
-                        </div>
-                    </div>
-                    <div class="fc-event">
-                        <div class="type">HW</div>
-                        <div class="class">WIS: H3 opdr 4/5/6</div>
-                        <div class="date"> 
-                            <span class="date__day">10</span>
-                            <span class="date__month">mei</span>
-                        </div>
-                    </div>
-                    <div class="fc-event">
-                        <div class="type">SO</div>
-                        <div class="class">WIS H2</div>
-                        <div class="date"> 
-                            <span class="date__day">8</span>
-                            <span class="date__month">mei</span>
+                            <span class="date__day">{{ magister_item.deadlineDay }}</span>
+                            <span class="date__month">{{ magister_item.deadlineMonth }}</span>
                         </div>
                     </div>
                 </div>
@@ -114,6 +82,13 @@ export default {
     },
     data() {
         return {
+            magister_items: [
+                {id: 1, type: 'HW', exc: 'EN: H5 opdr 21', deadlineDay: 7, deadlineMonth: 'mei'},
+                {id: 2, type: 'SO', exc: 'BIO: H2 opdr 4', deadlineDay: 9, deadlineMonth: 'mei'},
+                {id: 3, type: 'REP', exc: 'EN: H4', deadlineDay: 7, deadlineMonth: 'mei'},
+                {id: 4, type: 'HW', exc: 'WIS: H3 opdr 4/5/6', deadlineDay: 10, deadlineMonth: 'mei'},
+                {id: 5, type: 'SO', exc: 'WIS: H2', deadlineDay: 8, deadlineMonth: 'mei'},
+            ],
             agenda_items: [],
             notHome: true,
             config: {
@@ -231,11 +206,11 @@ export default {
         setColors() {
             var self = this
 
+            // Get the colors from the database
+            var input = self.$auth.user().colors
+
             // Set the color for each agenda item, if they are of a specific type
             this.agenda_items.forEach(agenda_item => {
-
-                // Get the colors from the database
-                var input = self.$auth.user().colors
 
                 if(input !== null) {
 
@@ -256,6 +231,27 @@ export default {
                     // If a task is completed, change to color + opacity
                     if (agenda_item.completed == 1) {
                         agenda_item.color = "rgba(63, 195, 128, 0.1)";
+                    }
+                }
+            });
+            
+            // Set the color for each magister(sidebar) item, if they are of a specific type
+            this.magister_items.forEach(magister_item => {
+
+                if(input !== null) {
+
+                    var colors = input.split(',')
+
+                    if (magister_item.type == "HW") {
+                        magister_item.color = colors[0];
+                    } else if (magister_item.type == "REP") {
+                        magister_item.color = colors[1];
+                    } else if (magister_item.type == "SO") {
+                        magister_item.color = colors[2];
+                    } else if (magister_item.type == "Vrij") {
+                        magister_item.color = colors[3];
+                    } else if (magister_item.type == "Les") {
+                        magister_item.color = colors[4];
                     }
                 }
             });

@@ -295,36 +295,57 @@ This function can also be triggered with the refresh button in the sidebar.
 `setColors()` sets the colors the user has selected in their profile or when a task is completed.
 ```javascript
 setColors() {
-    var self = this
-    
-    // Set the color for each agenda item, if they are of a specific type
-    this.agenda_items.forEach(agenda_item => {
+var self = this
 
-        // Get the colors from the database
-        var input = self.$auth.user().colors
+// Get the colors from the database
+var input = self.$auth.user().colors
 
-        if(input !== null) {
+// Set the color for each agenda item, if they are of a specific type
+this.agenda_items.forEach(agenda_item => {
 
-            var colors = input.split(',')
+    if(input !== null) {
 
-            if (agenda_item.type == "HW") {
-                agenda_item.color = colors[0];
-            } else if (agenda_item.type == "REP") {
-                agenda_item.color = colors[1];
-            } else if (agenda_item.type == "SO") {
-                agenda_item.color = colors[2];
-            } else if (agenda_item.type == "Vrij") {
-                agenda_item.color = colors[3];
-            } else if (agenda_item.type == "Les") {
-                agenda_item.color = colors[4];
-            } 
+        var colors = input.split(',')
 
-            // If a task is completed, change to color + opacity
-            if (agenda_item.completed == 1) {
-                agenda_item.color = "rgba(63, 195, 128, 0.1)";
-            }
+        if (agenda_item.type == "HW") {
+            agenda_item.color = colors[0];
+        } else if (agenda_item.type == "REP") {
+            agenda_item.color = colors[1];
+        } else if (agenda_item.type == "SO") {
+            agenda_item.color = colors[2];
+        } else if (agenda_item.type == "Vrij") {
+            agenda_item.color = colors[3];
+        } else if (agenda_item.type == "Les") {
+            agenda_item.color = colors[4];
+        } 
+        
+        // If a task is completed, change to color + opacity
+        if (agenda_item.completed == 1) {
+            agenda_item.color = "rgba(63, 195, 128, 0.1)";
         }
-    });
+    }
+});
+
+// Set the color for each magister(sidebar) item, if they are of a specific type
+this.magister_items.forEach(magister_item => {
+
+    if(input !== null) {
+
+        var colors = input.split(',')
+
+        if (magister_item.type == "HW") {
+            magister_item.color = colors[0];
+        } else if (magister_item.type == "REP") {
+            magister_item.color = colors[1];
+        } else if (magister_item.type == "SO") {
+            magister_item.color = colors[2];
+        } else if (magister_item.type == "Vrij") {
+            magister_item.color = colors[3];
+        } else if (magister_item.type == "Les") {
+            magister_item.color = colors[4];
+        }
+    }
+});
 },
 ```
 
@@ -438,20 +459,24 @@ formSubmit() {
     // Determine if the event is the whole day or has a time
     if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
         this.form.allDay = "false";
+
+        // Put date + time together so fullcalendar can read it.
+        if (this.form.from && this.form.date) {
+            var start = this.form.date + 'T' + this.form.from;
+        }
+        
+        if (this.form.till) {
+            var end = this.form.date + 'T' + this.form.till;
+        }
     } else {
         this.form.allDay = "true";
+
+        if (this.form.date) {
+            var start = this.form.date
+        }
     }
 
-    // Put date + time together so fullcalendar can read it.
-    if (this.form.from && this.form.date) {
-        var start = this.form.date + 'T' + this.form.from;
-    }
-
-    if (this.form.till && this.form.date) {
-        var end = this.form.date + 'T' + this.form.till;
-    }
-
-    axios.post('/agenda_items', { //AgendaItem uses PUT as it edits the event
+    axios.post('/agenda_items', {
 
         title: this.form.name,
         start: start,
@@ -468,7 +493,7 @@ formSubmit() {
     .catch(function (error) {
 
         self.has_error = true
-        self.errors = error.response.data.errors
+        // self.errors = error.response.data.errors
 
     });
 
@@ -885,7 +910,7 @@ There are some issues which need te be fixed before the tool is implemented.
 * The Magister API is not (yet) implemented.
 * Arrows on the select on newItem and AgendaItem are not clickable.
 * Forms are emptied if a value is not filled in or not correct.
-* If an event is all day, time is still expected.
+* New tasks without a date should be created in the sidebar.
 
 ## Potential functionalities
 Functionalities which can strengthen the product, but could not (yet) be implemented.

@@ -27,7 +27,6 @@ class AgendaController extends Controller
         $v = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255'],
-            'start' => ['required', 'string', 'max:255'],
         ]);
 
         if ($v->fails())
@@ -72,7 +71,6 @@ class AgendaController extends Controller
         $v = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255'],
-            'start' => ['required', 'string', 'max:255'],
         ]);
 
         if ($v->fails())

@@ -107,17 +107,21 @@ methods: {
         // Determine if the event is the whole day or has a time
         if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
             this.form.allDay = "false";
+
+            // Put date + time together so fullcalendar can read it.
+            if (this.form.from && this.form.date) {
+                var start = this.form.date + 'T' + this.form.from;
+            }
+            
+            if (this.form.till) {
+                var end = this.form.date + 'T' + this.form.till;
+            }
         } else {
             this.form.allDay = "true";
-        }
 
-        // Put date + time together so fullcalendar can read it.
-        if (this.form.from && this.form.date) {
-            var start = this.form.date + 'T' + this.form.from;
-        }
-
-        if (this.form.till) {
-            var end = this.form.date + 'T' + this.form.till;
+            if (this.form.date) {
+                var start = this.form.date
+            }
         }
 
         axios.put('/agenda_items/' + self.$attrs.id, {

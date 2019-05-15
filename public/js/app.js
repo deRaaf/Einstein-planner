@@ -3311,18 +3311,21 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       var self = this; // Determine if the event is the whole day or has a time
 
       if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
-        this.form.allDay = "false";
+        this.form.allDay = "false"; // Put date + time together so fullcalendar can read it.
+
+        if (this.form.from && this.form.date) {
+          var start = this.form.date + 'T' + this.form.from;
+        }
+
+        if (this.form.till) {
+          var end = this.form.date + 'T' + this.form.till;
+        }
       } else {
         this.form.allDay = "true";
-      } // Put date + time together so fullcalendar can read it.
 
-
-      if (this.form.from && this.form.date) {
-        var start = this.form.date + 'T' + this.form.from;
-      }
-
-      if (this.form.till) {
-        var end = this.form.date + 'T' + this.form.till;
+        if (this.form.date) {
+          var start = this.form.date;
+        }
       }
 
       axios.put('/agenda_items/' + self.$attrs.id, {
@@ -3619,38 +3622,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3659,6 +3630,37 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      magister_items: [{
+        id: 1,
+        type: 'HW',
+        exc: 'EN: H5 opdr 21',
+        deadlineDay: 7,
+        deadlineMonth: 'mei'
+      }, {
+        id: 2,
+        type: 'SO',
+        exc: 'BIO: H2 opdr 4',
+        deadlineDay: 9,
+        deadlineMonth: 'mei'
+      }, {
+        id: 3,
+        type: 'REP',
+        exc: 'EN: H4',
+        deadlineDay: 7,
+        deadlineMonth: 'mei'
+      }, {
+        id: 4,
+        type: 'HW',
+        exc: 'WIS: H3 opdr 4/5/6',
+        deadlineDay: 10,
+        deadlineMonth: 'mei'
+      }, {
+        id: 5,
+        type: 'SO',
+        exc: 'WIS: H2',
+        deadlineDay: 8,
+        deadlineMonth: 'mei'
+      }],
       agenda_items: [],
       notHome: true,
       config: {
@@ -3769,12 +3771,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     setColors: function setColors() {
-      var self = this; // Set the color for each agenda item, if they are of a specific type
+      var self = this; // Get the colors from the database
+
+      var input = self.$auth.user().colors; // Set the color for each agenda item, if they are of a specific type
 
       this.agenda_items.forEach(function (agenda_item) {
-        // Get the colors from the database
-        var input = self.$auth.user().colors;
-
         if (input !== null) {
           var colors = input.split(',');
 
@@ -3793,6 +3794,24 @@ __webpack_require__.r(__webpack_exports__);
 
           if (agenda_item.completed == 1) {
             agenda_item.color = "rgba(63, 195, 128, 0.1)";
+          }
+        }
+      }); // Set the color for each magister(sidebar) item, if they are of a specific type
+
+      this.magister_items.forEach(function (magister_item) {
+        if (input !== null) {
+          var colors = input.split(',');
+
+          if (magister_item.type == "HW") {
+            magister_item.color = colors[0];
+          } else if (magister_item.type == "REP") {
+            magister_item.color = colors[1];
+          } else if (magister_item.type == "SO") {
+            magister_item.color = colors[2];
+          } else if (magister_item.type == "Vrij") {
+            magister_item.color = colors[3];
+          } else if (magister_item.type == "Les") {
+            magister_item.color = colors[4];
           }
         }
       });
@@ -4058,18 +4077,21 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_0___default.a);
       var self = this; // Determine if the event is the whole day or has a time
 
       if (this.form.allDay == 0 || this.form.allDay == "" || this.form.allDay == null) {
-        this.form.allDay = "false";
+        this.form.allDay = "false"; // Put date + time together so fullcalendar can read it.
+
+        if (this.form.from && this.form.date) {
+          var start = this.form.date + 'T' + this.form.from;
+        }
+
+        if (this.form.till) {
+          var end = this.form.date + 'T' + this.form.till;
+        }
       } else {
         this.form.allDay = "true";
-      } // Put date + time together so fullcalendar can read it.
 
-
-      if (this.form.from && this.form.date) {
-        var start = this.form.date + 'T' + this.form.from;
-      }
-
-      if (this.form.till && this.form.date) {
-        var end = this.form.date + 'T' + this.form.till;
+        if (this.form.date) {
+          var start = this.form.date;
+        }
       }
 
       axios.post('/agenda_items', {
@@ -4086,8 +4108,7 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_0___default.a);
           });
         }
       })["catch"](function (error) {
-        self.has_error = true;
-        self.errors = error.response.data.errors;
+        self.has_error = true; // self.errors = error.response.data.errors
       });
       this.form = [{
         name: '',
@@ -90709,7 +90730,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "button",
-                { staticClass: "refresh", on: { click: _vm.refresh } },
+                { staticClass: "refresh", on: { click: _vm.get_agenda_items } },
                 [
                   _c(
                     "svg",
@@ -90791,81 +90812,48 @@ var render = function() {
             [_vm._v("Nieuw agenda item")]
           ),
           _vm._v(" "),
-          _vm._m(0)
+          _c(
+            "div",
+            { attrs: { id: "external_events" } },
+            _vm._l(_vm.magister_items, function(magister_item) {
+              return _c(
+                "div",
+                { key: magister_item.id, staticClass: "fc-event" },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "type",
+                      style: "background:" + magister_item.color
+                    },
+                    [_vm._v(_vm._s(magister_item.type))]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "class" }, [
+                    _vm._v(_vm._s(magister_item.exc))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "date" }, [
+                    _c("span", { staticClass: "date__day" }, [
+                      _vm._v(_vm._s(magister_item.deadlineDay))
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "date__month" }, [
+                      _vm._v(_vm._s(magister_item.deadlineMonth))
+                    ])
+                  ])
+                ]
+              )
+            }),
+            0
+          )
         ],
         1
       )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "external_events" } }, [
-      _c("div", { staticClass: "fc-event" }, [
-        _c("div", { staticClass: "type" }, [_vm._v("HW")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "class" }, [_vm._v("EN: H5 opdr 21-...")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "date" }, [
-          _c("span", { staticClass: "date__day" }, [_vm._v("7")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "date__month" }, [_vm._v("mei")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "fc-event" }, [
-        _c("div", { staticClass: "type" }, [_vm._v("SO")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "class" }, [_vm._v("BIO: H2 opdr 4")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "date" }, [
-          _c("span", { staticClass: "date__day" }, [_vm._v("9")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "date__month" }, [_vm._v("mei")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "fc-event" }, [
-        _c("div", { staticClass: "type" }, [_vm._v("REP")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "class" }, [_vm._v("Engels H4")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "date" }, [
-          _c("span", { staticClass: "date__day" }, [_vm._v("7")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "date__month" }, [_vm._v("mei")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "fc-event" }, [
-        _c("div", { staticClass: "type" }, [_vm._v("HW")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "class" }, [_vm._v("WIS: H3 opdr 4/5/6")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "date" }, [
-          _c("span", { staticClass: "date__day" }, [_vm._v("10")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "date__month" }, [_vm._v("mei")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "fc-event" }, [
-        _c("div", { staticClass: "type" }, [_vm._v("SO")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "class" }, [_vm._v("WIS H2")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "date" }, [
-          _c("span", { staticClass: "date__day" }, [_vm._v("8")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "date__month" }, [_vm._v("mei")])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

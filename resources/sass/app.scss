@@ -8,10 +8,6 @@
 // Foundation
 @import "foundation";
 
-// Font-awesome
-@import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
-@import "node_modules/@fortawesome/fontawesome-free/scss/solid";
-
 @include foundation-everything($flex: true);
 
 //fullcalendar
