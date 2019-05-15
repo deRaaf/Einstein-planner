@@ -1,15 +1,26 @@
-//logo
+<p align="center">
+    <img width="250" height="250" src="https://i.imgur.com/gkO7IyE.png">
+</p>
 
 # Einstein planner
-The Einstein planner is a plan-learn-tool. The tool’s design is tailored to the needs of the target audience, students with ASS. The tool provides overview, both functionally and visually. The user gets an overview over their tasks and agenda at the same time. This way users can see their tasks, prioritize them and schedule them. The user can get support with the use of a step-by-step plan which can help them learn to schedule their tasks.
+The Einstein planner originated out of the need for a way to teach students with ASS (autism) to structure their planning. Because at the Einstein Class of the Anna Maria van Schuurman school in Franeker this was done by the administration per student, per day. Because every student needs different support, so all students had a different daily schedule. This time costly. The students themselves also have no overview of, for example, their homework. To give the students insight into their lives, it is important that the students learn to plan themselves. They also need to be able to do this at further educations (MBO / HAVO) and other periods in their lives. 
+
+To solve this problem, the Einstein planner was created. Einstein planner is a plan-learn-tool. The tool’s design is tailored to the needs of the target audience, students with ASS. The tool provides overview, both functionally and visually. The user gets an overview over their tasks and agenda at the same time. This way users can see their tasks, prioritize them and schedule them. The user can get support with the use of a step-by-step plan which can help them learn to schedule their tasks.
 
 **Note: This is a proof of concept, the Einstein planner was designed to work with the [Magister][1] API in mind, which we unfortunately could not implement.**
 
 ![Screenshot Einstein Planner][screen]
 
 ## Table of contents
-
-## Features
+[Demo](https://github.com/deRaaf/Einstein-planner#demo)
+[Requirements](https://github.com/deRaaf/Einstein-planner#requirements)
+[External components](https://github.com/deRaaf/Einstein-planner#external-components)
+[Quickstart](https://github.com/deRaaf/Einstein-planner#quickstart)
+[Configuration](https://github.com/deRaaf/Einstein-planner#configuration)
+[Project structure](https://github.com/deRaaf/Einstein-planner#project-structure)
+[Functions per page](https://github.com/deRaaf/Einstein-planner#functions-per-page)
+[Known issues](https://github.com/deRaaf/Einstein-planner#known-issues)
+[Potential functionalities](https://github.com/deRaaf/Einstein-planner#potential-functionalities)
 
 ## Demo
 If you want to see the Einstein planner in action, you can access the demo [here][2]
@@ -156,12 +167,12 @@ Home is the page where the user will spend most of their time, it contains the c
 
 The calendar component has a config and a few functions attached to it. For an explaination of the config properties see the [Fullcalendar documentation][8].
 
-Translation (Dutch) is imported by ```import 'fullcalendar/dist/locale/nl'```
+Translation (Dutch) is imported by `import 'fullcalendar/dist/locale/nl'`
 ```javascript
 <full-calendar :config="config" :events="agenda_items" @event-selected="eventClick" @event-receive="eventReceive"/>
 ```
 
-Events are loaded by an array in ```data()```, like this:
+Events are loaded by an array in `data()`, like this:
 ```javascript
 data() {
     return {
@@ -194,7 +205,7 @@ data() {
 }
 ```
 
-When a user clicks on an event ```eventClick``` is triggered, and the user is sent to the AgendaItem page.
+When a user clicks on an event `eventClick` is triggered, and the user is sent to the AgendaItem page.
 ```javascript
 eventClick(item) {
     var data = item.id
@@ -202,7 +213,7 @@ eventClick(item) {
 }
 ```
 
-When a task is dragged in the calendar ```eventRecieve()``` is triggered, and the event will first be formatted and then sent to the database.
+When a task is dragged in the calendar `eventRecieve()` is triggered, and the event will first be formatted and then sent to the database.
 ```javascript
 eventReceive(e) {
     var self = this
@@ -248,7 +259,7 @@ eventReceive(e) {
 },
 ```
 
-```get_agenda_items()``` gets all the events from the database and after that calls setColors()
+`get_agenda_items()` gets all the events from the database and after that calls setColors()
 ```javascript
 get_agenda_items() {
     axios.get('/agenda_items').then(({ data }) => {
@@ -273,7 +284,7 @@ This function can also be triggered with the refresh button in the sidebar.
 </button>
 ```
 
-```setColors()``` sets the colors the user has selected in their profile or when a task is completed.
+`setColors()` sets the colors the user has selected in their profile or when a task is completed.
 ```javascript
 setColors() {
     var self = this
@@ -309,7 +320,7 @@ setColors() {
 },
 ```
 
-```makeDraggable()``` makes the tasks sortable/draggable via Jquery sortable
+`makeDraggable()` makes the tasks sortable/draggable via Jquery sortable
 ```javascript
 makeDraggable() {
     // initialize the external events
@@ -329,7 +340,7 @@ makeDraggable() {
     });
 },
 ```
-```collapse()``` collapses the tasklist by toggling the class ```.collapse``` to the ```.sidebar``` and ```.calendar_wrap```.
+`collapse()` collapses the tasklist by toggling the class `.collapse` to the `.sidebar` and `.calendar_wrap`.
 ```javascript
 collapse() {
     $(".calendar_wrap").toggleClass("collapsed");
@@ -337,9 +348,9 @@ collapse() {
 }
 ```
 
-Two functions reside in the fullcalendar config as there are no props for the component as there are for ```eventRecieve()``` and ```eventClick()```. These are fullCalendar functions. Docs: [eventDragstop][9], [drop][10].
+Two functions reside in the fullcalendar config as there are no props for the component as there are for `eventRecieve()` and `eventClick()`. These are fullCalendar functions. Docs: [eventDragstop][9], [drop][10].
 
-```eventDragStop()``` is triggered when dragging of an event stops. ```isEventOverDiv``` determines if the event left the external event list.
+`eventDragStop()` is triggered when dragging of an event stops. `isEventOverDiv` determines if the event left the external event list.
 The event is put back in the list if the dragging stops.
 ```javascript
 eventDragStop: function( event, jsEvent, ui, view ) {
@@ -371,7 +382,7 @@ eventDragStop: function( event, jsEvent, ui, view ) {
     }
 },
 ```
-```drop()``` is triggered when an event is dropped in the calendar. The event is removed from the external events list.
+`drop()` is triggered when an event is dropped in the calendar. The event is removed from the external events list.
 ```javascript
 drop(e) {
     // remove the element from the "External Events" list
@@ -384,14 +395,14 @@ NewItem is used to create new agenda items by the user.
 AgendaItem is used to display and/or edit existing agenda items.
 
 These pages contain one external component, select-vue. This is so we can style the background dynamically which can't be done with normal select inputs.
-```
+```javascript
 import vSelect from 'vue-select'
 
 Vue.component('v-select', vSelect)
 ```
 
-```data()``` has three objects.
-```form``` contains the event form data, ```errors``` contains the validation errors and ```has_errors``` is true or false depending if there is a validation error.
+`data()` has three objects.
+`form` contains the event form data, `errors` contains the validation errors and `has_errors` is true or false depending if there is a validation error.
 ```javascript
 data() {
     return {
@@ -411,7 +422,7 @@ data() {
 },
 ```
 
-```formsubmit()``` sends the new agenda item or the edited item to the database.
+`formsubmit()` sends the new agenda item or the edited item to the database.
 ```javascript
 formSubmit() {
     var self = this;
@@ -464,7 +475,7 @@ formSubmit() {
     }];
 },
 ```
-```initselect()``` is used for setting the background color of the type of event based on the user's preferences. It also sets the arrow icon.
+`initselect()` is used for setting the background color of the type of event based on the user's preferences. It also sets the arrow icon.
 ```javascript
 initSelect() {
     var input = this.$auth.user().colors
@@ -508,9 +519,9 @@ initSelect() {
 },
 ```
 
-AgendaItem has three extra functions ```fetchPost()```, ```deleteItem()``` and ```completeItem```.
+AgendaItem has three extra functions `fetchPost()`, `deleteItem()` and `completeItem`.
 
-```fetchPost()``` fetches the current agenda_item based on the ```event.id``` which it gets from the router prop in ```this.$attrs.id```.
+`fetchPost()` fetches the current agenda_item based on the `event.id` which it gets from the router prop in `this.$attrs.id`.
 ```javascript
 fetchPost() {
     var id = this.$attrs.id;
@@ -540,7 +551,7 @@ fetchPost() {
 },
 ```
 
-```deleteItem()``` deletes the current item if the user presses the corresponding button. A sweetAlert is fired which asks the user if they are sure they want to delete this item. A second sweetAlert is fired when the item is succesfully deleted.
+`deleteItem()` deletes the current item if the user presses the corresponding button. A sweetAlert is fired which asks the user if they are sure they want to delete this item. A second sweetAlert is fired when the item is succesfully deleted.
 ```javascript
 deleteItem() {
     var self = this
@@ -570,11 +581,11 @@ deleteItem() {
     },
 ```
 The delete button is located in the form footer.
-```
+```javascript
 <a @click="deleteItem" class="button delete">Verwijderen</a>
 ```
 
-```completeItem()``` completes the current item if the user presses the corresponding button. A SweetAlert is fired if the completion was succesfull. And the user is rederected to the home page.
+`completeItem()` completes the current item if the user presses the corresponding button. A SweetAlert is fired if the completion was succesfull. And the user is rederected to the home page.
 
 If an event is later than the current date a SweetAlert is fired which asks the user if they are sure they want to complete this item. If so a second SweetAlert is fired when the item is succesfully completed.
 ```javascript
@@ -684,7 +695,7 @@ completeItem() {
 ### Login.vue
 The page used to login to the Einstein planner. If a user is not logged in and they try to access the application, they will be redirected to this page. Auth is done with vue-auth.
 
-```login()``` determines if the login info is correct. If so the user get's redirected to their homepage. If not, validation errors are displayed under the inputs.
+`login()` determines if the login info is correct. If so the user get's redirected to their homepage. If not, validation errors are displayed under the inputs.
 ```javascript
 login() {
     // get the redirect object
@@ -713,9 +724,9 @@ login() {
 }
 ```
 ### Register.vue
-On this page users register their account. Form data is saved in the ```data()``` object. This is also handled with vue-auth.
+On this page users register their account. Form data is saved in the `data()` object. This is also handled with vue-auth.
 
-The ```register()``` function gets the form data and sends it to the user controller. If all data is correct the user is redirected to the login page.
+The `register()` function gets the form data and sends it to the user controller. If all data is correct the user is redirected to the login page.
 
 ```javascript
 register() {
@@ -749,7 +760,7 @@ The user profile. This page has three sections where the user can change their i
 
 External component vue-swatches is used to set these colors.
 
-Profile has three items in ```data()```. ```user``` is used to save the user data in. ```color``` is for saving the selected colors by the user. And ```colors``` is the color preset for vue-swatches.
+Profile has three items in `data()`. `user` is used to save the user data in. `color` is for saving the selected colors by the user. And `colors` is the color preset for vue-swatches.
 ```javascript
 data() {
     return {
@@ -765,7 +776,7 @@ data() {
 },
 ```
 
-```submitInfo()``` is the function used for saving the edited user info to the database. A sweetAlert is fired when it's succesfull.
+`submitInfo()` is the function used for saving the edited user info to the database. A sweetAlert is fired when it's succesfull.
 ```javascript
 submitInfo() {
     var self = this
@@ -794,7 +805,7 @@ submitInfo() {
 },
 ```
 
-```submitColors()``` is the function used for saving the selected colors to the database. First all colors are comma seperated in a single string to make it easier to access the data. Again a sweetAlert is fired when it's succesfull.
+`submitColors()` is the function used for saving the selected colors to the database. First all colors are comma seperated in a single string to make it easier to access the data. Again a sweetAlert is fired when it's succesfull.
 ```javascript
 submitColors() {
     var colors = this.color.hw + ',' + this.color.so + ',' + this.color.rep + ',' + this.color.ft + ',' + this.color.cl
@@ -822,7 +833,7 @@ submitColors() {
 },
 ```
 
-```getUser()``` fetches the current user data from corresponding vue-auth variables and displays the data in the top section, ready to be edited.
+`getUser()`  fetches the current user data from corresponding vue-auth variables and displays the data in the top section, ready to be edited.
 ```javascript
 getUser() {
     // Fetch user data from vue-auth
@@ -850,7 +861,7 @@ getUser() {
 },
 ```
 
-To display the name of the event type colors ```appendLabels``` is used, as there is no title prop for vue-swatches.
+To display the name of the event type colors `appendLabels` is used, as there is no title prop for vue-swatches.
 ```javascript
 $( ".color:first-child .vue-swatches__trigger" ).append("Huiswerk");
 $( ".color:nth-child(2) .vue-swatches__trigger" ).append("SO");
