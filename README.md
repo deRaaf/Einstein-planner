@@ -27,9 +27,13 @@ Zurb's [Foundation framework][zurb] is used instead of Bootstrap.
 The Einstein planner uses a few external components to add certain functionalities.
 
 For the calendar [vue-fullcalendar][full] is used.
+
 Selectboxes are [vue-select][select].
+
 Color preferences are set with [vue-swatches][swatch]
+
 Login and register auth is done with [vue-auth][auth]
+
 [SweetAlert2][sweet] is used to convey messages.
 
 ## Quickstart
